@@ -1,0 +1,2728 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language american
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 2cm
+\rightmargin 3cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip smallskip
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Boltzmann Generators
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Equilibrium statistical mechanics is concerned with computing the statistical
+ properties of an ensemble, i.e.
+ infinitely many copies, of a microscopic physical system.
+ A classical example is the Ising magnetization model, where interesting
+ quantities are which fraction of spins are 
+\begin_inset Quotes eld
+\end_inset
+
+up
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+down
+\begin_inset Quotes erd
+\end_inset
+
+ for a given external field, or spatial properties, such as the typical
+ size of contiguous clusters of equal spins (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:problem_description"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+a).
+ A second example is protein biophysics – for a protein system that can
+ exist in two or more macroscopic states (active or inactive, folded or
+ unfolded, bound or dissociated), what is the probability of finding the
+ protein in either of these states, and does their population depend on
+ external factors, such as temperature, illumination or electric fields
+ (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:problem_description"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+b).
+\end_layout
+
+\begin_layout Standard
+A common concept to approach these problems is to assign to each possible
+ configuration 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ (the setting of all spins, the position of all protein atoms, etc.) a dimensionl
+ess energy, 
+\begin_inset Formula $u(\mathbf{x})$
+\end_inset
+
+ whose contributions depend on the thermodynamic ensemble of interest (e.g.,
+ constant particle number, constant volume, etc.
+ – see SI).
+ Then, each configuration has the equilibrium probability: 
+\begin_inset Formula 
+\[
+\mu(\mathbf{x})=\frac{1}{Z}\mathrm{e}^{-u(\mathbf{x})}.
+\]
+
+\end_inset
+
+Now we would like to compute expectation values of relevant observables
+ weighted by this probability distribution, such as the probability of finding
+ the Ising spins 
+\begin_inset Quotes eld
+\end_inset
+
+up
+\begin_inset Quotes erd
+\end_inset
+
+ or the protein in the active state.
+ However, following this idea is fraught with difficulties that inspire
+ much of the research done in statistical mechanics.
+ Even if 
+\begin_inset Formula $u(\mathbf{x})$
+\end_inset
+
+ is exactly known, it if often very expensive to evaluate as it contains
+ all microscopic interactions between spins or atoms, possible involving
+ millions of terms.
+ The normalization factor, 
+\begin_inset Formula $Z$
+\end_inset
+
+, is an integral of 
+\begin_inset Formula $\mathrm{e}^{-u(\mathbf{x})}$
+\end_inset
+
+ of all possible configurations 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+, and generally considered to be impossible to compute for large systems
+ with nontrivial interactions.
+\end_layout
+
+\begin_layout Standard
+The only known strategies to tackle this problem are Markov-Chain Monte
+ Carlo (MCMC) simulations where we propose changes to 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ (e.g., flipping a spin) and accepting or rejecting according to how the energy
+ changes, or Molecular Dynamics (MD) simulations where we change 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ by a tiny step that involves the derivatives of the energy with respect
+ to 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ that ensure that 
+\begin_inset Formula $\mu(\mathbf{x})$
+\end_inset
+
+ will be sampled.
+ These methods are generally extremely expensive and much of the worldwide
+ supercomputing resources are used for MCMC or MD simulations.
+ This expense is due to (1) evaluating 
+\begin_inset Formula $u(\mathbf{x})$
+\end_inset
+
+ or its gradient which may involve computing millions of interaction terms
+ that make every step expensive, and (2) computing expectation values according
+ to 
+\begin_inset Formula $\mu(\mathbf{x})$
+\end_inset
+
+ involves sampling back and forth between phases or states that need and
+ extremely large number of steps (e.g.
+ 
+\begin_inset Formula $10^{9}-10^{15}$
+\end_inset
+
+ steps in a typical MD simulation to fold or unfold a protein).
+ Only for some systems we know specifically designed MCMC moves which make
+ large changes in an efficient way (e.g.
+ cluster moves in Ising models or implicit protein models [
+\series bold
+cite
+\series default
+]).
+ Speeding up the transition with enhanced sampling methods is possible if
+ we can 
+\begin_inset Quotes eld
+\end_inset
+
+drive
+\begin_inset Quotes erd
+\end_inset
+
+ the system along a few collective coordinates which must describe all the
+ slow transitions of the system and sampling the remaining fast motions
+ [
+\series bold
+cite metadynamics etc
+\series default
+], but this approach breaks down in systems where the number of slow processes
+ is large.
+\end_layout
+
+\begin_layout Standard
+Ideally, we would like to have a machine that samples 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ directly from the distribution 
+\begin_inset Formula $\mu(\mathbf{x})$
+\end_inset
+
+, or at least something very close to it.
+ This problem is probably impossible to solve in configuration space, because
+ for a large dimension, the subvolume of low-energy configurations is vanishingl
+y small compared to the full configuration space and has a complex and unknown
+ shape.
+ Thus, generating 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ by simply generating random configurations is bound to fail – e.g.
+ generating random atom positions in a box will have almost zero probability
+ to generate a configuration that corresponds to a protein (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:problem_description"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+b), and almost always result in numerically infinite energies that contribute
+ nothing to 
+\begin_inset Formula $\mu(\mathbf{x})$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Nonetheless, we directly address this problem here.
+ Our strategy is: since sampling 
+\begin_inset Formula $\mu(\mathbf{x})$
+\end_inset
+
+ in configuration space is too difficult, can we instead find a coordinate
+ transformation of 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ to another representation 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+, in which sampling is easy and every sample can be back-transformed to
+ a relevant configuration 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ that contributes to 
+\begin_inset Formula $\mu(\mathbf{x})$
+\end_inset
+
+?
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+a)
+\begin_inset Graphics
+	filename figs/intro_ising.jpg
+	lyxscale 50
+	width 30text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{0.2cm}
+\end_layout
+
+\end_inset
+
+b)
+\begin_inset Graphics
+	filename figs/intro_confchange.jpg
+	lyxscale 50
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:problem_description"
+
+\end_inset
+
+State- and phase transitions in complex metastable systems
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Invertible Networks
+\end_layout
+
+\begin_layout Standard
+To find such a transformation, we employ machine learning, specifically
+ deep learning that has recently led to breakthroughs in pattern recognition,
+ games and autonomous control [
+\series bold
+cite
+\series default
+].
+ The key idea is to sample a complicated distribution 
+\begin_inset Formula $p_{X}(\mathbf{x})\propto\mathrm{e}^{-u(\mathbf{x})}$
+\end_inset
+
+ by learning a reversible transformation to a latent space, 
+\begin_inset Formula $\mathbf{z}=T_{xz}(\mathbf{x})$
+\end_inset
+
+, such that 
+\begin_inset Formula $p_{Z}(\mathbf{z})=p_{Z}\left(T_{xz}(\mathbf{x})\right)$
+\end_inset
+
+ is simple.
+ Specifically, we want to make the distribution in 
+\begin_inset Formula $z$
+\end_inset
+
+ a standard normal distribution 
+\begin_inset Formula $p_{Z}(\mathbf{z})=\mathcal{N}\left(0,\mathbf{I}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We call the transformation from configuration to latent space 
+\begin_inset Formula $T_{xz}$
+\end_inset
+
+ and the inverse transformation 
+\begin_inset Formula $T_{zx}=T_{xz}^{-1}$
+\end_inset
+
+.
+ In general, these transformations are not volume preserving and we thus
+ keep record of the Jacobian of the transformation.
+ We use the notation:
+\begin_inset Formula 
+\begin{align*}
+\mathbf{J}_{zx} & =\frac{\partial T_{zx}(\mathbf{z})}{\partial\mathbf{z}^{\top}}\\
+\mathbf{J}_{xz} & =\frac{\partial T_{xz}(\mathbf{x})}{\partial\mathbf{x}^{\top}}
+\end{align*}
+
+\end_inset
+
+Random variables are transformed according to:
+\begin_inset Formula 
+\begin{align}
+p_{X}(\mathbf{x}) & =p_{Z}(\mathbf{z})\left|\mathbf{J}_{zx}(\mathbf{z})\right|^{-1}\label{eq:transform_zx}\\
+p_{Z}(\mathbf{z}) & =p_{X}(\mathbf{x})\left|\mathbf{J}_{xz}(\mathbf{x})\right|^{-1}\label{eq:transform_xz}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figs/network_structure2.pdf
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig_network-architecture"
+
+\end_inset
+
+Network architecture
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+NICE and NICER
+\end_layout
+
+\begin_layout Standard
+We first use the volume-preserving transformation proposed for nonlinear
+ independent components estimation (NICE, Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_network-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DinhDruegerBengio_NICE2015"
+literal "false"
+
+\end_inset
+
+.
+ For this transformation one defines two groups of variables, 
+\begin_inset Formula $\mathbf{x}_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mathbf{x}_{2}$
+\end_inset
+
+, and employs a nonlinear transformation, 
+\begin_inset Formula $P$
+\end_inset
+
+, to transform only 
+\begin_inset Formula $\mathbf{x}_{2}$
+\end_inset
+
+, while 
+\begin_inset Formula $\mathbf{x}_{1}$
+\end_inset
+
+ is unchanged.
+ Independent of the choice of 
+\begin_inset Formula $P$
+\end_inset
+
+, this transformation is easily invertible:
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+\begin{aligned}\mathbf{y}_{1} & =\mathbf{x}_{1}\\
+\mathbf{y}_{2} & =\mathbf{x}_{2}+P(\mathbf{x}_{1})
+\end{aligned}
+ &  & \begin{aligned}\mathbf{x}_{1} & =\mathbf{y}_{1}\\
+\mathbf{x}_{2} & =\mathbf{y}_{2}-P(\mathbf{y}_{1})
+\end{aligned}
+\end{array}
+\]
+
+\end_inset
+
+This transformation has the following Jacobian:
+\begin_inset Formula 
+\[
+\mathbf{J}_{xy}=\left(\begin{array}{cc}
+1 & 0\\
+\frac{\partial P(x_{1})}{\partial x_{1}} & 1
+\end{array}\right),
+\]
+
+\end_inset
+
+and, as a result:
+\begin_inset Formula 
+\begin{align*}
+\left|\det\left(\mathbf{J}_{xy}\right)\right| & =1\\
+\left|\det\left(\mathbf{J}_{yx}\right)\right| & =1
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This makes the transformation volume-preserving.
+ In physics, such transformations are found in symplectic integrators, and
+ in incompressible fluid flows.
+ 
+\end_layout
+
+\begin_layout Standard
+In order to transform both channels, we define the NICER layer (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_network-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) with involves a second transformation 
+\begin_inset Formula $Q$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+\begin{aligned}\mathbf{z}_{2} & =\mathbf{y}_{2}\\
+\mathbf{z}_{1} & =\mathbf{y}_{1}+Q(\mathbf{y}_{2})
+\end{aligned}
+ &  & \begin{aligned}\mathbf{y}_{2} & =\mathbf{z}_{2}\\
+\mathbf{y}_{1} & =\mathbf{z}_{1}-Q(\mathbf{z}_{2})
+\end{aligned}
+\end{array}
+\]
+
+\end_inset
+
+By concatenating many of these layers, we obtain the deep NICER network
+ 
+\begin_inset Formula $T_{xz}$
+\end_inset
+
+ is reversible 
+\begin_inset Formula $T_{zx}=T_{xz}^{-1}$
+\end_inset
+
+ and volume-preserving as well (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_network-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ Here we use two-layer perceptrons with 100 hidden neurons and rectified
+ linear units [
+\series bold
+cite
+\series default
+] for each 
+\begin_inset Formula $P$
+\end_inset
+
+ and 
+\begin_inset Formula $Q$
+\end_inset
+
+ and ten NICER layers.
+ 
+\end_layout
+
+\begin_layout Standard
+As a result of volume preservation, the transformation of probability densities
+ is trivial:
+\begin_inset Formula 
+\begin{align*}
+\log p_{X}(x) & =\log p_{Z}(T_{xz}(\mathbf{x}))\\
+\log p_{Z}(z) & =\log p_{X}(T_{zx}(\mathbf{z}))
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Scaling layer
+\end_layout
+
+\begin_layout Standard
+We generalize the transformation by adding a scaling layer: 
+\begin_inset Formula 
+\begin{align*}
+\mathbf{z} & =T_{xz}(\mathbf{x})=\mathbf{s}\circ\mathbf{x}\\
+\mathbf{x} & =T_{zx}(\mathbf{z})=\mathbf{s}^{-1}\circ\mathbf{z}
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $\mathbf{s}=(s_{1},...,s_{n})$
+\end_inset
+
+ are the scaling factors and 
+\begin_inset Formula $\mathbf{s}^{-1}=(s_{1}^{-1},...,s_{n}^{-1})^{T}$
+\end_inset
+
+.
+ The Jacobians of this transformation are:
+\begin_inset Formula 
+\begin{align*}
+\left|\det\left(\mathbf{J}_{xz}\right)\right| & =\left|\det\left(\mathrm{diag}(\mathbf{s})\right)\right|=\left|\prod_{i}s_{i}\right|\\
+\left|\det\left(\mathbf{J}_{zx}\right)\right| & =\left|\det\left(\mathrm{diag}(\mathbf{s}^{-1})\right)\right|=\left|\prod_{i}s_{i}^{-1}\right|
+\end{align*}
+
+\end_inset
+
+Unless a better initialization for the problem at hand is available, we
+ recomment to initialize the network in a regime with low condition number
+ by choosing
+\begin_inset Formula 
+\[
+\mathbf{s}^{(0)}=\mathrm{diag}(1,...,1).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The scaling layer transforms logarithmized probability distributions as
+ follows:
+\begin_inset Formula 
+\begin{align*}
+\log p_{X}(x) & =\left|\sum_{i}\log s_{i}\right|+\log p_{Z}(\mathbf{s}\circ\mathbf{x})\\
+\log p_{Z}(z) & =\left|-\sum_{i}\log s_{i}\right|+\log p_{X}(\mathbf{s}^{-1}\circ\mathbf{z})
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Exponential Scaling Layer
+\end_layout
+
+\begin_layout Standard
+When scaling is just used to stretch or compress space and it is not desired
+ to change signs, we can choose the following parametrization of 
+\begin_inset Formula $\mathbf{S}$
+\end_inset
+
+ which enforces nonnegativity of the scaling factors:
+\begin_inset Formula 
+\[
+\mathbf{S}=\mathrm{diag}\left(\exp(k_{1}),...,\exp(k_{1})\right),
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $k_{i}$
+\end_inset
+
+ are the trainable parameters.
+ With this formulation, the Jacobians become:
+\begin_inset Formula 
+\begin{align*}
+\left|\det\left(\mathbf{J}_{xz}\right)\right| & =\exp\left(\sum_{i}k_{i}\right)\\
+\left|\det\left(\mathbf{J}_{zx}\right)\right| & =\exp\left(-\sum_{i}k_{i}\right)
+\end{align*}
+
+\end_inset
+
+Note that the absolute value operator is no longer needed as the value of
+ the exponential function is always nonnegative.
+ The exponential scaling layer transforms logarithmized probability distribution
+s as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\log p_{X}(x) & =\sum_{i}k_{i}+\log p_{Z}(\exp(\mathbf{k})\circ\mathbf{x})\\
+\log p_{Z}(z) & =-\sum_{i}k_{i}+\log p_{X}(\exp(-\mathbf{k})\circ\mathbf{z})
+\end{align*}
+
+\end_inset
+
+
+\lang english
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+In general:
+\begin_inset Formula 
+\begin{align*}
+p_{X}(x) & =\left|\det\left(\frac{dT_{xz}}{dx}\right)\right|p_{Z}(T_{xz}(x))=\left|\det\left(\frac{dT_{zx}}{dx}\right)\right|^{-1}p_{Z}(T_{xz}(x))\\
+p_{Z}(z) & =\left|\det\left(\frac{dT_{zx}}{dz}\right)\right|p_{X}(T_{zx}(z))=\left|\det\left(\frac{dT_{xz}}{dz}\right)\right|^{-1}p_{X}(T_{zx}(z))
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Formula 
+\begin{align*}
+p_{X}(\mathbf{x}) & =\left|\det\left(S\right)\right|^{-1}p_{Z}(T_{xz}(\mathbf{x}))
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+If we simply decide to sample 
+\begin_inset Formula $z$
+\end_inset
+
+ from a normal distribution and transform to 
+\begin_inset Formula $x$
+\end_inset
+
+, the network represents the density
+\begin_inset Formula 
+\begin{align}
+p_{X}(\mathbf{x}) & =\left|\det\left(S\right)\right|^{-1}\mathcal{N}(0,\mathbf{I}).\label{eq:pX_withS_from_Normal}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+RealNVP
+\end_layout
+
+\begin_layout Standard
+Forward transformation: 
+\begin_inset Formula $\mathbf{x}\rightarrow\mathbf{y}\rightarrow\mathbf{z}$
+\end_inset
+
+ with the first step:
+\begin_inset Formula 
+\begin{align*}
+\mathbf{y}_{1} & =\mathbf{x}_{1}\\
+\mathbf{y}_{2} & =\mathbf{x}_{2}\odot\exp\left(S(\mathbf{x}_{1})\right)+T(\mathbf{x}_{1})
+\end{align*}
+
+\end_inset
+
+and the Jacobian:
+\begin_inset Formula 
+\begin{align*}
+\mathbf{J}_{xy} & =\left[\begin{array}{cc}
+I & 0\\
+\frac{\partial\mathbf{y}_{2}}{\partial\mathbf{x}_{1}} & \mathrm{diag}\left[\exp\left(S(\mathbf{x}_{1})\right)\right]
+\end{array}\right]\\
+\left|\det\left(\mathbf{J}_{xy}\right)\right| & =\mathrm{e}^{\sum_{i}S_{i}(\mathbf{x}_{1})}
+\end{align*}
+
+\end_inset
+
+Likelihood:
+\begin_inset Formula 
+\[
+p_{X}(\mathbf{x})=J(\mathbf{x})p_{Z}(T_{xz}(\mathbf{x}))
+\]
+
+\end_inset
+
+with
+\begin_inset Formula 
+\[
+J(\mathbf{x})=\left|\det\left(\frac{dT_{xz}}{dx}\right)\right|
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Log Likelihood of a Gaussian in 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ with mean 0 and std 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ is given by:
+\begin_inset Formula 
+\begin{align*}
+L(\mathbf{x}) & =\log J(\mathbf{x})-n\log\left(\sigma\right)-\frac{1}{2\sigma^{2}}\mathbf{z}^{\top}\mathbf{z}+\mathrm{const}\\
+ & =\log J(\mathbf{x})-\frac{1}{2\sigma^{2}}\mathbf{z}^{\top}\mathbf{z}+\mathrm{const}
+\end{align*}
+
+\end_inset
+
+For multiple trajectories that should each be standartized, if we sum their
+ log-likelihoods we will get the same loss function except for a constant
+ pre-factor.
+ If we instead sum their likelihoods, we get:
+\begin_inset Formula 
+\begin{align*}
+\mathrm{e}^{L(\mathbf{X})} & =\mathrm{e}^{\sum_{s=1}^{N_{1}}\log J(\mathbf{x}_{s})-\frac{1}{2\sigma^{2}}\mathbf{z}_{s}^{\top}\mathbf{z}_{s}}+\mathrm{e}^{\sum_{s=1}^{N_{2}}\log J(\mathbf{x}_{t})-\frac{1}{2\sigma^{2}}\mathbf{z}_{t}^{\top}\mathbf{z}_{t}}\\
+L(\mathbf{X}) & =\log\left(\mathrm{e}^{\sum_{s=1}^{N_{1}}\log J(\mathbf{x}_{s})-\frac{1}{2\sigma^{2}}\mathbf{z}_{s}^{\top}\mathbf{z}_{s}}+\mathrm{e}^{\sum_{s=1}^{N_{2}}\log J(\mathbf{x}_{t})-\frac{1}{2\sigma^{2}}\mathbf{z}_{t}^{\top}\mathbf{z}_{t}}\right)\\
+ & =\mathrm{logsumexp}\left(\sum_{s=1}^{N_{1}}\log J(\mathbf{x}_{s})-\frac{1}{2\sigma^{2}}\mathbf{z}_{s}^{\top}\mathbf{z}_{s},\sum_{s=1}^{N_{2}}\log J(\mathbf{x}_{s})-\frac{1}{2\sigma^{2}}\mathbf{z}_{s}^{\top}\mathbf{z}_{s}\right)
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+L(\mathbf{X}) & =\sum_{s=1}^{N_{1}}\left(\frac{1}{N_{1}}\log J(\mathbf{x}_{s})-\frac{1}{N_{1}}\frac{1}{2\sigma^{2}}\mathbf{z}_{s}^{\top}\mathbf{z}_{s}\right)+\sum_{t=1}^{N_{2}}\left(\frac{1}{N_{2}}\log J(\mathbf{x}_{t})-\frac{1}{N_{2}}\frac{1}{2\sigma^{2}}\mathbf{z}_{t}^{\top}\mathbf{z}_{t}\right)
+\end{align*}
+
+\end_inset
+
+If we have equally many trajectories (
+\begin_inset Formula $N/2$
+\end_inset
+
+) in each batch, we can concatenate them and write
+\begin_inset Formula 
+\begin{align*}
+L(\mathbf{X}) & =\sum_{t=1}^{N/2}\left(\frac{2}{N}\log J(\mathbf{x}_{s})-\frac{2}{N}\frac{1}{2\sigma^{2}}\mathbf{z}_{s}^{\top}\mathbf{z}_{s}\right)+\sum_{t=N/2}^{N}\left(\frac{2}{N}\log J(\mathbf{x}_{t})-\frac{2}{N}\frac{1}{2\sigma^{2}}\mathbf{z}_{t}^{\top}\mathbf{z}_{t}\right)\\
+ & =\frac{2}{N}\sum_{t=1}^{N}\log J(\mathbf{x}_{s})-\frac{2}{N}\sum_{t=1}^{N}\frac{1}{2\sigma^{2}}\mathbf{z}_{s}^{\top}\mathbf{z}_{s}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Reverse transformation:
+\begin_inset Formula 
+\begin{align*}
+\mathbf{x}_{1} & =\mathbf{y}_{1}\\
+\mathbf{x}_{2} & =\left(\mathbf{y}_{2}-T(\mathbf{x}_{1})\right)\odot\exp\left(-S(\mathbf{y}_{1})\right)
+\end{align*}
+
+\end_inset
+
+and the Jacobian:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial\mathbf{x}}{\partial\mathbf{y}} & =\left[\begin{array}{cc}
+I & 0\\
+\frac{\partial\mathbf{x}_{2}}{\partial\mathbf{y}_{1}} & \mathrm{diag}\left[\exp\left(-S(\mathbf{y}_{1})\right)\right]
+\end{array}\right]\\
+\det\left(\frac{\partial\mathbf{x}}{\partial\mathbf{y}}\right) & =\mathrm{e}^{-\sum_{i}S_{i}(\mathbf{y}_{1})}
+\end{align*}
+
+\end_inset
+
+Note that if we use scaling layers with nonnegative output, the minus disappears.
+\end_layout
+
+\begin_layout Standard
+As above, we can minimize the KL divergence, resulting in
+\begin_inset Formula 
+\begin{align*}
+J & =\log\left|\det\left(\frac{dT_{xz}}{dx}\right)\right|+\mathbb{E}_{\mathbf{z}\sim\mathcal{N}(0,I)}\left[u(T_{zx}(\mathbf{z}))\right]\\
+ & =-\sum_{i}S_{i}+\mathbb{E}_{\mathbf{z}\sim\mathcal{N}(0,I)}\left[u(T_{zx}(\mathbf{z}))\right]
+\end{align*}
+
+\end_inset
+
+Where 
+\begin_inset Formula $i$
+\end_inset
+
+ runs over 
+\series bold
+all
+\series default
+ scaling units in the network.
+ Note that in the reverse transformation 
+\begin_inset Formula $S$
+\end_inset
+
+ enters with a negative sign, i.e.
+ the role of the first term in 
+\begin_inset Formula $J$
+\end_inset
+
+ is the same as in the NICE transformation: minimizing the first term smaller
+ increases the scaling from 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ to 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+, corresponding to trying to include more configuration space, while it
+ is beneficial to reduce the scaling from 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ to 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ to minimizing the mean energy (second term).
+\end_layout
+
+\begin_layout Standard
+We can condatenate two RealNVP layers with swapped channels in order to
+ transform all variables:
+\begin_inset Formula 
+\begin{align*}
+\mathbf{z}_{2} & =\mathbf{y}_{2}\\
+\mathbf{z}_{1} & =\mathbf{y}_{1}\odot\exp\left(S(\mathbf{y}_{2})\right)+T(\mathbf{y}_{2})
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="5">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="1.5cm">
+<column alignment="left" valignment="top" width="4.5cm">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top" width="4.5cm">
+<column alignment="left" valignment="top" width="0pt">
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Layer
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $T_{xz}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\left|\det\mathbf{J}_{xz}\right|$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $T_{zx}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\left|\det\mathbf{J}_{zx}\right|$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+NICE
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\begin{array}{cl}
+\mathbf{z}_{1}= & \mathbf{x}_{1}\\
+\mathbf{z}_{2}= & \mathbf{x}_{2}+P(\mathbf{x}_{1})
+\end{array}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\begin{array}{cl}
+\mathbf{x}_{1} & =\mathbf{z}_{1}\\
+\mathbf{x}_{2} & =\mathbf{z}_{2}-P(\mathbf{y}_{1})
+\end{array}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+NICER
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\begin{array}{cl}
+\mathbf{z}_{2} & =\mathbf{x}_{2}+P(\mathbf{x}_{1})\\
+\mathbf{z}_{1} & =\mathbf{x}_{1}+Q(\mathbf{x}_{2}+P(\mathbf{x}_{1}))
+\end{array}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\begin{array}{cl}
+\mathbf{x}_{1} & =\mathbf{z}_{1}-Q(\mathbf{z}_{2})\\
+\mathbf{x}_{2} & =\mathbf{z}_{2}-P(\mathbf{z}_{1}-Q(\mathbf{z}_{2}))
+\end{array}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Scaling
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{0.2cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $\mathbf{z}=\mathbf{s}\circ\mathbf{x}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\left|\prod_{i}s_{i}\right|$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{0.2cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $\mathbf{x}=\mathbf{s}^{-1}\circ\mathbf{z}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\left|\prod_{i}s_{i}^{-1}\right|$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Scaling, Exp
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{0.2cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $\mathbf{z}=\mathrm{e}^{\mathbf{k}}\circ\mathbf{x}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\mathrm{e}^{\sum_{i}k_{i}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{0.2cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $\mathbf{x}=\mathrm{e}^{-\mathbf{k}}\circ\mathbf{z}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\mathrm{e}^{-\sum_{i}k_{i}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+RealNVP
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\begin{array}{cl}
+\mathbf{y}_{1} & =\mathbf{x}_{1}\\
+\mathbf{y}_{2} & =\mathbf{x}_{2}\odot\exp\left(S(\mathbf{x}_{1})\right)\\
+ & \:\:\:+T(\mathbf{x}_{1})
+\end{array}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\mathrm{e}^{\sum_{i}S_{i}(\mathbf{x}_{1})}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\begin{array}{cl}
+\mathbf{x}_{1} & =\mathbf{y}_{1}\\
+\mathbf{x}_{2} & =\left(\mathbf{y}_{2}-T(\mathbf{x}_{1})\right)\\
+ & \:\:\:\odot\exp\left(-S(\mathbf{y}_{1})\right)
+\end{array}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\mathrm{e}^{-\sum_{i}S_{i}(\mathbf{y}_{1})}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Training
+\end_layout
+
+\begin_layout Standard
+We call the prior distribution injected into the latent space 
+\begin_inset Formula $q_{Z}(\mathbf{z})$
+\end_inset
+
+ and the Boltzmann distribution in the configuration space 
+\begin_inset Formula $\mu_{X}(\mathbf{x})$
+\end_inset
+
+.
+ The generated distributions are then called 
+\begin_inset Formula $p$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray*}
+q_{Z}(\mathbf{z}) & \overset{T_{zx}}{\longrightarrow} & p_{X}(\mathbf{x})\\
+\mu_{X}(\mathbf{x}) & \overset{T_{xz}}{\longrightarrow} & p_{Z}(\mathbf{z})
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Prior distribution
+\series default
+: We sample the input in 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ from the isotropic Gaussian distribution:
+\begin_inset Formula 
+\begin{equation}
+q_{Z}(\mathbf{z})=\mathcal{N}(\mathbf{0},\sigma^{2}\mathbf{I})=Z_{Z}^{-1}\mathrm{e}^{-\frac{1}{2}\left\Vert \mathbf{z}\right\Vert ^{2}/\sigma^{2}},\label{eq:z_Gaussian_prior}
+\end{equation}
+
+\end_inset
+
+with normalization constant 
+\begin_inset Formula $Z_{Z}$
+\end_inset
+
+.
+ We also define the prior energy as 
+\begin_inset Formula 
+\begin{align}
+u_{Z}(\mathbf{z}) & =-\log q_{Z}(\mathbf{z})\nonumber \\
+ & =\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}+\mathrm{const}.\label{eq:z_Gaussian_energy}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Boltzmann distribution
+\series default
+: We aim at sampling configurations 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ from the Boltzmann distribution
+\begin_inset Formula 
+\begin{equation}
+\mu_{X}(\mathbf{x})=Z_{X}^{-1}\mathrm{e}^{-\beta U(\mathbf{x})}\label{eq:Boltzmann_distribution}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\beta^{-1}=k_{B}T$
+\end_inset
+
+ with Boltzmann constant 
+\begin_inset Formula $k_{B}$
+\end_inset
+
+ and temperature 
+\begin_inset Formula $T$
+\end_inset
+
+.
+ When we only have one temperature, we can simply subsume the constant into
+ a reduced energy
+\begin_inset Formula 
+\[
+u(\mathbf{x})=\frac{U(\mathbf{x})}{k_{B}T}
+\]
+
+\end_inset
+
+In order to evaluate a set of temperatures 
+\begin_inset Formula $(T_{1},...,T_{K})$
+\end_inset
+
+, we can define a reference temperature 
+\begin_inset Formula $T_{0}$
+\end_inset
+
+ and the respective reduced energy 
+\begin_inset Formula $u_{0}(\mathbf{x})=U(\mathbf{x})/k_{B}T_{0}$
+\end_inset
+
+ and we then obtain the reduced energies simply by scaling:
+\begin_inset Formula 
+\[
+u_{k}(\mathbf{x})=\frac{T_{0}}{T_{k}}u_{0}(\mathbf{x})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Latent KL divergence and reweighting loss
+\end_layout
+
+\begin_layout Standard
+The KL divergence between two distributions 
+\begin_inset Formula $q$
+\end_inset
+
+ and 
+\begin_inset Formula $p$
+\end_inset
+
+ is given by
+\begin_inset Formula 
+\begin{align*}
+\mathrm{KL}(q\parallel p) & =\int q(\mathbf{x})\left[\log q(\mathbf{x})-\log p(\mathbf{x})\right]\mathrm{d}\mathbf{x},\\
+ & =H_{q}-\int q(\mathbf{x})\log p(\mathbf{x})\mathrm{d}\mathbf{x},
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $H_{q}$
+\end_inset
+
+ is the entropy of the distribution 
+\begin_inset Formula $q$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Here we use the KL divergences to minimize the difference between the probabilit
+y densities predicted by the Boltzmann generator and the respective reference
+ distribution.
+ Using the variable transformations (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:transform_zx"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+-
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:transform_xz"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) and the Boltzmann distribution (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Boltzmann_distribution"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+), we can express the KL divergence in latent space as:
+\begin_inset Formula 
+\begin{align*}
+\mathrm{KL}_{\boldsymbol{\theta}}\left[q_{Z}\parallel p_{Z}\right] & =H_{Z}-\int q_{Z}(\mathbf{z})\log p_{Z}(\mathbf{z};\boldsymbol{\theta})\mathrm{d}\mathbf{z},\\
+ & =H_{Z}-\int q_{Z}(\mathbf{z})\left[\log\mu_{X}(T_{zx}(\mathbf{z};\boldsymbol{\theta}))+\log\left|\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]\mathrm{d}\mathbf{z},\\
+ & =H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[u(T_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]
+\end{align*}
+
+\end_inset
+
+Here, 
+\begin_inset Formula $\boldsymbol{\theta}$
+\end_inset
+
+ are the trainable neural network parameters.
+ Since 
+\begin_inset Formula $H_{Z}$
+\end_inset
+
+ and 
+\begin_inset Formula $Z_{X}$
+\end_inset
+
+ are constants in 
+\begin_inset Formula $\boldsymbol{\theta}$
+\end_inset
+
+, the KL loss is given by:
+\begin_inset Formula 
+\begin{equation}
+J_{KL}=\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[u(T_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right].\label{eq:loss_KL}
+\end{equation}
+
+\end_inset
+
+Practically, each training batch samples points 
+\begin_inset Formula $\mathbf{z}\sim q_{Z}(\mathbf{z})$
+\end_inset
+
+ from a normal distribution, transformes them via 
+\begin_inset Formula $T_{zx}$
+\end_inset
+
+, and evaluates Eq.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:loss_KL"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The KL loss (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:loss_KL"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) has an interesting thermodynamic interpretation.
+ By transforming the prior distribution 
+\begin_inset Formula $q_{Z}$
+\end_inset
+
+ through the Boltzmann generator, we arrive at a proposal distribution 
+\begin_inset Formula $p_{X}$
+\end_inset
+
+.
+ We can now employ reweighting (
+\series bold
+see below
+\series default
+) to turn this proposal distribution into a Boltzmann distribution.
+ In reweighting, each point is assigned a weight
+\begin_inset Formula 
+\[
+w_{X}(\mathbf{x}\mid\mathbf{z})=\frac{\mu_{X}(\mathbf{x})}{p_{X}(\mathbf{x})}=\frac{p_{Z}(\mathbf{z})}{q_{Z}(\mathbf{z})}.
+\]
+
+\end_inset
+
+where the equivalence on the right hand side results from (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:transform_zx"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+-
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:transform_xz"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ The minimization of the latent KL divergence can be rewritten in terms
+ of these weights:
+\begin_inset Formula 
+\begin{align*}
+\min\mathrm{KL}_{\boldsymbol{\theta}}\left[q_{Z}\parallel p_{Z}\right] & =\min\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[\log q_{Z}(\mathbf{z})-\log p_{Z}(\mathbf{z};\boldsymbol{\theta})\right]\\
+ & =\max\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[\log w_{X}(\mathbf{x}\mid\mathbf{z})\right].
+\end{align*}
+
+\end_inset
+
+Thus, the minimization of the latent KL divergence is equivalent to maximizing
+ the expected log-weights of points, or equivalently the product of all
+ weights, in a reweighting procedure.
+ Indeed the maximum weights are achieved when the proposal distribution
+ is identical to the Boltzmann distribution, resulting in 
+\begin_inset Formula $w_{X}(\mathbf{x})\equiv1$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Subsection
+Configuration KL divergence and Maximum Likelihood
+\end_layout
+
+\begin_layout Standard
+Likewise, we can express the KL divergence in 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ space where we compare the generated distributions with a Boltzmann weight.
+ Using (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:transform_zx"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+-
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:transform_xz"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) and the Gaussian prior density (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:z_Gaussian_prior"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+), this KL-divergences evaluates as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\mathrm{KL}_{\boldsymbol{\theta}}(\mu_{X}\parallel p_{X}) & =H_{X}-\int\mu_{X}(\mathbf{x})\log p_{X}(\mathbf{x};\boldsymbol{\theta})\mathrm{d}\mathbf{x}\\
+ & =H_{X}-\int\mu_{X}(\mathbf{x})\left[\log q_{Z}(T_{xz}(\mathbf{x};\boldsymbol{\theta}))+\log\left|\mathbf{J}_{xz}(\mathbf{z};\boldsymbol{\theta})\right|\right]\mathrm{d}\mathbf{x}.\\
+ & =H_{X}+\log Z_{Z}+\mathbb{E}_{\mathbf{x}\sim\mu(\mathbf{x})}\left[\frac{1}{\sigma^{2}}\left\Vert T_{xz}(\mathbf{x};\boldsymbol{\theta})\right\Vert ^{2}-\log\left|\mathbf{J}_{xz}(\mathbf{x};\boldsymbol{\theta})\right|\right].
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Although the constants 
+\begin_inset Formula $H_{X}$
+\end_inset
+
+ and 
+\begin_inset Formula $Z_{Z}$
+\end_inset
+
+ can be ignored during the training, this loss is difficult to evaluate
+ because it needs to sample configurations according to 
+\begin_inset Formula $\mu(\mathbf{x})$
+\end_inset
+
+, which is actually the problem we are trying to solve.
+ 
+\end_layout
+
+\begin_layout Standard
+However we can approximate the configuration KL divergence by starting from
+ a sample 
+\begin_inset Formula $\rho(\mathbf{x})$
+\end_inset
+
+ and using the loss:
+\begin_inset Formula 
+\begin{align*}
+J_{LL} & =-\mathbb{E}_{\mathbf{x}\sim\rho(\mathbf{x})}\left[\log p_{X}(\mathbf{x};\boldsymbol{\theta})\right]\\
+ & =\mathbb{E}_{\mathbf{x}\sim\rho(\mathbf{x})}\left[\frac{1}{\sigma^{2}}\left\Vert T_{xz}(\mathbf{x};\boldsymbol{\theta})\right\Vert ^{2}-\log\left|\mathbf{J}_{xz}(\mathbf{x};\boldsymbol{\theta})\right|\right]
+\end{align*}
+
+\end_inset
+
+This loss is the negative log-likelihood, i.e.
+ minimizing 
+\begin_inset Formula $\mathrm{LL}_{\boldsymbol{\theta}}$
+\end_inset
+
+ corresponds to maximizing the likelihood of the sample 
+\begin_inset Formula $\rho(\mathbf{x})$
+\end_inset
+
+ in the Gaussian prior density.
+ Likelihood maximization is used in the NICE [
+\series bold
+cite
+\series default
+] and RealNVP methods [
+\series bold
+cite
+\series default
+].
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Multivariate 
+\series bold
+log-normal distribution
+\series default
+:
+\begin_inset Formula 
+\begin{align*}
+\mathbf{y} & \sim\mathcal{N}(\mathbf{0},\sigma^{2}\mathbf{I})\\
+\mathbf{z} & =e^{\mathbf{y}}
+\end{align*}
+
+\end_inset
+
+Then we have the density:
+\begin_inset Formula 
+\begin{align*}
+p(\mathbf{z}) & =\prod_{i=1}^{d}\frac{1}{\sigma z_{i}\sqrt{2\pi}}\mathrm{e}^{-\frac{(\log(z_{i}))^{2}}{2\sigma^{2}}}\\
+ & =\frac{1}{\prod_{i=1}^{d}z_{i}}\frac{1}{(2\pi)^{d/2}\sigma^{d}}\mathrm{e}^{-\frac{1}{2\sigma^{2}}\sum_{i=1}^{d}(\log(z_{i}))^{2}}\\
+u(z)=-\log p(z) & =\sum_{i=1}^{d}y_{i}+d\log\sigma+\frac{1}{2\sigma^{2}}\left\Vert \mathbf{y}\right\Vert ^{2}+\mathrm{const}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Jensen-Shannon divergence
+\end_layout
+
+\begin_layout Standard
+The two KL divergences above can be naturally combined to the Jensen-Shannon
+ divergence
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathrm{D}_{JS}=\frac{1}{2}D_{KL}(p_{X}\parallel p_{Z})+\frac{1}{2}D_{KL}(p_{Z}\parallel p_{X})
+\]
+
+\end_inset
+
+which can be approximated by:
+\begin_inset Formula 
+\[
+\mathrm{D}_{JS}\approx J_{KL}+J_{LL}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Training Latent MCMC Acceptance
+\end_layout
+
+\begin_layout Standard
+Using Barker Dynamics and Latent MCMC we can express the acceptance probability
+ of 
+\begin_inset Formula $\mathbf{z}_{2}$
+\end_inset
+
+ after 
+\begin_inset Formula $\mathbf{z}_{1}$
+\end_inset
+
+ as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\log p_{\mathrm{acc}} & =-\log\left(1+\mathrm{e}^{F(\mathbf{z}_{2})-F(\mathbf{z}_{1})}\right)\\
+F(\mathbf{z}) & =u(T_{zx}(\mathbf{z}))-\log J_{zx}(\mathbf{z})-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}\\
+ & =u(T_{zx}(\mathbf{z}))+\log J_{xz}(\mathbf{x}(\mathbf{z}))-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}
+\end{align*}
+
+\end_inset
+
+Now we use the network in a parallel fashion, i.e.:
+\begin_inset Formula 
+\begin{eqnarray*}
+\mathbf{x}_{in} & \rightarrow & \mathbf{z}_{out}\\
+\mathbf{z}_{in} & \rightarrow & \mathbf{x}_{out}
+\end{eqnarray*}
+
+\end_inset
+
+where 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ is training data and 
+\begin_inset Formula $\mathbf{z}\sim\mathcal{N}(\mathbf{0},\sigma^{2}\mathbf{I})$
+\end_inset
+
+.
+ We now consider the following Latent MCMC move:
+\begin_inset Formula 
+\[
+\mathbf{z}_{out}\rightarrow\mathbf{z}_{in}
+\]
+
+\end_inset
+
+That means we start at a 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ value corresponding to a training configuration and we want to maximize
+ the MCMC efficiency when considering a single step.
+ We have
+\begin_inset Formula 
+\begin{align*}
+F(\mathbf{z}_{1}) & =u(\mathbf{x}_{in})+\log J_{xz}(\mathbf{x}_{in})-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{out}\right\Vert ^{2}\\
+F(\mathbf{z}_{2}) & =u(\mathbf{x}_{out})-\log J_{zx}(\mathbf{z}_{in})-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{in}\right\Vert ^{2}
+\end{align*}
+
+\end_inset
+
+Note that we have to use the Jacobian in both directions in order to work
+ with available input data.
+ Now we maximize:
+\begin_inset Formula 
+\[
+\log p_{\mathrm{acc}}+\log\left\Vert \mathbf{x}_{in}-\mathbf{x}_{out}\right\Vert ^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Symmetric acceptance
+\end_layout
+
+\begin_layout Standard
+We want to maximize the acceptance probability forward and backward.
+ In Barker dynamics the forward-and-backward probabilities sum up to one,
+ therefore we use the product:
+\begin_inset Formula 
+\begin{align*}
+p_{\rightleftarrows} & =p_{\mathrm{acc}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2})p_{\mathrm{acc}}(\mathbf{z}_{2}\rightarrow\mathbf{z}_{1})\\
+ & =\frac{1}{1+\mathrm{e}^{F(\mathbf{z}_{2})-F(\mathbf{z}_{1})}}\frac{1}{1+\mathrm{e}^{-(F(\mathbf{z}_{2})-F(\mathbf{z}_{1}))}}\\
+ & =\frac{1}{2+\mathrm{e}^{F(\mathbf{z}_{2})-F(\mathbf{z}_{1})}+\mathrm{e}^{-(F(\mathbf{z}_{2})-F(\mathbf{z}_{1}))}}.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Barker dynamics efficiency
+\end_layout
+
+\begin_layout Standard
+Barker dynamics is given by
+\begin_inset Formula 
+\[
+p_{\mathrm{acc}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2})=\frac{1}{1+\exp\left(u(\mathbf{z}_{2})-u(\mathbf{z}_{1})+\log p_{\mathrm{prop}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2})-\log p_{\mathrm{prop}}(\mathbf{z}_{2}\rightarrow\mathbf{z}_{1})\right)}
+\]
+
+\end_inset
+
+Using latent MCMC this is given by:
+\begin_inset Formula 
+\begin{align*}
+p_{\mathrm{acc}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2}) & =\frac{1}{1+\exp\left(u(\mathbf{z}_{2})-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{2}\right\Vert ^{2}-u(\mathbf{z}_{1})+\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{1}\right\Vert ^{2}\right)}\\
+ & =\frac{1}{1+\exp\left(g(\mathbf{z}_{2})-g(\mathbf{z}_{1})\right)}
+\end{align*}
+
+\end_inset
+
+with 
+\begin_inset Formula $g(\mathbf{z})=u(\mathbf{z})-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}$
+\end_inset
+
+, and typically we use 
+\begin_inset Formula $\sigma=1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The log efficiency is
+\begin_inset Formula 
+\begin{align*}
+\log\left(p_{\mathrm{acc}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2})\left\Vert \mathbf{x}_{2}-\mathbf{x}_{1}\right\Vert _{2}^{2}\right) & =\log p_{\mathrm{acc}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2})+\log\left\Vert \mathbf{x}_{2}-\mathbf{x}_{1}\right\Vert _{2}^{2}\\
+ & =-\log\left[1+\exp\left(g(\mathbf{z}_{2})-g(\mathbf{z}_{1})\right)\right]+\log\left\Vert \mathbf{x}_{2}-\mathbf{x}_{1}\right\Vert _{2}^{2}
+\end{align*}
+
+\end_inset
+
+Then we minimize
+\begin_inset Formula 
+\[
+J=\log\left[1+\exp\left(g(\mathbf{z}_{2})-g(\mathbf{z}_{1})\right)\right]-\log\left\Vert \mathbf{x}_{2}-\mathbf{x}_{1}\right\Vert _{2}^{2}
+\]
+
+\end_inset
+
+batchwise
+\end_layout
+
+\begin_layout Section
+Sampling the Boltzmann Density
+\end_layout
+
+\begin_layout Standard
+A trained Boltzmann generator will generally sample from the Boltzmann density
+ only approximately.
+ The more significant problem is that the Boltzmann generator may not cover
+ the complete configuration space.
+ Below we describe a number of algorithms to correct the proposal density
+ of the Boltzmann generator and to embed it into a sampling algorithm that
+ may asymptotically sample the whole configuration space.
+\end_layout
+
+\begin_layout Subsection
+Reweighting / Free Energy Perturbation
+\end_layout
+
+\begin_layout Standard
+The most direct way to compute quantitative statistics using Boltzmann generator
+s is to employ reweighting of probability densities.
+ In this framework, we assign to each generated configuration 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ the statistical weight:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+w_{X}(\mathbf{x}\mid\mathbf{z}) & =\frac{\mu_{X}(\mathbf{x})}{p_{X}(\mathbf{x})}=\frac{p_{Z}(\mathbf{z})}{q_{Z}(\mathbf{z})}.\label{eq:reweighting_w}\\
+ & \propto\mathrm{e}^{-u_{X}\left(T_{zx}(\mathbf{z})\right)+u_{Z}(\mathbf{z})+\log\left|\det\left(\mathbf{J}_{zx}(\mathbf{z})\right)\right|}\nonumber 
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This principle can be directly used in order to compute statistical quantities.
+ For example, the free energy difference two substates 
+\begin_inset Formula $A$
+\end_inset
+
+ and 
+\begin_inset Formula $B$
+\end_inset
+
+ is then given by free energy perturbation: 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+We are not using the right terminology here.
+ FEP is:
+\begin_inset Formula 
+\[
+\mathrm{e}^{F_{A}-F_{B}}=\langle\mathrm{e}^{u_{A}-u_{B}}\rangle_{A}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+F_{B}-F_{A}=-\log\frac{\langle w_{X}(\mathbf{x})\rangle_{B}}{\langle w_{X}(\mathbf{x})\rangle_{A}}.
+\]
+
+\end_inset
+
+Expectation values can be computed as
+\begin_inset Formula 
+\[
+\mathbb{E}[O]\approx\frac{\sum_{i=1}^{N}w_{X}(\mathbf{x})O(\mathbf{x})}{\sum_{i=1}^{N}w_{X}(\mathbf{x})},
+\]
+
+\end_inset
+
+etc.
+ However direct reweighting is numerically unstable because the distribution
+ of weights (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:reweighting_w"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) contains a long tail of very high but very rare weights.
+ 
+\end_layout
+
+\begin_layout Subsection
+Free energy differences
+\end_layout
+
+\begin_layout Standard
+A more robust way to compute free energy differences is to use samples at
+ the two states whose free energy difference we want to compute and use
+ Bennett's acceptance ratio 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bennett_JCP76_BAR"
+literal "false"
+
+\end_inset
+
+ to relate them.
+\begin_inset Formula 
+\[
+F_{B}-F_{A}=-\log\frac{Z_{B}}{Z_{A}}=-\log\frac{\langle M(u_{B}-u_{A})\rangle_{A}}{\langle M(u_{A}-u_{B})\rangle_{B}}
+\]
+
+\end_inset
+
+where we can use the Metropolis function 
+\begin_inset Formula $M(x)=\min(e^{-x},1)$
+\end_inset
+
+.
+ Normally, BAR is used to compute free energy differences between different
+ thermodynamic states 
+\begin_inset Formula $A$
+\end_inset
+
+ and 
+\begin_inset Formula $B$
+\end_inset
+
+ and the assumption is that each thermodynamic state is sampled in equilibrium.
+ Here we have the problem that we have samples at two configuration states
+ 
+\begin_inset Formula $A$
+\end_inset
+
+ and 
+\begin_inset Formula $B$
+\end_inset
+
+ that are in the same thermodynamic state, but do not overlap in 
+\begin_inset Formula $x$
+\end_inset
+
+-space, and we therefore cannot get an equilibrium sample.
+ However, 
+\begin_inset Formula $A$
+\end_inset
+
+ and 
+\begin_inset Formula $B$
+\end_inset
+
+ do overlap in 
+\begin_inset Formula $z$
+\end_inset
+
+-space.
+ We can there do the following trick of definition three thermodynamic states:
+\end_layout
+
+\begin_layout Enumerate
+Configuration 
+\begin_inset Formula $A$
+\end_inset
+
+ with energy 
+\begin_inset Formula $u_{A}(\mathbf{x})=u(\mathbf{x})$
+\end_inset
+
+ in configuration 
+\begin_inset Formula $A$
+\end_inset
+
+ and 
+\begin_inset Formula $u_{A}(\mathbf{x})=\infty$
+\end_inset
+
+ otherwise
+\end_layout
+
+\begin_layout Enumerate
+Configuration 
+\begin_inset Formula $B$
+\end_inset
+
+ with energy 
+\begin_inset Formula $u_{B}(\mathbf{x})=u(\mathbf{x})$
+\end_inset
+
+ in configuration 
+\begin_inset Formula $B$
+\end_inset
+
+ and 
+\begin_inset Formula $u_{B}(\mathbf{x})=\infty$
+\end_inset
+
+ otherwise
+\end_layout
+
+\begin_layout Enumerate
+State 
+\begin_inset Formula $Z$
+\end_inset
+
+ with energy 
+\begin_inset Formula $u_{Z}(\mathbf{z})$
+\end_inset
+
+ given in (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:energy_z_prior"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Then, the resulting BAR ratio is given by:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+F_{B}-F_{A}=F_{B}-F_{Z}+F_{Z}-F_{A}=-\log\frac{\langle M(u_{B}-u_{Z})\rangle_{Z}}{\langle M(u_{Z}-u_{B})\rangle_{B}}\frac{\langle M(u_{Z}-u_{A})\rangle_{A}}{\langle M(u_{A}-u_{Z})\rangle_{Z}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Latent MC 
+\end_layout
+
+\begin_layout Standard
+Consider that we always propose 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ samples from the prior distribution
+\begin_inset Formula 
+\[
+\mathbf{z}\sim\mathcal{N}(\mathbf{0},\sigma^{2}\mathbf{I})\propto\exp\left(-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}\right).
+\]
+
+\end_inset
+
+Our aim is to sample 
+\begin_inset Formula $\mu(\mathbf{x})$
+\end_inset
+
+.
+ The MCMC acceptance probability should be:
+\begin_inset Formula 
+\begin{align*}
+p_{\mathrm{acc}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2}) & =\min\left\{ 1,\frac{p_{Z}(\mathbf{z}_{2})}{p_{Z}(\mathbf{z}_{1})}\frac{p_{\mathrm{prop}}(\mathbf{z}_{2}\rightarrow\mathbf{z}_{1})}{p_{\mathrm{prop}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2})}\right\} 
+\end{align*}
+
+\end_inset
+
+Using 
+\begin_inset Formula 
+\[
+p_{Z}(z)=J(z)p_{X}(T_{zx}(z))
+\]
+
+\end_inset
+
+with
+\begin_inset Formula 
+\[
+J(z)=\left|\det\left(\frac{dT_{zx}}{dz}\right)\right|(z)
+\]
+
+\end_inset
+
+we have:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+p_{\mathrm{acc}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2}) & =\min\left\{ 1,\frac{J(\mathbf{z}_{2})\mu(T_{zx}(\mathbf{z}_{2}))}{J(\mathbf{z}_{1})\mu(T_{zx}(\mathbf{z}_{1}))}\frac{p_{\mathrm{prop}}(\mathbf{z}_{1})}{p_{\mathrm{prop}}(\mathbf{z}_{2})}\right\} \\
+ & =\min\left\{ 1,\frac{\mathrm{e}^{\log J(\mathbf{z}_{2})-u(T_{zx}(\mathbf{z}_{2}))}}{\mathrm{e}^{\log J(\mathbf{z}_{1})-u(T_{zx}(\mathbf{z}_{1}))}}\frac{\mathrm{e}^{-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{1}\right\Vert ^{2}}}{\mathrm{e}^{-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{2}\right\Vert ^{2}}}\right\} \\
+ & =\min\left\{ 1,\mathrm{e}^{\log J(\mathbf{z}_{2})-u(T_{zx}(\mathbf{z}_{2}))+\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{2}\right\Vert ^{2}-\log J(\mathbf{z}_{1})+u(T_{zx}(\mathbf{z}_{1}))-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{1}\right\Vert ^{2}}\right\} 
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In line 2 and 3 we have cancelled equal prefactors: the prefactor involved
+ in variable transformation, e.g.
+ 
+\begin_inset Formula $p_{z}(z)=\left|\det\left(S\right)\right|\mu(T_{zx}(z))$
+\end_inset
+
+ for the scaled NICER network, and the constant prefactor of the Gaussian
+ densities.
+ This results in the check:
+\begin_inset Formula 
+\begin{align*}
+r & \le p_{\mathrm{acc}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2})\\
+-\log r & \ge\log J(\mathbf{z}_{1})-\log J(\mathbf{z}_{2})+u(T_{zx}(\mathbf{z}_{2}))-u(T_{zx}(\mathbf{z}_{1}))+\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{1}\right\Vert ^{2}-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{2}\right\Vert ^{2}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\begin{align*}
+p_{Z}(z) & =\left|\det\left(\frac{dT_{xz}}{dz}\right)\right|^{-1}p_{X}(T_{zx}(z))\\
+ & =\left|\det\left(S\right)\right|p_{X}(T_{zx}(z))
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Subsection
+Multi-
+\begin_inset Formula $\sigma$
+\end_inset
+
+ Latent MC 
+\end_layout
+
+\begin_layout Plain Layout
+The multivariate normal distribution in 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ is:
+\begin_inset Formula 
+\[
+p(\mathbf{x};\boldsymbol{\mu},\boldsymbol{\Sigma})=\det(2\pi\boldsymbol{\Sigma})^{-\frac{1}{2}}\mathrm{e}^{-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{\top}\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})}
+\]
+
+\end_inset
+
+When 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ is from an isotropic normal distribution with 
+\begin_inset Formula $d$
+\end_inset
+
+ dimensions and mean 
+\begin_inset Formula $0$
+\end_inset
+
+, this simplifies to:
+\begin_inset Formula 
+\[
+p(\mathbf{z};\sigma)=\frac{1}{\sqrt{2\pi}}\frac{1}{\sigma^{d}}\mathrm{e}^{-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Here we consider sampling from 
+\begin_inset Formula $K$
+\end_inset
+
+ different standard deviations 
+\begin_inset Formula $[\sigma_{1},...,\sigma_{K}]$
+\end_inset
+
+ with uniform probability.
+ Then the probability to propose 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ is given by the following Gaussian mixture model:
+\begin_inset Formula 
+\[
+p_{\mathrm{prop}}(\mathbf{z};[\sigma_{1},...,\sigma_{K}])=\frac{1}{K\sqrt{2\pi}}\sum_{k=1}^{K}\frac{1}{\sigma_{k}^{d}}\mathrm{e}^{-\frac{1}{2\sigma_{k}^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}}
+\]
+
+\end_inset
+
+Using 
+\begin_inset Formula $a\mathrm{e}^{b}=\mathrm{e}^{\log a}\mathrm{e}^{b}=\mathrm{e}^{\log a+b}$
+\end_inset
+
+ we can rewrite this to:
+\begin_inset Formula 
+\[
+p_{\mathrm{prop}}(\mathbf{z};[\sigma_{1},...,\sigma_{K}])=\frac{1}{K\sqrt{2\pi}}\sum_{k=1}^{K}\mathrm{e}^{-\frac{1}{2\sigma_{k}^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}-d\log\sigma_{k}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+The proposal ratio is then:
+\begin_inset Formula 
+\[
+\frac{p_{\mathrm{prop}}(\mathbf{z}_{1};[\sigma_{1},...,\sigma_{K}])}{p_{\mathrm{prop}}(\mathbf{z}_{2};[\sigma_{1},...,\sigma_{K}])}=\frac{\sum_{k=1}^{K}\mathrm{e}^{-\frac{1}{2\sigma_{k}^{2}}\left\Vert \mathbf{z}_{1}\right\Vert ^{2}-d\log\sigma_{k}}}{\sum_{k=1}^{K}\mathrm{e}^{-\frac{1}{2\sigma_{k}^{2}}\left\Vert \mathbf{z}_{2}\right\Vert ^{2}-d\log\sigma_{k}}}
+\]
+
+\end_inset
+
+and the log:
+\begin_inset Formula 
+\begin{align*}
+\log\frac{p_{\mathrm{prop}}(\mathbf{z}_{1};[\sigma_{1},...,\sigma_{K}])}{p_{\mathrm{prop}}(\mathbf{z}_{2};[\sigma_{1},...,\sigma_{K}])} & =\mathrm{logsumexp}\left[-\frac{1}{2\sigma_{k}^{2}}\left\Vert \mathbf{z}_{1}\right\Vert ^{2}-d\log\sigma_{k}\right]\\
+ & -\mathrm{logsumexp}\left[-\frac{1}{2\sigma_{k}^{2}}\left\Vert \mathbf{z}_{2}\right\Vert ^{2}-d\log\sigma_{k}\right]
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Applications
+\end_layout
+
+\begin_layout Subsection
+Double Well
+\end_layout
+
+\begin_layout Standard
+We define a two-dimensional toy model which is bistable in 
+\begin_inset Formula $x$
+\end_inset
+
+-direction and harmonic in 
+\begin_inset Formula $y$
+\end_inset
+
+-direction:
+\begin_inset Formula 
+\[
+E(x,y)=E(x)+\frac{1}{2}dy^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+with
+\begin_inset Formula 
+\[
+E(x)=\frac{1}{4}ax^{4}-\frac{1}{2}bx^{2}+cx
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+defining the double well.
+ 
+\end_layout
+
+\begin_layout Standard
+In order to estimate transition rates, we want to have a parametric transition
+ state.
+ However changing 
+\begin_inset Formula $b$
+\end_inset
+
+ alone also changes the position of minima.
+ Taking the derivative leads to:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{\partial E(x)}{\partial x}=ax^{3}-bx+c
+\]
+
+\end_inset
+
+Setting this to 0 lead to very complicated solutions.
+ However for the case 
+\begin_inset Formula $c=0$
+\end_inset
+
+, we have 
+\begin_inset Formula $0=x\left(ax^{2}-b\right)$
+\end_inset
+
+ with the trivial stationary point 
+\begin_inset Formula $x=0$
+\end_inset
+
+ (transition state) and the minima at:
+\begin_inset Formula 
+\[
+x=\pm\sqrt{\frac{b}{a}}
+\]
+
+\end_inset
+
+Then if we set the minima to 
+\begin_inset Formula $\pm1$
+\end_inset
+
+ we obtain
+\begin_inset Formula 
+\begin{align*}
+b & =a
+\end{align*}
+
+\end_inset
+
+removing one parameter in 
+\begin_inset Formula $E(x)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+For 
+\begin_inset Formula $c=0$
+\end_inset
+
+, the minima energies are: 
+\begin_inset Formula $E(x=\pm1)=-\frac{1}{4}a$
+\end_inset
+
+, which is equal to the energy barrier.
+\end_layout
+
+\begin_layout Subsection
+Bistable Dimer in a Lennard-Jones Bath
+\end_layout
+
+\begin_layout Subsection
+Molecular Mechanics System
+\end_layout
+
+\end_body
+\end_document
