@@ -1,4 +1,5 @@
 *.lyx~
 ~$*
 .DS_Store
+local_*
 

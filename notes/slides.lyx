@@ -1,0 +1,2402 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass beamer
+\begin_preamble
+\usetheme{Warsaw}
+%\usetheme{Boadilla}
+%\usetheme[hideothersubsections, left, width=.15\paperwidth]{goettingen}
+% or ...
+
+\usecolortheme{orchid}
+\setbeamertemplate{footline}[text line]{} % makes the footer EMPTY
+
+%\setbeamertemplate{footline}
+%{
+%\begin{beamercolorbox}[wd=.7\paperwidth, center]{date in head/foot}
+%\insertframenumber/\inserttotalframenumber\vskip0pt
+%\end{beamercolorbox}
+%}
+
+\setbeamercovered{transparent}
+% or whatever (possibly just delete it)
+
+\beamertemplatenavigationsymbolsempty
+
+%\setbeamertemplate{footline}
+%{
+%\large{\insertframenumber/\inserttotalframenumber}\vspace{0.1cm}
+%}
+
+\setbeamercolor{footline}{fg=black}
+
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \begin{minipage}{0.8cm}
+    \normalsize{\insertframenumber/\inserttotalframenumber}\vspace{0.2cm}
+    \vspace{0.1cm}
+    \end{minipage}      
+}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "times" "default"
+\font_sans "lmss" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 10
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Copyright 2004 by Till Tantau <tantau@users.sourceforge.net>.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+In principle, this file can be redistributed and/or modified under the terms
+ of the GNU Public License, version 2.
+ However, this file is supposed to be a template to be modified for your
+ own needs.
+ For this reason, if you use this file as a template and not specifically
+ distribute it as part of a another package/program, the author grants the
+ extra permission to freely copy and modify this file as you see fit and
+ even to delete this copyright notice.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+Monte Carlo Sampling with Deep Learning
+\end_layout
+
+\begin_layout Author
+F.
+\begin_inset space ~
+\end_inset
+
+Noé
+\begin_inset Flex InstituteMark
+status open
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Date
+Group Seminar, July 28, 2018
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+If you have a file called "institution-logo-filename.xxx", where xxx is a
+ graphic format that can be processed by latex or pdflatex, resp., then you
+ can add a logo by uncommenting the following:
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+pgfdeclareimage[height=0.5cm]{institution-logo}{institution-logo-filename}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+logo{
+\backslash
+pgfuseimage{institution-logo}}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+If you wish to uncover everything in a step-wise fashion, uncomment the
+ following command:
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+beamerdefaultoverlayspecification{<+->}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Limitations of Monte Carlo Sampling
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/intro_ising.jpg
+	lyxscale 50
+	width 30text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{0.5cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figs/intro_confchange.jpg
+	lyxscale 50
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<1->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Input
+\series default
+: Reduced Potential Energy 
+\begin_inset Formula $u(\mathbf{x})$
+\end_inset
+
+ in coordinates 
+\begin_inset Formula $\mathbf{x}\in\mathbb{R}^{n}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Aim
+\series default
+: Sample Equilibrium Distribution.
+\begin_inset Formula 
+\[
+\mu(\mathbf{x})\propto\mathrm{e}^{-u(\mathbf{x})}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<3->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Problem 1
+\series default
+: For increasing 
+\begin_inset Formula $n$
+\end_inset
+
+, the subvolume of low-energy configurations is vanishingly small compared
+ to 
+\begin_inset Formula $\mathbb{R}^{n}$
+\end_inset
+
+ and has a complex shape.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Direct MD sampling (with rejection or reweighting) in configuration space
+ is hopeless .
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<4->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Problem 2
+\series default
+: Metastable states or phases 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+MCMC or MD methods with small steps converge very slowly
+\end_layout
+
+\begin_layout Itemize
+Guessing large MCMC proposal steps is hard and problem-specific.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Reminder: Multilayer Neural Networks
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename ../../../../lectures/deep_learning/figs/nn-multilayer.jpeg
+	lyxscale 50
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.3cm}
+\end_layout
+
+\end_inset
+
+Sequence of linear and nonlinear transforms defined by the recursion:
+\begin_inset Formula 
+\[
+\mathbf{x}^{l+1}=\sigma\left(\mathbf{W}^{l}\mathbf{x}^{l}+\mathbf{b}^{l}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Pause
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.3cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $L$
+\end_inset
+
+ layers indexed by 
+\begin_inset Formula $l=1,...,L$
+\end_inset
+
+.
+ Input vector 
+\begin_inset Formula $\mathbf{x}^{(0)}$
+\end_inset
+
+ does not count as a layer.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $\mathbf{x}^{l}\in\mathbb{R}^{n_{l}}$
+\end_inset
+
+: Activations of 
+\begin_inset Formula $n_{l}$
+\end_inset
+
+ neurons at layer 
+\begin_inset Formula $l$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<3->
+\end_layout
+
+\end_inset
+
+Trainable weights 
+\begin_inset Formula $\mathbf{W}^{l}\in\mathbb{R}^{n_{l-1}\times n_{l}}$
+\end_inset
+
+ and biases 
+\begin_inset Formula $\mathbf{b}^{l}\in\mathbb{R}^{n_{l}}$
+\end_inset
+
+ at each layer.
+ 
+\begin_inset Formula $W_{ij}^{l}$
+\end_inset
+
+ is connecting neuron 
+\begin_inset Formula $j$
+\end_inset
+
+ of layer 
+\begin_inset Formula $l-1$
+\end_inset
+
+ with neuron 
+\begin_inset Formula $i$
+\end_inset
+
+ of layer 
+\begin_inset Formula $l$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<4->
+\end_layout
+
+\end_inset
+
+Nonlinear function 
+\begin_inset Formula $\sigma:\mathbb{R}\rightarrow\mathbb{R}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<5->
+\end_layout
+
+\end_inset
+
+Output vector: 
+\begin_inset Formula $\hat{\mathbf{y}}=\mathbf{x}^{l}$
+\end_inset
+
+ (
+\begin_inset Formula $\hat{\mathbf{y}}$
+\end_inset
+
+: network predictions.
+ 
+\begin_inset Formula $\mathbf{y}$
+\end_inset
+
+: training values)
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Reminder: Multilayer Neural Networks
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Universal Represenation Theorem
+\series default
+\emph on
+: (Under some mild conditions), a neural network with 
+\series bold
+one
+\series default
+ hidden layer and sufficiently many hidden neurons can approximate any continuou
+s function 
+\begin_inset Formula $F:\mathbb{R}^{n_{0}}\mapsto\mathbb{R}^{n_{2}}$
+\end_inset
+
+ with arbitrary accuracy.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Deeper neural networks
+\series default
+ often perform better as they can model complex functions with less hidden
+ neurons.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<3->
+\end_layout
+
+\end_inset
+
+Avoid vanishing/exploding gradients: 
+\series bold
+nonsaturating nonlinearity
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename ../../../../lectures/deep_learning/figs/nn-activation_functions2.png
+	lyxscale 50
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Reminder: Generative Neural Networks
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename ../../../../lectures/deep_learning/figs/vae_generative.png
+	lyxscale 60
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Reminder: Generative Neural Networks
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<1->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Idea
+\series default
+: Learn to sample intractable 
+\begin_inset Formula $p(\mathbf{x})$
+\end_inset
+
+ by sampling tractable latent distribution
+\begin_inset Formula 
+\[
+\mathbf{z}\sim p(\mathbf{z})
+\]
+
+\end_inset
+
+and perform a linear transformation to a desired distribution:
+\begin_inset Formula 
+\[
+\mathbf{x}=G(\mathbf{z},\boldsymbol{\theta})\sim p(\mathbf{x}).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Example
+\series default
+: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Left
+\series default
+: Samples from normal distribution, 
+\begin_inset Formula $\mathbf{z}\sim\mathcal{N}(\mathbf{0},\mathbf{I})$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Right
+\series default
+: Samples mapped through 
+\begin_inset Formula $G(\mathbf{z})=\frac{\mathbf{z}}{10}+\frac{\mathbf{z}}{\left\Vert \mathbf{z}\right\Vert }$
+\end_inset
+
+ to form a ring.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename ../../../../lectures/deep_learning/figs/vae_transformation.png
+	lyxscale 60
+	width 80col%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Two New Monte Carlo Approaches
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/two_approaches.pdf
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Neural Adaptive MCMC
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<1->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Gaussian Encoder
+\series default
+ - proposal step:
+\begin_inset Formula 
+\[
+\begin{array}{ccccc}
+\mathbf{x} & \overset{F}{\longmapsto}\boldsymbol{\mu}(\mathbf{x}),\mathbf{A}(\mathbf{x}) & \searrow\\
+\mathbf{w} & \sim\mathcal{N}\left(\cdot\mid\boldsymbol{0},\mathbf{Id}\right) & \rightarrow & \mathbf{y} & =\boldsymbol{\mu}(\mathbf{x})+\mathbf{A}(\mathbf{x})\mathbf{w}
+\end{array}
+\]
+
+\end_inset
+
+
+\lang american
+with 
+\begin_inset Formula $\mathbf{\mathbf{A}}$
+\end_inset
+
+ an upper diagonal matrix or diagonal matrix, and 
+\begin_inset Formula $\boldsymbol{\Sigma}=\mathbf{\mathbf{A}}\mathbf{\mathbf{A}}^{\top}$
+\end_inset
+
+ .
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+
+\series bold
+\lang american
+Proposal probabilities
+\series default
+:
+\begin_inset Formula 
+\begin{align*}
+p_{\mathrm{prop}}(\mathbf{x}\rightarrow\mathbf{y}) & =\frac{1}{\sqrt{2\pi}\prod_{i=1}^{n}A_{ii}}\mathrm{e}^{-\frac{1}{2}\mathbf{w}^{\top}\mathbf{w}}\\
+p_{\mathrm{prop}}(\mathbf{y}\rightarrow\mathbf{x}) & =\frac{1}{\sqrt{2\pi}\prod_{i=1}^{n}A_{ii}}\mathrm{e}^{-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu}(\mathbf{y}))^{\top}\left(\mathbf{A}(\mathbf{y})\mathbf{A}^{\top}(\mathbf{y})\right)^{-1}(\mathbf{x}-\boldsymbol{\mu}(\mathbf{y}))}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<3->
+\end_layout
+
+\end_inset
+
+
+\series bold
+\lang american
+Network
+\series default
+: 
+\begin_inset Formula 
+\[
+\begin{array}{ccccccccc}
+\mathbf{x} & \overset{F_{\mu}}{\rightarrow} & \boldsymbol{\mu}(\mathbf{x}) & \rightarrow & \oplus & \rightarrow & \mathbf{y} & \overset{F_{\mu}}{\rightarrow} & \boldsymbol{\mu}(\mathbf{y})\\
+ &  &  &  & \uparrow &  & F_{A} & \searrow\\
+\mathbf{x} & \overset{F_{A}}{\rightarrow} & \mathbf{A}(\mathbf{x}) & \rightarrow & \otimes &  &  &  & \mathbf{A}(\mathbf{y})\\
+ &  &  & \nearrow\\
+\mathbf{w} & \rightarrow & \rightarrow
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Neural Adaptive MCMC
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<1->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Loss function
+\series default
+ - MCMC efficiency:
+\begin_inset Formula 
+\[
+S(\mathbf{x}\rightarrow\mathbf{y})=p_{acc}(\mathbf{x}\rightarrow\mathbf{y})\,\left\Vert \mathbf{x}-\mathbf{y}\right\Vert ^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+Use 
+\series bold
+Barker acceptance probability
+\series default
+.
+\begin_inset Formula 
+\[
+p_{\mathrm{acc}}(\mathbf{x}\rightarrow\mathbf{y})=\frac{\mu(\mathbf{y})p_{\mathrm{prop}}(\mathbf{y}\rightarrow\mathbf{x})}{\mu(\mathbf{x})p_{\mathrm{prop}}(\mathbf{x}\rightarrow\mathbf{y})+\mu(\mathbf{y})p_{\mathrm{prop}}(\mathbf{y}\rightarrow\mathbf{x})}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Neural Adaptive MCMC - 1D Example
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\noindent
+\align center
+
+\lang american
+\begin_inset Graphics
+	filename /Users/noe/data/open_projects/ProjectMarket/projects_deep_dynamics/proj_metrogens/figs/doublewell_potential.png
+	lyxscale 80
+	width 40col%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename ../proj_metrogens/figs/gaussenc_2well_parameters.pdf
+	lyxscale 50
+	width 55col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\lang american
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.7cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename ../proj_metrogens/figs/gaussenc_2well_learntraj.pdf
+	lyxscale 50
+	width 40col%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename ../proj_metrogens/figs/gaussenc_2well_learnacf.pdf
+	lyxscale 50
+	width 39col%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename ../proj_metrogens/figs/gaussenc_2well_trained_distribution.pdf
+	lyxscale 20
+	width 16col%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Neural Adaptive MCMC - 2D example
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\noindent
+\align center
+
+\lang american
+\begin_inset Graphics
+	filename ../proj_metrogens/figs/gaussenc_2d_trained_transitions_1.pdf
+	lyxscale 50
+	width 40col%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename ../proj_metrogens/figs/gaussenc_2d_trained_transitions_4.pdf
+	lyxscale 50
+	width 40col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\lang american
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.7cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename ../proj_metrogens/figs/gaussenc_2d_trained_transitions_2.pdf
+	lyxscale 50
+	width 40col%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename ../proj_metrogens/figs/gaussenc_2d_trained_transitions_3.pdf
+	lyxscale 50
+	width 40col%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Two New Monte Carlo Approaches
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/two_approaches_first.pdf
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Neural Latent MC
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/two_approaches_second.pdf
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+NICE: Non-linear Independent Components Estimation
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout FrameSubtitle
+Dinh, Krueger, Bengio, ICLR 2015
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/nice.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-.2cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<1->
+\end_layout
+
+\end_inset
+
+Forward transformation:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-.5cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+y_{1} & =x_{1}\\
+y_{2} & =x_{2}+P(x_{1})
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+Inverse transformation:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-.5cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+x_{1} & =y_{1}\\
+x_{2} & =y_{2}-P(y_{1})
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<3->
+\end_layout
+
+\end_inset
+
+Bijective transform with unit Jacobian:
+\begin_inset Formula 
+\[
+\frac{\partial y}{\partial x}=\left(\begin{array}{cc}
+\frac{\partial y_{1}}{\partial x_{1}} & \frac{\partial y_{1}}{\partial x_{2}}\\
+\frac{\partial y_{2}}{\partial x_{1}} & \frac{\partial y_{2}}{\partial x_{2}}
+\end{array}\right)=\left(\begin{array}{cc}
+1 & 0\\
+0 & 1
+\end{array}\right)\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\det\left(\frac{\partial y}{\partial x}\right)=1.
+\]
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Given transformation 
+\begin_inset Formula $y=g(x)$
+\end_inset
+
+ and 
+\begin_inset Formula $x=g^{-1}(y)$
+\end_inset
+
+ we have
+\begin_inset Formula 
+\[
+p_{Y}(y)=p_{X}(g^{-1}(y))\left|\det\frac{\partial g^{-1}}{\partial y}\right|
+\]
+
+\end_inset
+
+and 
+\begin_inset Formula 
+\[
+p_{X}(x)=p_{Y}(g(x))\left|\det\frac{\partial g}{\partial x}\right|
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Probability distributions
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<1->
+\end_layout
+
+\end_inset
+
+Define an invertible and continuous differentiable 
+\series bold
+variable transformation
+\series default
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.5cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\mathbf{z}=T_{xz}(\mathbf{x})\:\:\:\:\:\:\:\:\:\:\:\mathbf{x}=T_{zx}(\mathbf{z})=T_{xz}^{-1}(\mathbf{z})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+Probability density transforms as:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.2cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+p_{X}(\mathbf{x})=\left|\det\left(\frac{\partial T_{xz}}{\partial\mathbf{x}}\right)\right|p_{Z}(T_{xz}(\mathbf{z}))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<3->
+\end_layout
+
+\end_inset
+
+With unit Jacobian:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.5cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+p_{X}(\mathbf{x})=p_{Z}(T_{xz}(\mathbf{x}))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.8cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout ExampleBlock
+\begin_inset Argument 2
+status collapsed
+
+\begin_layout Plain Layout
+Key Idea
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Given a 
+\series bold
+complicated distribution
+\series default
+ 
+\begin_inset Formula $p_{X}(\mathbf{x})\propto\mathrm{e}^{-u(\mathbf{x})}$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\series bold
+learn
+\series default
+ 
+\begin_inset Formula $\mathbf{z}=T_{xz}(\mathbf{x})$
+\end_inset
+
+ such that 
+\begin_inset Formula $p_{Z}(\mathbf{z})=p_{Z}\left(T_{xz}(\mathbf{x})\right)$
+\end_inset
+
+ is 
+\series bold
+simple
+\series default
+, e.g.:
+\begin_inset Formula 
+\[
+p_{Z}(\mathbf{z})=\mathcal{N}\left(0,\mathbf{I}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Neural Latent MC
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout FrameSubtitle
+Motivation
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/network_structure.pdf
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Neural Latent MC - 1D Example
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout FrameSubtitle
+Motivation
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/doublewell_potential.png
+	width 30text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figs/doublewell_prior_trajs.png
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/doublewell_prior_transformation.png
+	width 60text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figs/doublewell_prior_transformation_fieldzx.png
+	width 30text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Neural Latent MCMC - 1D Example
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout FrameSubtitle
+Motivation
+\end_layout
+
+\begin_layout Standard
+\align left
+\begin_inset Graphics
+	filename figs/doublewell_directMCMC.png
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figs/doublewell_latentMCMC_pmf.png
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align left
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{0.1cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figs/doublewell_latentMCMC.png
+	width 48text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Neural Latent MC - 1D Example
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align left
+\begin_inset Graphics
+	filename figs/doublewell_latentMCRew_energy.png
+	width 43text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figs/doublewell_latentMCRew.png
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<1->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Sample prior
+\series default
+:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.5cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\mathbf{z}\sim\mathcal{N}(\mathbf{0},\sigma^{2}\mathbf{I})\propto\exp\left(-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}\right)
+\]
+
+\end_inset
+
+This corresponds to a prior energy of 
+\begin_inset Formula $u_{Z}(z)=\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Reweighting
+\series default
+:
+\begin_inset Formula 
+\[
+w_{X}(\mathbf{x})=\frac{p_{X}(T_{zx}(\mathbf{z}))}{p_{Z}(\mathbf{z})}=\mathrm{e}^{u_{Z}(\mathbf{z})-u_{X}\left(T_{zx}(\mathbf{z})\right)}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Neural Latent MC - Particle Example
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/particle_structure_closed.png
+	width 30text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figs/scheme_twowell.png
+	width 40text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figs/particle_structure_open.png
+	width 30text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/particle_directsim_distances.png
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Neural Latent MC - Particle Example
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<1->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Input
+\series default
+: Simulation data 
+\begin_inset Formula $\mathbf{X}=(\mathbf{x}_{1}^{\mathrm{closed}},...,\mathbf{x}_{20000}^{\mathrm{closed}},\mathbf{x}_{1}^{\mathrm{open}},...,\mathbf{x}_{20000}^{\mathrm{open}})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+
+\series bold
+Train
+\series default
+ 
+\begin_inset Formula $\mathbf{z}_{i}=T_{xy}(\mathbf{x}_{i},\theta)$
+\end_inset
+
+ until convergence (3000 epochs) using:
+\begin_inset Formula 
+\[
+\min_{\theta}\underset{\mathrm{force}\:\mathrm{mean}\:0}{\underbrace{\left\Vert \frac{1}{B}\sum_{i}\left(\mathbf{z}_{i}-\hat{\boldsymbol{\mu}}\right)\right\Vert ^{2}}}+\underset{\mathrm{force}\:\mathrm{covariance}\:\mathbf{I}}{\underbrace{\left\Vert \mathbf{I}-\frac{1}{B}\sum_{i}\left(\mathbf{z}_{i}-\hat{\boldsymbol{\mu}}\right)\left(\mathbf{z}_{i}-\hat{\boldsymbol{\mu}}\right)^{\top}\right\Vert _{F}^{2}}}+\underset{\mathrm{make}\:\mathrm{compact}}{\underbrace{\frac{1}{B}\sum_{i}\left(\mathbf{z}_{i}-\hat{\boldsymbol{\mu}}\right)^{2}}}
+\]
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+TODO
+\series default
+: check if we have normalized z, otherwise we can't match the identity (2nd
+ term).
+\end_layout
+
+\end_inset
+
+where 
+\begin_inset Formula $\hat{\boldsymbol{\mu}}=B^{-1}\sum_{j}\mathbf{z}_{j}$
+\end_inset
+
+, 
+\begin_inset Formula $B$
+\end_inset
+
+ batchsize, 
+\begin_inset Formula $i,j$
+\end_inset
+
+ sample indices in batch.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/particle_transformation.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Neural Latent MC - Particle Example
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Sample prior:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.5cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\mathbf{z}\sim\mathcal{N}(\mathbf{0},\sigma^{2}\mathbf{I})\propto\exp\left(\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Evaluate posterior energy 
+\begin_inset Formula $u(\mathbf{x}[\mathbf{z}])$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/particle_zsampling_energy.png
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/particle_zsampling_structure_closed.png
+	width 30text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figs/particle_zsampling_structure_open.png
+	width 30text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator parbreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Comparison with umbrella sampling
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/particle_umbrella_sampling.png
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename figs/particle_zsampling_structure_closed.png
+	width 30text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figs/particle_zsampling_structure_open.png
+	width 30text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_body
+\end_document
