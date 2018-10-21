@@ -86,20 +86,15 @@ Deep Boltzmann Generators
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 
 \series bold
 Next TODOs
 \series default
 :
-\end_layout
-
-\begin_layout Itemize
-Account for permutation symmetry when generating configurations before reweighti
-ng
-\end_layout
-
-\begin_layout Itemize
-Average free energies from different trained networks.
 \end_layout
 
 \begin_layout Itemize
@@ -171,6 +166,15 @@ In Umbrella sampling we are currently not using the mapper.
  Add it and make sure results are still consistent.
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
 \begin_layout Section*
 Done
 \end_layout
@@ -240,6 +244,15 @@ failed
 \end_layout
 
 \end_deeper
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
 \begin_layout Section*
 Minimal Paper Checklist
 \end_layout
@@ -327,6 +340,15 @@ Outline ideas to extend this method to Latent MCMC, FEP, Adaptive sampling
  (+demonstrate for double well? Danger: request to do this for the other
  systems as well, but it doesn't work well for those yet)
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
 
 \begin_layout Section*
 Overview / TODOs
@@ -1130,6 +1152,11 @@ Efficiency
 \end_layout
 
 \end_deeper
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Introduction
 \end_layout
@@ -1303,7 +1330,15 @@ drive
 
  the system along a few collective coordinates which must describe all the
  slow transitions of the system and sampling the remaining fast motions
- [
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "LaioParrinello_PNAS99_12562"
+literal "false"
+
+\end_inset
+
+[
 \series bold
 cite metadynamics etc
 \series default
@@ -1441,7 +1476,7 @@ State- and phase transitions in complex metastable systems
 \end_layout
 
 \begin_layout Section
-Idea and Network Architecture
+Boltzmann Generators
 \end_layout
 
 \begin_layout Standard
@@ -1713,8 +1748,314 @@ variable transformations
 
 \end_layout
 
+\begin_layout Subsection
+Training
+\end_layout
+
+\begin_layout Standard
+Basic idea: Minimize the difference between the 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+J_{KL}=\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[u(T_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]\label{eq:main_loss_KL}
+\end{equation}
+
+\end_inset
+
+and
+\begin_inset Formula 
+\begin{equation}
+J_{ML}=\mathbb{E}_{\mathbf{x}\sim\rho(\mathbf{x})}\left[\frac{1}{\sigma^{2}}\left\Vert T_{xz}(\mathbf{x};\boldsymbol{\theta})\right\Vert ^{2}-\log\left|\mathbf{J}_{xz}(\mathbf{x};\boldsymbol{\theta})\right|\right]\label{eq:main_loss_ML}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Results
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Aim for this part
+\series default
+:
+\end_layout
+
+\begin_layout Plain Layout
+- Illustrate how Boltzmann generators work
+\end_layout
+
+\begin_layout Plain Layout
+- Show that 1D-free energies can be sampled without rare event problems
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We first illustrate Boltzmann generators using a two-dimensional potential
+ that has two stable states in 
+\begin_inset Formula $x$
+\end_inset
+
+-direction separated by a high energy barrier, while it is a harmonic oscillator
+ in 
+\begin_inset Formula $y$
+\end_inset
+
+-direction (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+a).
+ MD simulations will oscillate close to one of the stable state for a long
+ time before a rare transition event occurs (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+b).
+ Hence, the distribution in configuration space 
+\begin_inset Formula $(x,y)$
+\end_inset
+
+ is split into two modes (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+c, transition state ensemble is shown in yellow for clarity but not used
+ for training).
+ We are training Boltzmann generators by minimizing (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:main_loss_KL"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+-
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:main_loss_ML"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) using the two short simulations shown in Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+b as input and with an additional term to promote sampling along 
+\begin_inset Formula $x$
+\end_inset
+
+ (SI).
+ Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+d,e show the latent space learned by non-volume-preserving and a volume-preservi
+ng transformation, respectively.
+ In both cases, the probability densities of the two states and the transition
+ state are 
+\begin_inset Quotes eld
+\end_inset
+
+repacked
+\begin_inset Quotes erd
+\end_inset
+
+ so as to form a compact density close to the center.
+ The flow field shown in Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+f shows how the volume-preserving transformation 
+\begin_inset Formula $T_{zx}$
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+unpacks
+\begin_inset Quotes erd
+\end_inset
+
+ the latent density into the two-state configuration density (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+e
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+c).
+ 
+\end_layout
+
+\begin_layout Standard
+We use the Boltzmann generator by sampling from its latent space according
+ to the Gaussian distribution.
+ After transforming these variables via 
+\begin_inset Formula $T_{zx}$
+\end_inset
+
+, this produces uncorrelated samples that populate both stable states.
+ A variety of training methods (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:main_loss_KL"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+-
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:main_loss_ML"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) succeed in sampling across the barrier such that the rare event nature
+ of the system is eliminated.
+ In order to also sample rare transition states, we additionaly have to
+ add a training term that enhances the sampling of rare states (
+\series bold
+refer to SI
+\series default
+, Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+g).
+ Using simple reweighting, this procedure reproduces the precise free energy
+ along the 
+\begin_inset Formula $x$
+\end_inset
+
+-coordinate without any sampling problem (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+h).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+TODO
+\series default
+: Also show/describe Latent MCMC
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+TODO
+\series default
+: Discuss various training methods more, refer to SI figures.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1729,7 +2070,7 @@ status open
 \begin_inset Graphics
 	filename figs/Fig_Results_DoubleWell.pdf
 	lyxscale 80
-	width 30text%
+	width 100text%
 
 \end_inset
 
@@ -1792,6 +2133,265 @@ Double well results.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Aim for this part
+\series default
+:
+\end_layout
+
+\begin_layout Plain Layout
+- Show that Boltzmann generators can sample structures and thermodynamics
+ in condensed matter systems.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Finally, we demonstrate that Boltzmann Generators can sample high-probability
+ structures and efficiently compute the thermodynamics in high-dimensional
+ condensed matter systems.
+ For this we simulated a dense system of two-dimensional particles confined
+ to a box borrowed from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "NilmeyerEtAl_PNA11_NCMC"
+literal "false"
+
+\end_inset
+
+ (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:particle_dimer"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+a).
+ Particles repel each other with the 
+\begin_inset Formula $12^{th}$
+\end_inset
+
+ power of their distance when being close.
+ A bistable particle dimer is immersed in the fluid.
+ The open and closed states of the dimer are separated by a high barrier
+ (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:particle_dimer"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+a-c).
+ Directly opening or closing the dimer is not possible due to the high density
+ of the system and requires a concerted rearrangement of the solvent particles.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Make sure that it is understood that the main ingredient to training is
+ the energy.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A Boltzmann Generator is trained to sample open, closed, and intermediate
+ states.
+ We initialize the training procedure with separate, disconnected simulations
+ of the open and closed states, but in later stages, only the 
+\begin_inset Formula $\mathrm{KL}$
+\end_inset
+
+-loss 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:main_loss_KL"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ is used, i.e.
+ training is guided by the potential energy function that defines the system
+ (SI for details).
+ The low-energy/high-probability states of this system are organized on
+ a complex and thin nonlinear manifold in the 76-dimensional configuration
+ space - almost every vector of length 76 corresponds to a physically unrealisti
+c configuration as clashing particles immediately cause gigantic potential
+ energies and thus vanishing probabilities.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Would be nice to illustrate how simple-minded configuration generation results
+ in energies that are orders of magnitude too high.
+\end_layout
+
+\end_inset
+
+A restraint keeps the bistable particle dimer centered and aligned in the
+ simulation box, therefore the 
+\begin_inset Formula $x$
+\end_inset
+
+-position of each dimer particle indicates if we are in the open or closed
+ state (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:particle_dimer"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+d).
+ The trained Boltzmann Generator has learned a transformation of the complex
+ configuration space density to a compact, 76-dimensional ball in latent
+ space (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:particle_dimer"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+e).
+ Direct sampling of from 76-dimensional Gaussian in latent space and transformat
+ion via 
+\begin_inset Formula $T_{zx}$
+\end_inset
+
+ not only generates realistically looking configurations where all particles
+ are placed without significant clashes, but also samples potential energies
+ that have a similar distribution as the MD trajectories started in open
+ and closed states (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:particle_dimer"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+f-h).
+ The sampling procedure generates open and closed states without any rare
+ event sampling problem and also produces realistic transition states that
+ have not been included in any training data (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:particle_dimer"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+g).
+ 
+\end_layout
+
+\begin_layout Standard
+In order to demonstrate that thermodynamic quantities can be computed with
+ Boltzmann Generators, we conduct the training using the 
+\begin_inset Formula $\mathrm{KL}$
+\end_inset
+
+ loss (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:main_loss_KL"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) simultaneously to a range of temperatures between one fourth and four
+ times the reference temperature.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Say this earlier?
+\end_layout
+
+\end_inset
+
+ For this training we exploit that the temperature, which has a complicated
+ effect in configuration space, simply enters as a scaling factor in the
+ width of the Gaussian in latent space.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+OK, this should be demonstrated somewhere or shown as an equation.
+ Perhaps simply as a prefactor in the latent distribution above and then
+ explained in the SI?
+\end_layout
+
+\end_inset
+
+ Then, we sample the Boltzmann Generator for a range of temperatures and
+ use simple reweighting to compute the free energies along the dimer distances.
+ As shown in Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:particle_dimer"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+i, these temperature-dependent free energies agree precisely with extensive
+ Umbrella Sampling simulations that employ bias potentials along the dimer
+ distance 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Torrie_JCompPhys23_187"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -1806,7 +2406,7 @@ status open
 \begin_inset Graphics
 	filename figs/Fig_Results_Particles.pdf
 	lyxscale 70
-	width 40text%
+	width 80text%
 
 \end_inset
 
@@ -1843,12 +2443,44 @@ Particle System with bistable dimer.
  Insets show one-shot samples from Boltzmann generator.
  i) Free energy differences as a function of dimer distance and temperature
  sampled with Boltzmann generators (one-shot generation and reweighting,
- shaded areas) and umbrella sampling (solid lines) .
+ bullets with error bars indicating one standard deviation) and umbrella
+ sampling (green lines) .
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Conclusions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+clearpage
 \end_layout
 
 \end_inset
@@ -1890,22 +2522,22 @@ p_{Z}(\mathbf{z}) & =p_{X}(\mathbf{x})\left|\mathbf{J}_{xz}(\mathbf{x})\right|^{
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="5">
 <features tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<column alignment="left" valignment="top" width="1.5cm">
+<column alignment="left" valignment="top" width="4.5cm">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top" width="4.5cm">
+<column alignment="left" valignment="top" width="0pt">
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-Layer Type
+Layer
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1917,11 +2549,11 @@ Layer Type
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $\left|\det\frac{\partial T_{xz}(x)}{\partial x}\right|$
+\begin_inset Formula $\left|\det\mathbf{J}_{xz}\right|$
 \end_inset
 
 
@@ -1929,7 +2561,7 @@ Layer Type
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1941,11 +2573,11 @@ Layer Type
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $\left|\det\frac{\partial T_{zx}(z)}{\partial z}\right|$
+\begin_inset Formula $\left|\det\mathbf{J}_{zx}\right|$
 \end_inset
 
 
@@ -1954,8 +2586,8 @@ Layer Type
 \end_inset
 </cell>
 </row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1964,19 +2596,14 @@ NICE
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula 
-\[
-\begin{array}{c}
-\begin{aligned}\mathbf{z}_{1} & =\mathbf{x}_{1}\\
-\mathbf{z}_{2} & =\mathbf{x}_{2}+P(\mathbf{x}_{1})
-\end{aligned}
-\end{array}
-\]
-
+\begin_inset Formula $\begin{array}{cl}
+\mathbf{z}_{1}= & \mathbf{x}_{1}\\
+\mathbf{z}_{2}= & \mathbf{x}_{2}+P(\mathbf{x}_{1})
+\end{array}$
 \end_inset
 
 
@@ -1984,7 +2611,7 @@ NICE
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1996,19 +2623,14 @@ NICE
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula 
-\[
-\begin{array}{c}
-\begin{aligned}\mathbf{x}_{1} & =\mathbf{z}_{1}\\
+\begin_inset Formula $\begin{array}{cl}
+\mathbf{x}_{1} & =\mathbf{z}_{1}\\
 \mathbf{x}_{2} & =\mathbf{z}_{2}-P(\mathbf{y}_{1})
-\end{aligned}
-\end{array}
-\]
-
+\end{array}$
 \end_inset
 
 
@@ -2016,7 +2638,7 @@ NICE
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2029,8 +2651,8 @@ NICE
 \end_inset
 </cell>
 </row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2039,10 +2661,23 @@ Scaling, Exp
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{0.2cm}
+\end_layout
+
+\end_inset
+
+
 \begin_inset Formula $\mathbf{z}=\mathrm{e}^{\mathbf{k}}\circ\mathbf{x}$
 \end_inset
 
@@ -2051,7 +2686,7 @@ Scaling, Exp
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2063,10 +2698,23 @@ Scaling, Exp
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{0.2cm}
+\end_layout
+
+\end_inset
+
+
 \begin_inset Formula $\mathbf{x}=\mathrm{e}^{-\mathbf{k}}\circ\mathbf{z}$
 \end_inset
 
@@ -2075,7 +2723,7 @@ Scaling, Exp
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2088,8 +2736,8 @@ Scaling, Exp
 \end_inset
 </cell>
 </row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2098,16 +2746,15 @@ RealNVP
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula 
-\begin{align*}
+\begin_inset Formula $\begin{array}{cl}
 \mathbf{y}_{1} & =\mathbf{x}_{1}\\
-\mathbf{y}_{2} & =\mathbf{x}_{2}\odot\exp\left(S(\mathbf{x}_{1})\right)+T(\mathbf{x}_{1})
-\end{align*}
-
+\mathbf{y}_{2} & =\mathbf{x}_{2}\odot\exp\left(S(\mathbf{x}_{1})\right)\\
+ & \:\:\:+T(\mathbf{x}_{1})
+\end{array}$
 \end_inset
 
 
@@ -2115,7 +2762,7 @@ RealNVP
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2127,16 +2774,15 @@ RealNVP
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula 
-\begin{align*}
+\begin_inset Formula $\begin{array}{cl}
 \mathbf{x}_{1} & =\mathbf{y}_{1}\\
-\mathbf{x}_{2} & =\left(\mathbf{y}_{2}-T(\mathbf{x}_{1})\right)\odot\exp\left(-S(\mathbf{y}_{1})\right)
-\end{align*}
-
+\mathbf{x}_{2} & =\left(\mathbf{y}_{2}-T(\mathbf{x}_{1})\right)\\
+ & \:\:\:\odot\exp\left(-S(\mathbf{y}_{1})\right)
+\end{array}$
 \end_inset
 
 
@@ -2144,7 +2790,7 @@ RealNVP
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
