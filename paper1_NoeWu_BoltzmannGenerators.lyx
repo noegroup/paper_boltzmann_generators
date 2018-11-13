@@ -29,7 +29,7 @@
 \bibtex_command default
 \index_command default
 \paperfontsize default
-\spacing single
+\spacing onehalf
 \use_hyperref false
 \papersize default
 \use_geometry true
@@ -43,9 +43,12 @@
 \use_package stackrel 1
 \use_package stmaryrd 1
 \use_package undertilde 1
-\cite_engine basic
-\cite_engine_type default
-\biblio_style plain
+\cite_engine biblatex-natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
+\biblio_options maxnames=5
+\biblatex_bibstyle numeric
+\biblatex_citestyle numeric
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -72,11 +75,12 @@
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
-\tracking_changes false
+\tracking_changes true
 \output_changes false
 \html_math_output 0
 \html_css_as_file 0
 \html_be_strict false
+\author 880794617 "Frank Noe"
 \end_header
 
 \begin_body
@@ -86,18 +90,45 @@ Boltzmann Generators
 \end_layout
 
 \begin_layout Author
-Frank Noé and Hao Wu
+Frank Noé* and Hao Wu
+\end_layout
+
+\begin_layout Standard
+FU Berlin, Department of Mathematics and Computer Science, Arnimallee 6,
+ 14195 Berlin
+\end_layout
+
+\begin_layout Standard
+* Correspondance to: frank.noe@fu-berlin.de
 \end_layout
 
 \begin_layout Abstract
 Computing equilibrium structures and statistics of condensed-matter many-body
- systems such as spin systems or macromolecules in solution is a computationally
- intensive task that presently uses algorithms such as molecular dynamics
- (MD) simulation or Markov-chain Monte Carlo (MCMC) that need to take many
- small steps in configuration space until statistical estimates are converged.
- Here we develop Boltzmann Generators, a deep learning method that learns
- a variable transformation such that the equilibrium distribution of a given
- many-body system can be 
+ systems such as spin systems or solvated macromolecules 
+\change_inserted 880794617 1542046090
+presently relies on
+\change_unchanged
+ computationally intensive 
+\change_inserted 880794617 1542127797
+simulations
+\change_unchanged
+ such as molecular dynamics (MD) or Markov-chain Monte Carlo (MCMC) that
+ take many small steps in configuration space
+\change_inserted 880794617 1542046125
+.
+
+\change_unchanged
+ Here we 
+\change_inserted 880794617 1541956649
+combine recent progress in deep learning with principles of statistical
+ mechanics to 
+\change_unchanged
+develop Boltzmann Generators – 
+\change_inserted 880794617 1541956694
+neural networks
+\change_unchanged
+ that learn a variable transformation such that the equilibrium distribution
+ of a given many-body system can be 
 \begin_inset Quotes eld
 \end_inset
 
@@ -108,9 +139,19 @@ one-shot
  sampled, i.e.
  by sampling statistically independent random variables from a simple distributi
 on in the transformed space.
- This is achieved by combining recent developments in directed generative
- neural networks with principles of equilibrium statistical mechanics.
  
+\change_inserted 880794617 1542127813
+As an input, the Boltzmann Generator only needs to know the potential energy
+ function of the system, and optionally examples of known configurations.
+
+\change_unchanged
+ 
+\change_inserted 880794617 1542133337
+Boltzmann Generators can both compute statistics, e.g., free energy differences,
+ of known system states or phases, and discover new ones many orders of
+ magnitude faster than a local MD or MCMC method.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -2392,14 +2433,33 @@ Efficiency
 
 \end_layout
 
+\begin_layout Standard
+
+\change_inserted 880794617 1542132450
+\begin_inset Note Note
+status open
+
 \begin_layout Section
+
+\change_inserted 880794617 1542132452
+
+\series bold
 Introduction
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
-Equilibrium statistical mechanics is concerned with computing the average
- behavior of many copies of a physical system based on models of its microscopic
- constituents and their interactions.
+
+\change_inserted 880794617 1542127822
+S
+\change_unchanged
+tatistical mechanics is concerned with computing the average behavior of
+ many copies of a physical system based on models of its microscopic constituent
+s and their interactions.
  For example, what is the average magnetization in an Ising model of interacting
  magnetic spins in an external field, or what is the probability of a protein
  to be folded in an atomistic molecular model as a function of the temperature.
@@ -2408,53 +2468,62 @@ Equilibrium statistical mechanics is concerned with computing the average
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- (setting of all spins, positions of all protein atoms, etc.) can be expressed
- by a Boltzmann-type distribution of the form
-\begin_inset Formula 
-\[
-\mu(\mathbf{x})=\frac{1}{Z}\mathrm{e}^{-u(\mathbf{x})},
-\]
-
+ (setting of all spins, positions of all protein atoms, etc.) 
+\change_inserted 880794617 1542128806
+is proportional to 
+\begin_inset Formula $\mathrm{e}^{-u(\mathbf{x})}$
 \end_inset
 
+, e.g., the Boltzmann distribution.
+ The dimensionless energy 
+\change_unchanged
 
-\end_layout
-
-\begin_layout Standard
-where 
 \begin_inset Formula $u(\mathbf{x})$
 \end_inset
 
- is a dimensionless energy which contains the potential energy of the system,
- the temperature and optionally other thermodynamic quantities (SI).
+ contains the potential energy of the system, the temperature and optionally
+ other thermodynamic quantities (SI).
  
 \end_layout
 
 \begin_layout Standard
-Except for the simple model systems, such as the ideal gas or harmonic oscillato
-rs, we presently neither know exact solutions for Boltzmann-weighted averages,
- nor ways to sample 
+Except for simple model systems, we presently 
+\change_inserted 880794617 1542133470
+have no approach
+\change_unchanged
+ to directly draw statistically independent samples 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- directly from the Boltzmann distribution.
- Therefore, the generic simulation methods that are currently in use are
- essentially all variants of Markov-Chain Monte Carlo (MCMC) or Molecular
+ from the Boltzmann distribution
+\change_inserted 880794617 1542133527
+ in order to compute Boltzmann-weighted averages such as free energy differences
+\change_unchanged
+.
+ Therefore, 
+\change_inserted 880794617 1542046487
+currently used
+\change_unchanged
+ simulation methods are variants of Markov-Chain Monte Carlo (MCMC) or Molecular
  Dynamics (MD) simulations that make tiny changes to 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- in each simulation step and will, over a long time, generate simulation
- trajectories that sample from the Boltzmann distribution.
+ in each simulation step and will, over a long time, generate trajectories
+ that sample from the Boltzmann distribution.
  These methods suffer from rare events, i.e., many simulation steps are needed
- to transition between different phases or states – for example, 
+ to transition between different phases or 
+\change_inserted 880794617 1542128851
+metastable (long-lived) 
+\change_unchanged
+states – for example, 
 \begin_inset Formula $10^{9}-10^{15}$
 \end_inset
 
  MD simulation steps are needed to fold or unfold a protein.
  As a result, these methods are extremely expensive and consume much of
  the worldwide supercomputing resources.
- Rare events transitions which can be traced by low-dimensional coordinates
+ Rare event transitions which can be traced by low-dimensional coordinates
  can be sped up by enhanced sampling methods 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -2463,11 +2532,15 @@ literal "false"
 
 \end_inset
 
-, but the computational effort remains enourmous.
+, but the computational effort remains enormous.
+\change_inserted 880794617 1541968778
+
 \end_layout
 
 \begin_layout Standard
-Ideally we would like to have a 
+
+\change_inserted 880794617 1542134295
+Here we set out to develop a 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2475,29 +2548,16 @@ Boltzmann Generator
 \begin_inset Quotes erd
 \end_inset
 
- machine that samples statistically independent configurations in 
-\begin_inset Quotes eld
+ machine that is trained on a given energy function 
+\begin_inset Formula $u(\mathbf{x})$
 \end_inset
 
-one-shot
-\begin_inset Quotes erd
-\end_inset
-
- from a known distribution 
-\begin_inset Formula $p_{X}(\mathbf{x})$
-\end_inset
-
- that is very similar to the Boltzmann distribution.
- If that could be achieved, we could use the ratio between 
-\begin_inset Formula $p_{X}(\mathbf{x})$
-\end_inset
-
- and the Boltzmann weight 
+ and then produces statistically independent samples from 
 \begin_inset Formula $\mathrm{e}^{-u(\mathbf{x})}$
 \end_inset
 
- to reweight each sample and compute any desired statistics.
- This enterprise seems, at first, hopeless for condensed-matter systems
+.
+ At first sight, this enterprise seems hopeless for condensed-matter systems
  and complex polymers (e.g., Fig.
  
 \begin_inset CommandInset ref
@@ -2522,24 +2582,36 @@ noprefix "false"
 
 k).
  In these systems, particles with strong repulsive interactions are densely
- packed in space, such that the number of 
-\begin_inset Quotes eld
-\end_inset
-
-valid
-\begin_inset Quotes erd
-\end_inset
-
- configurations with a significant Boltzmann probability are vanishingly
- few compared to the number of possible ways to place particles.
+ packed in space, such that the number of low-energy configurations are
+ vanishingly few compared to the number of possible ways to place particles.
  
 \end_layout
 
 \begin_layout Standard
-Nonetheless, we directly address this problem in the present paper.
- Our strategy is: since constructing a Boltzmann Generator in configuration
- space is too difficult, can instead seek a coordinate transformation of
+
+\change_inserted 880794617 1542045205
+Key to the solution is combining the strengths of deep machine learning
  
+\begin_inset CommandInset citation
+LatexCommand cite
+key "LeCunBengioHinton_DeepLearning_Nature05"
+literal "false"
+
+\end_inset
+
+ and statistical mechanics (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:illustration"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+a): We train a deep invertible neural network, to learn a coordinate transformat
+ion from 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
@@ -2560,22 +2632,123 @@ latent
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- with a relevant Boltzmann weight.
- To find such a transformation, we employ deep learning that has recently
- led to breakthroughs in pattern recognition, games and autonomous control
- 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "LeCunBengioHinton_DeepLearning_Nature05"
-literal "false"
+ with high Boltzmann probability.
+ We can improve the ability to find relevant parts of configuration space
+ by 
+\begin_inset Quotes eld
+\end_inset
 
+learning from example
+\begin_inset Quotes erd
+\end_inset
+
+, where we feed the Boltzmann Generator not only with the potential energy
+ 
+\begin_inset Formula $u(\mathbf{x})$
+\end_inset
+
+, but also relevant samples 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+, such as samples from the folded or unfolded state of a protein, but without
+ knowing the probabilities of these states.
+ Then we employ statistical mechanics which offers a rich set of tools to
+ generate the target distribution 
+\begin_inset Formula $\mathrm{e}^{-u(\mathbf{x})}$
+\end_inset
+
+ when the proposal distribution 
+\begin_inset Formula $p_{X}(\mathbf{x})$
+\end_inset
+
+ is sufficiently similar.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542128950
+It is demonstrated that Boltzmann Generators can be trained to sample low-energy
+ structures of condensed-matter systems and complex polymer structures in
+ 
+\begin_inset Quotes eld
+\end_inset
+
+one-shot
+\begin_inset Quotes erd
 \end_inset
 
 .
+ When the Boltzmann Generator is initialized with a few structures from
+ different metastable states, it can generate independent samples from these
+ states and can compute the free energy difference between them without
+ suffering from rare events.
+ We also demonstrate that the Boltzmann Generator has a chance of generating
+ new, previously unseen states.
+ Exploiting this property, an 
+\begin_inset Quotes eld
+\end_inset
+
+iterative discovery
+\begin_inset Quotes erd
+\end_inset
+
+ procedure is constructed in which the Boltzmann Generator gradually explores
+ the state space.
+\change_unchanged
+
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+TODO
+\series default
+: say something about Neural renormalization group and Neural Hamiltonian
+ Monte Carlo.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542132435
+\begin_inset Note Note
+status open
+
 \begin_layout Section
+
+\change_inserted 880794617 1542132440
+
+\series bold
 Boltzmann Generators
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Computational effort is to train the network, but then you generate the
+ Boltzmann distribution in one shot, and you need only partial information
+ to generate the network.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2599,25 +2772,19 @@ literal "false"
 \end_inset
 
 , to produce deceivingly realistic speech audio 
+\change_inserted 880794617 1542036282
+
 \begin_inset CommandInset citation
 LatexCommand cite
-key "VanDenOord_WaveNet"
+key "VanDenOord_WaveNet2"
 literal "false"
 
 \end_inset
 
-, 
-\begin_inset Note Note
-status open
 
-\begin_layout Plain Layout
-Is this really a generative network?
-\end_layout
-
-\end_inset
-
-and even to sample formulae of chemical compounds with certain physico-chemical
- properties 
+\change_unchanged
+, and even to sample formulae of chemical compounds with certain physico-chemica
+l properties 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "GomezBombarelli_ACSCentral_AutomaticDesignVAE"
@@ -2626,24 +2793,43 @@ literal "false"
 \end_inset
 
 .
- In these domains, the exact target distribution is not known and must be
- inferred by observing many examples, which explains why the approach works
- best when large datasets are available.
- Here we are in the inverse situation, as we want to avoid having to train
- the Boltzmann Generator with samples 
+ In these domains, the exact target distribution is not known and 
+\change_inserted 880794617 1542129011
+the network is 
+\begin_inset Quotes eld
+\end_inset
+
+trained by example
+\begin_inset Quotes erd
+\end_inset
+
+ using large databases of images, audio or molecules.
+
+\change_unchanged
+ Here we are in the inverse situation, as we 
+\change_inserted 880794617 1542131207
+can compute the Boltzmann weight of each generated sample 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- from the Boltzmann distribution, as these are difficult to generate.
- However, we have the great advantage that the Boltzmann distribution is
- known up to constant factor, such that the weight of each generated sample
- can be evaluated and used in the training procedure.
+, but we do not have samples from the Boltzmann distribution 
+\emph on
+a priori
+\emph default
+.
  
+\change_unchanged
+The idea of Boltzmann Generators is as follows: 
+\change_inserted 880794617 1542050634
+
 \end_layout
 
-\begin_layout Standard
-The idea of Boltzmann Generators is as follows: we want to learn a neural
- network transformation 
+\begin_layout Enumerate
+
+\change_inserted 880794617 1542050637
+W
+\change_unchanged
+e learn a neural network transformation 
 \begin_inset Formula $F_{zx}$
 \end_inset
 
@@ -2651,62 +2837,190 @@ The idea of Boltzmann Generators is as follows: we want to learn a neural
 \begin_inset Formula $\mathbf{z}$
 \end_inset
 
-, such as a standard normal distribution, 
+, such as a 
+\change_inserted 880794617 1542050665
+Gaussian
+\change_unchanged
+ normal distribution, 
 \begin_inset Formula $F_{zx}(\mathbf{z})$
 \end_inset
 
- will provide a Boltzmann-distributed configuration 
-\begin_inset Formula $x$
+ will provide a configuration 
+\begin_inset Formula $\mathbf{x}$
 \end_inset
 
-:
-\begin_inset Formula 
-\[
-p_{Z}(\mathbf{z})=\mathcal{N}\left(0,\tau\mathbf{I}\right)\overset{^{\mathrm{sample}}}{\sim}\mathbf{z}\overset{F_{zx}}{\longrightarrow}\mathbf{x}\overset{^{\mathrm{sample}}}{\sim}p_{X}(\mathbf{x})\propto\mathrm{e}^{-u(\mathbf{x})/\tau}.
-\]
 
-\end_inset
-
-Here, 
-\begin_inset Formula $\mathcal{N}\left(0,\tau\mathbf{I}\right)$
-\end_inset
-
- indicates the normal distribution with variance 
-\begin_inset Formula $\tau$
-\end_inset
-
- and 
-\begin_inset Formula $\mathrm{e}^{-u(\mathbf{x})/\tau}$
-\end_inset
-
- is a Boltzmann distribution at temperature 
-\begin_inset Formula $\tau$
-\end_inset
-
- (SI).
-\end_layout
-
-\begin_layout Standard
-In general, we will sample from the Boltzmann distribution exactly, and
- in some cases we may even want to deviate from that goal, for example in
- order to sample certain high-energy states with a higher probability.
- In order to both train the Boltzmann Generator and subsequently reweight
- its samples to the Boltzmann distribution, it is important that we can
- quantify the distribution 
+\change_inserted 880794617 1542131244
+ which has a high Boltzmann weight, i.e.
+ is coming from a distribution 
 \begin_inset Formula $p_{X}(\mathbf{x})$
 \end_inset
 
- that is generated by the network at all times.
+ that is similar to the target Boltzmann distribution (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:illustration"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Enumerate
+
+\change_inserted 880794617 1542131265
+To compute Boltzmann-weighted averages, we reweight the generated distribution
+ 
+\begin_inset Formula $p_{X}(\mathbf{x})$
+\end_inset
+
+ to the Boltzmann distribution 
+\begin_inset Formula $\mathrm{e}^{-u(\mathbf{x})}$
+\end_inset
+
+.
+ This can be achieved with various algorithms; here the simplest one is
+ used: assign the statistical weight 
+\begin_inset Formula $w(\mathbf{x})=\mathrm{e}^{-u(\mathbf{x})}/p_{X}(\mathbf{x})$
+\end_inset
+
+ to every sample 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ and then compute any desired averages using this weight.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542051268
+\begin_inset Float figure
+placement t
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+
+\change_inserted 880794617 1542051268
+\begin_inset Graphics
+	filename figs/Fig_Illustration.pdf
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542051268
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542051268
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:illustration"
+
+\end_inset
+
+
+\series bold
+Boltzmann Generators.
+
+\series default
+ 
+\series bold
+a)
+\series default
+ A Boltzmann Generator is trained by minimizing the difference between its
+ generated distribution and the desired Boltzmann distribution.
+ It is used by transforming samples from a simple (e.g., Gaussian) distribution
+ to generated configurations.
+ To compute thermodynamics, such as configurational free energies, the samples
+ must be reweighted to the Boltzmann distribution.
+ 
+\series bold
+b)
+\series default
+ The Boltzmann Generator is composed of invertible neural network blocks.
+ Here, a volume-preserving block is shown as an example.
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542051268
+CC: Too much detail.
+ Put b-e in the SI.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542050805
+For both, training and 
+\change_unchanged
+reweight
+\change_inserted 880794617 1541970348
+ing,
+\change_unchanged
+ it is important that we can 
+\change_inserted 880794617 1541970355
+compute
+\change_unchanged
+ the 
+\change_inserted 880794617 1541970369
+probability weight
+\change_unchanged
+ 
+\begin_inset Formula $p_{X}(\mathbf{x})$
+\end_inset
+
+ 
+\change_inserted 880794617 1541970377
+of every sample 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+.
+
+\change_unchanged
  This can be achieved when 
 \begin_inset Formula $F_{zx}$
 \end_inset
 
- is invertible: For invertible transformations, we can not only back-compute
- 
-\begin_inset Formula $\mathbf{z}=F_{zx}^{-1}(\mathbf{x})=F_{xz}(\mathbf{x})$
-\end_inset
-
-, but we can also compute 
+ is 
+\change_inserted 880794617 1541970405
+an 
+\change_unchanged
+invertible
+\change_inserted 880794617 1541970420
+ transformation, for which we can
+\change_unchanged
+ compute 
 \begin_inset Formula $p_{X}(\mathbf{x})$
 \end_inset
 
@@ -2714,90 +3028,32 @@ In general, we will sample from the Boltzmann distribution exactly, and
 \begin_inset Formula $p_{Z}(\mathbf{z})$
 \end_inset
 
- and 
-\begin_inset Formula $F_{xz}$
-\end_inset
-
- (SI).
-\end_layout
-
-\begin_layout Standard
-\align center
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename figs/network_structure2.pdf
-	width 100text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig_network-architecture"
-
-\end_inset
-
-
-\series bold
-Boltzmann Generator network architecture.
-
-\series default
+ (
+\change_inserted 880794617 1541970420
+Fig.
  
-\series bold
-a)
-\series default
- Nonlinear transformations 
-\begin_inset Formula $T$
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:illustration"
+plural "false"
+caps "false"
+noprefix "false"
+
 \end_inset
 
- and 
-\begin_inset Formula $S$
-\end_inset
+, 
+\change_unchanged
+SI).
 
- are built with multilayer neural networks.
+\change_inserted 880794617 1542131274
  
-\series bold
-b,c)
-\series default
- Volume-preserving NICE layer and its inverse.
- 
-\series bold
-d,e)
-\series default
- Non-volume-preserving RealNVP layer and its inverse.
- 
-\series bold
-f)
-\series default
- Stacking any sequence of these layers with channels exchanges produces
- the full Boltzmann Generator, and invertible network.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
+\change_unchanged
 Invertible neural network transformations are similar to flows of a fluid
- – an incompressible fluid when using the NICE layers 
+\change_inserted 880794617 1542050923
+ that transform the probability density around from configuration space
+ to latent space.
+ Here we consider invertible neural network blocks that are volume-preserving
+ (as in incompressible fluids) 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DinhDruegerBengio_NICE2015"
@@ -2805,18 +3061,7 @@ literal "false"
 
 \end_inset
 
- (Fig.
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig_network-architecture"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-b) and a compressible fluid when using the RealNVP layers 
+, and non-volume preserving (as in compressible fluids) 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DinhBengio_RealNVP"
@@ -2824,7 +3069,14 @@ literal "false"
 
 \end_inset
 
- (Fig.
+
+\change_unchanged
+ (
+\change_inserted 880794617 1542035653
+Suppl.
+ 
+\change_unchanged
+Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2835,10 +3087,32 @@ noprefix "false"
 
 \end_inset
 
-e).
- Invertibility is achieved by splitting the variables into two or more channels,
- performing only simple, invertible operations on each of them, such as
- translations (T) and scaling (S) operations (Fig.
+b
+\change_inserted 880794617 1542035653
+-e
+\change_unchanged
+).
+ Invertibility is achieved by 
+\change_inserted 880794617 1542131289
+special neural network architectures
+\change_unchanged
+ (
+\change_inserted 880794617 1542035653
+Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:illustration"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+b, Suppl.
+ 
+\change_unchanged
+Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2849,47 +3123,48 @@ noprefix "false"
 
 \end_inset
 
-c,e).
- Nonlinear operations acting between the channels define the T/S operations.
- These are represented by general neural networks that do not need to be
- inverted themselves (Fig.
+c,e
+\change_inserted 880794617 1542131306
+; see SI for details
+\change_unchanged
+).
+ 
+\change_inserted 880794617 1542035818
+Invertible blocks 
+\change_unchanged
+are stacked to form a deep 
+\change_inserted 880794617 1542035653
+invertible 
+\change_unchanged
+neural network (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig_network-architecture"
+reference "fig:illustration"
 plural "false"
 caps "false"
 noprefix "false"
 
 \end_inset
 
-a).
- The NICE or RealNVP layers can be stacked to form a deep neural network
- (Fig.
+
+\change_inserted 880794617 1542035653
+a, Suppl.
+ Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig_network-architecture"
+reference "fig:illustration"
 plural "false"
 caps "false"
 noprefix "false"
 
 \end_inset
 
-f).
- The resulting flow transformation can be trained to represent any continuous
- nonlinear variable transformation, and it is yet fully invertible (Fig.
+f
+\change_unchanged
+).
  
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig_network-architecture"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-f).
 \end_layout
 
 \begin_layout Standard
@@ -2897,29 +3172,11 @@ f).
 status open
 
 \begin_layout Plain Layout
-Symbols: We have used 
-\begin_inset Formula $S$
-\end_inset
+CC: it is not understandable how the network is trained.
+\end_layout
 
- and 
-\begin_inset Formula $T$
-\end_inset
-
- for the nonlinear transformations in the NN.
- Then it is confusing to also use 
-\begin_inset Formula $T$
-\end_inset
-
- (
-\begin_inset Formula $T_{xy}/T_{yx}$
-\end_inset
-
-) for the whole network.
- Maybe 
-\begin_inset Formula $F$
-\end_inset
-
-?
+\begin_layout Plain Layout
+Explained what is the input and output, and what you do.
 \end_layout
 
 \end_inset
@@ -2928,8 +3185,72 @@ Symbols: We have used
 \end_layout
 
 \begin_layout Standard
-In other application areas, invertible networks are trained with maximum
- likelihood (ML) 
+
+\change_inserted 880794617 1542051038
+Boltzmann Generators are trained by combining two modes: 
+\emph on
+training by energy
+\emph default
+ and 
+\emph on
+training by example
+\emph default
+.
+ In training by energy, it is exploited that the target distribution is
+ known up to a constant, 
+\begin_inset Formula $\mathrm{e}^{-u(\mathbf{x})}$
+\end_inset
+
+, and the Boltzmann Generator learns to sample from a distribution similar
+ to this target by minimizing the following loss function (SI): 
+\begin_inset Formula 
+\begin{equation}
+J_{KL}=\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[u_{X}(F_{zx}(\mathbf{z}))-S_{zx}(\mathbf{z})\right]\label{eq:main_loss_KL}
+\end{equation}
+
+\end_inset
+
+Here, 
+\begin_inset Formula $u_{X}(F_{zx}(\mathbf{z}))$
+\end_inset
+
+ takes the Gaussian random variable 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+, transforms it to a configuration 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ and computes it energy.
+ 
+\begin_inset Formula $S_{zx}$
+\end_inset
+
+ quantifies how much the network scales the configuration space volume at
+ 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ and can be computed from the scaling transformations of the network (SI).
+ Training by energy can be extended to train for the Boltzmann distribution
+ at a range of temperatures, by exploiting that the temperature, which changes
+ the configuration space distribution in a complex way, simply enters as
+ a scaling factor in the width of the Gaussian 
+\begin_inset Formula $q_{Z}(\mathbf{z})$
+\end_inset
+
+ (SI).
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542051100
+In Machine Learning areas where the target distribution is unknown, one
+ typically employs training by example, e.g.
+ using the maximum likelihood principle
+\change_unchanged
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DinhDruegerBengio_NICE2015"
@@ -2937,20 +3258,32 @@ literal "false"
 
 \end_inset
 
+
+\change_inserted 880794617 1542051114
 .
- Following this idea, we would use some initial simulation data, e.g.
+ Training by example is also useful here, in order to guide the Boltzmann
+ Generator to sample regions of configuration space that are relevant.
+ Examples for configurations 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ may come from
+\change_unchanged
+ some initial simulation data, e.g.
  short MD simulations in one or a few metastable states, that are not (yet)
- Boltzmann distributed as an input.
- Then we train 
-\begin_inset Formula $F_{xz}$
+ Boltzmann distributed
+\change_inserted 880794617 1542037386
+.
+ We also use this training mode for iterative discovery: Samples 
+\begin_inset Formula $\mathbf{x}$
 \end_inset
 
- such that 
-\begin_inset Formula $z$
-\end_inset
-
- will be distributed according to a Gaussian.
- This can be done by sampling configurations 
+ that have been generated previously and that are in new metastable states
+ can be used as examples in a new round of training, in order to force the
+ Boltzmann Generator to keep generating from known metastable states.
+ Training by example works by sampling
+\change_unchanged
+ configurations 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
@@ -2970,70 +3303,12 @@ J_{ML}=\mathbb{E}_{\mathbf{x}}\left[u_{Z}\left(F_{xz}(\mathbf{x})\right)-S_{xz}(
 \end_layout
 
 \begin_layout Standard
-Here, 
-\begin_inset Formula $u_{Z}$
-\end_inset
-
- is the 
-\begin_inset Quotes eld
-\end_inset
-
-energy
-\begin_inset Quotes erd
-\end_inset
-
- of the latent space distribution, which is simple a harmonic oscillator
- energy when using a Gaussian distribution in 
-\begin_inset Formula $\mathbf{z}$
-\end_inset
-
-.
- 
-\begin_inset Formula $S_{xz}$
-\end_inset
-
- quantifies how much the network scales the configuration space volume at
- 
-\begin_inset Formula $\mathbf{x}$
-\end_inset
-
- and can be computed from the scaling transformations of the network (SI).
- 
-\begin_inset Formula $S_{xz}$
-\end_inset
-
- is zero for volume-preserving NICE layers.
- 
-\end_layout
-
-\begin_layout Standard
-The unique capability of Boltzmann Generators is that they can also be trained
- in the reverse direction: We sample Gaussian normal variables 
-\begin_inset Formula $\mathbf{z}$
-\end_inset
-
-, transform them through the network 
-\begin_inset Formula $T_{zx}$
-\end_inset
-
- and try to minimize the difference between the generated distribution and
- the Boltzmann distribution.
- This leads to minimizing the following loss, which has the same principal
- form:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{equation}
-J_{KL}=\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[u_{X}(F_{zx}(\mathbf{z}))-S_{zx}(\mathbf{z})\right]\label{eq:main_loss_KL}
-\end{equation}
-
-\end_inset
-
 In both (
+\change_inserted 880794617 1541973017
+
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "eq:main_loss_ML"
+reference "eq:main_loss_KL"
 plural "false"
 caps "false"
 noprefix "false"
@@ -3041,9 +3316,11 @@ noprefix "false"
 \end_inset
 
 -
+\change_unchanged
+
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "eq:main_loss_KL"
+reference "eq:main_loss_ML"
 plural "false"
 caps "false"
 noprefix "false"
@@ -3091,17 +3368,7 @@ noprefix "false"
 \end_inset
 
  to point to the relevant part of state space.
- Finally, it may not always be desired to sample according to the Boltzmann
- distribution, for example when we want to sample transition states with
- low probability.
- For this reason, we introduce an additional loss term that enhances sampling
- along specific coordinates called reaction coordinate (RC) loss and that
- will be used for certain applications (SI).
  
-\end_layout
-
-\begin_layout Section
-Results
 \end_layout
 
 \begin_layout Standard
@@ -3110,18 +3377,38 @@ status open
 
 \begin_layout Plain Layout
 
-\series bold
-Aim for this part
-\series default
-:
+\change_deleted 880794617 1541972872
+CC: This is too short and not understandable.
 \end_layout
 
 \begin_layout Plain Layout
-- Illustrate how Boltzmann generators work
+
+\change_deleted 880794617 1541972872
+Why don't you just use metadynamics / US?
 \end_layout
 
 \begin_layout Plain Layout
-- Show that 1D-free energies can be sampled without rare event problems
+Explain that without this loss we can also get the free energy difference.
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_deleted 880794617 1541972877
+Explain that this just to enhance sampling high-probability states.
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_deleted 880794617 1541972884
+Make the point that even if we can achieve Boltzmann sampling, RC methods
+ such as US and metadynamics have a value because they can sample certain
+ high-energy states, so this is useful by itself.
+\end_layout
+
+\begin_layout Plain Layout
+Would be easier if in Example 1+2 we can already so something without RC
+ loss, e.g.
+ free energy difference calculation.
 \end_layout
 
 \end_inset
@@ -3130,13 +3417,78 @@ Aim for this part
 \end_layout
 
 \begin_layout Standard
+
+\change_inserted 880794617 1542096780
+By combining training by energy and training by example, we can sample configura
+tions that have high probabilities and low free energies.
+ However, sometimes we want to generate certain states with a low probability,
+ for example the transition states along a certain reaction coordinate (RC)
+ along which we want to compute the free energy profile.
+ Standard sampling methods, such as MD and MCMC, can be combined with Umbrella
+ Sampling 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Torrie_JCompPhys23_187"
+literal "false"
+
+\end_inset
+
+, Metadynamics 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "LaioParrinello_PNAS99_12562"
+literal "false"
+
+\end_inset
+
+ or Flooding 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "LaioParrinello_PNAS99_12562,Grubmueller_PhysRevE52_2893"
+literal "false"
+
+\end_inset
+
+ in order to bias the sampled distribution to be more uniform along a chosen
+ RC.
+ For the same purpose, we introduce an RC loss that can optionally be used
+ to enhance the sampling of a Boltzmann Generator along a chosen RC (SI).
+\change_deleted 880794617 1541972727
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542132393
+\begin_inset Note Note
+status open
+
+\begin_layout Section
+
+\change_inserted 880794617 1542132419
+
+\series bold
+Results
+\end_layout
+
+\end_inset
+
+
+\change_unchanged
+
+\end_layout
+
+\begin_layout Standard
 We first illustrate Boltzmann Generators using a two-dimensional potential
- that has two stable states in 
+ that has two stable states separated by a high energy barrier
+\change_inserted 880794617 1542131373
+ in 
 \begin_inset Formula $x_{1}$
 \end_inset
 
--direction separated by a high energy barrier, while it is a harmonic oscillator
- in 
+-direction
+\change_unchanged
+, while it is a harmonic oscillator in 
 \begin_inset Formula $x_{2}$
 \end_inset
 
@@ -3182,8 +3534,11 @@ noprefix "false"
 
 c, transition state ensemble is shown in yellow for clarity but not used
  for training).
- We are training Boltzmann Generators using the two short simulations shown
- in Fig.
+ We are training Boltzmann Generators using the two short 
+\change_inserted 880794617 1542134600
+and disconnected 
+\change_unchanged
+simulations shown in Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3194,32 +3549,11 @@ noprefix "false"
 
 \end_inset
 
-b as input, either by just minimizing (
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:main_loss_KL"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
--
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:main_loss_ML"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-) or with additional RC loss, which adds a term to promote sampling along
- 
-\begin_inset Formula $x_{1}$
-\end_inset
-
- (SI).
+b as 
+\change_inserted 880794617 1542134612
+example
+\change_unchanged
+.
  Fig.
  
 \begin_inset CommandInset ref
@@ -3304,7 +3638,41 @@ We use the Boltzmann generator by sampling from its latent space according
 
 , this produces uncorrelated samples from both stable states without any
  sampling problem.
- A variety of training methods (
+ A variety of training methods succeed in sampling across the barrier such
+ that the rare event nature of the system is eliminated (S
+\change_inserted 880794617 1542131555
+uppl.
+ Figs.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_training_methods_NICER"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+,
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_training_methods_RealNVP"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\change_unchanged
+).
+ 
+\change_inserted 880794617 1542134712
+Combining
+\change_unchanged
+ 
+\change_inserted 880794617 1542134726
+a Boltzmann Generator trained by minimizing (
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:main_loss_KL"
@@ -3324,10 +3692,10 @@ noprefix "false"
 
 \end_inset
 
-) succeed in sampling across the barrier such that the rare event nature
- of the system is eliminated (SI).
- Using simple reweighting, this procedure reproduces the precise free energy
- differences of the two metastable states (Fig.
+) with 
+\change_unchanged
+simple reweighting reproduces the precise free energy differences of the
+ two metastable states (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3339,8 +3707,15 @@ noprefix "false"
 \end_inset
 
 g green).
- By additionally training with the RC loss, the low-probability transition
- states are sampled (Fig.
+ By additionally training with the RC loss
+\change_inserted 880794617 1542134704
+ to promote sampling along 
+\begin_inset Formula $x_{1}$
+\end_inset
+
+
+\change_unchanged
+, the low-probability transition states are sampled (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3351,7 +3726,7 @@ noprefix "false"
 
 \end_inset
 
-f orange), and reconstruct the full free energy profile along 
+f orange), and the full free energy profile along 
 \begin_inset Formula $x_{1}$
 \end_inset
 
@@ -3367,6 +3742,24 @@ noprefix "false"
 \end_inset
 
 f,g orange).
+\change_inserted 880794617 1542134704
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542131754
+For the double-well system, the unbiased MD simulation needs on average
+ 
+\begin_inset Formula $4\cdot10^{6}$
+\end_inset
+
+ MD steps for a return trip between the two states (SI).
+ The Boltzmann Generator replaces this by statistically independent samples,
+ corresponding to a speedup by up to six orders of magnitude.
+ 
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -3398,7 +3791,7 @@ status open
 \begin_inset Graphics
 	filename figs/Fig_Results_DoubleWell.pdf
 	lyxscale 80
-	width 70text%
+	width 80text%
 
 \end_inset
 
@@ -3433,7 +3826,12 @@ a)
 \series bold
 b)
 \series default
- Distribution of training data in 
+ 
+\change_inserted 880794617 1542096901
+Two short simulation trajectories that stay in their metastable states without
+ crossing.
+\change_deleted 880794617 1542096903
+Distribution of training data in 
 \begin_inset Formula $x$
 \end_inset
 
@@ -3442,6 +3840,8 @@ b)
 \end_inset
 
 -space after training.
+
+\change_unchanged
  
 \begin_inset Note Note
 status open
@@ -3472,6 +3872,10 @@ c)
 d,e)
 \series default
  Latent-space distribution of trajectories of b) when mapped through 
+\change_inserted 880794617 1542096852
+trained 
+\change_unchanged
+
 \begin_inset Formula $F_{xz}$
 \end_inset
 
@@ -3511,33 +3915,15 @@ g)
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-
-\series bold
-Aim for this part
-\series default
-:
-\end_layout
-
-\begin_layout Plain Layout
-- Show that Boltzmann generators can sample structures and thermodynamics
- in condensed matter systems.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 As a second example, we demonstrate that Boltzmann Generators can sample
  high-probability structures and efficiently compute the thermodynamics
  in crowded condensed matter systems.
- For this we simulated a dense system of two-dimensional particles confined
- to a box as suggested in 
+ 
+\change_inserted 880794617 1542131765
+W
+\change_unchanged
+e simulated a dense system of two-dimensional particles confined to a box
+ as suggested in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "NilmeyerEtAl_PNA11_NCMC"
@@ -3557,14 +3943,15 @@ noprefix "false"
 \end_inset
 
 a).
- Particles repel each other with the 
-\begin_inset Formula $12^{th}$
-\end_inset
-
- power of their inverse distance when being close.
- A bistable particle dimer is immersed in the fluid.
- The open and closed states of the dimer are separated by a high barrier
- (Fig.
+ 
+\change_inserted 880794617 1542131792
+Immersed in the fluid is a
+\change_unchanged
+ bistable particle dimer
+\change_inserted 880794617 1542131802
+ whose
+\change_unchanged
+ open and closed states are separated by a high barrier (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3578,13 +3965,24 @@ noprefix "false"
 a-c).
  Directly opening or closing the dimer is not possible due to the high density
  of the system and requires a concerted rearrangement of the solvent particles.
- As a result of this setup, this system's low-energy/high-probability states
- are organized on a complex and thin nonlinear manifold in the 76-dimensional
- configuration space - almost every vector of length 76 corresponds to a
- physically unrealistic configuration as clashing particles immediately
- cause gigantic potential energies and thus vanishing probabilities.
- Designing a sampling method by hand that would simultaneously place all
  
+\change_inserted 880794617 1542131814
+Particles repel each other with the 
+\begin_inset Formula $12^{th}$
+\end_inset
+
+ power of their inverse distance when being close.
+ 
+\change_unchanged
+As a result
+\change_inserted 880794617 1542131842
+, the fraction of low-energy configurations is vanishingly small, and
+\change_unchanged
+ 
+\change_inserted 880794617 1542131842
+d
+\change_unchanged
+esigning a sampling method by hand that would simultaneously place all 
 \begin_inset Formula $38$
 \end_inset
 
@@ -3620,15 +4018,34 @@ Make sure that it is understood that the main ingredient to training is
 \end_layout
 
 \begin_layout Standard
-We train a Boltzmann Generator to sample valid one-shot configurations with
- low energy and use it in order to compute the free energy profiles of opening
- / closing the dimer.
- The training is initialized with separate, disconnected simulations of
- the open and closed states, but in later stages, mostly the 
-\begin_inset Formula $\mathrm{KL}$
+We train a Boltzmann Generator to sample 
+\change_inserted 880794617 1542131909
+low-energy
+\change_unchanged
+ configurations 
+\change_inserted 880794617 1542131926
+in 
+\begin_inset Quotes eld
 \end_inset
 
--loss (
+one-shot
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\change_unchanged
+and use it in order to compute the free energy profiles of opening / closing
+ the dimer.
+ The training is initialized with 
+\change_inserted 880794617 1542131960
+examples from 
+\change_unchanged
+separate, disconnected simulations of the open and closed states, but in
+ later stages, mostly 
+\change_inserted 880794617 1542131972
+training by energy
+\change_unchanged
+ (
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:main_loss_KL"
@@ -3638,9 +4055,11 @@ noprefix "false"
 
 \end_inset
 
-) is used, i.e.
- training is guided by the potential energy function that defines the system
- (SI).
+) is used
+\change_inserted 880794617 1542131983
+.
+
+\change_unchanged
  A restraint keeps the bistable particle dimer centered and aligned in the
  simulation box, therefore the 
 \begin_inset Formula $x$
@@ -3678,10 +4097,16 @@ ion via
 \begin_inset Formula $T_{zx}$
 \end_inset
 
- not only generates realistically looking configurations where all particles
- are placed without significant clashes, but also samples potential energies
- that overlap with the energy distribution of MD trajectories started in
- open and closed states (Fig.
+ generates configurations where all particles are placed without significant
+ clashes, 
+\change_inserted 880794617 1542132065
+and 
+\change_unchanged
+potential energies that overlap with the energy distribution of 
+\change_inserted 880794617 1542132081
+the unbiased 
+\change_unchanged
+MD trajectories (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3693,9 +4118,10 @@ noprefix "false"
 \end_inset
 
 f-h).
- The sampling procedure generates open and closed states without any rare
- event sampling problem and also produces realistic transition states that
- have not been included in any training data (Fig.
+ 
+\change_inserted 880794617 1542132145
+Also, realistic transition states that have not been included in any training
+ data are sampled (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3711,12 +4137,35 @@ g).
 \end_layout
 
 \begin_layout Standard
-In order to demonstrate that thermodynamic quantities can be computed with
- Boltzmann Generators, we conduct the training using the 
-\begin_inset Formula $\mathrm{KL}$
+
+\change_inserted 880794617 1542132277
+We estimate that the MD simulation needs at least 
+\begin_inset Formula $10^{12}$
 \end_inset
 
- loss (
+ steps to spontaneously see a transition from closed to open state and back
+ (SI).
+ The Boltzmann generator samples these states with a return time of about
+ 4 steps, corresponding to more than 11 orders of magnitude speedup.
+\change_unchanged
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542132282
+T
+\change_unchanged
+o demonstrate that thermodynamic quantities can be computed with Boltzmann
+ Generators, we 
+\change_inserted 880794617 1542132298
+perform
+\change_unchanged
+ the training 
+\change_inserted 880794617 1542132310
+by energy
+\change_unchanged
+ (
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:main_loss_KL"
@@ -3727,10 +4176,11 @@ noprefix "false"
 \end_inset
 
 ) simultaneously to a range of temperatures between one fourth and four
- times the reference temperature.
- For this training we exploit that the temperature, which changes the configurat
-ion space distribution in a complex way, simply enters as a scaling factor
- in the width of the Gaussian in latent space (SI).
+ times the reference temperature
+\change_inserted 880794617 1542132347
+ (SI)
+\change_unchanged
+.
  Then, we sample the Boltzmann Generator for a range of temperatures and
  use simple reweighting to compute the free energies along the dimer distances.
  As shown in Fig.
@@ -3843,32 +4293,33 @@ i)
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-
-\series bold
-Aim for this part
-\series default
-:
-\end_layout
-
-\begin_layout Plain Layout
-- Show that Boltzmann generators can sample complex polymer structures.
-\end_layout
-
+Finally, we demonstrate that Boltzmann Generators can sample complex polymer
+ structures
+\change_inserted 880794617 1542135107
+ in 
+\begin_inset Quotes eld
 \end_inset
 
+one shot
+\begin_inset Quotes erd
+\end_inset
 
-\end_layout
-
-\begin_layout Standard
-Finally, we demonstrate that Boltzmann Generators can sample complex polymer
- structures.
- Cyclical polymers are especially challening, because for each change of
- a torsion angle, other torsion angles must be changed so as to maintain
- ring closure and all bond angle constraints.
+ that belong to known or new metastable states
+\change_unchanged
+.
+ Cyclical polymers are especially challenging, because 
+\change_inserted 880794617 1542135008
+the main degrees of freedom are torsion angles, but 
+\change_unchanged
+for each change of a torsion, other torsion
+\change_inserted 880794617 1542135027
+s
+\change_unchanged
+ must be changed 
+\change_inserted 880794617 1542135041
+concurrently 
+\change_unchanged
+so as to maintain ring closure and all bond angle constraints.
  Sophisticated Monte Carlo moves have been designed for this purpose 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -3877,23 +4328,75 @@ literal "false"
 
 \end_inset
 
-, but they are so complex that calculating the Jacobian of the transformation
- is likely untractable, and it is thus unknown how to construct an MCMC
- procedure that would sample the Boltzmann distribution.
- Sampling thus relies on standard methods, such as replica-exchange MD that
- is used here in order to generate initial and reference data.
+, but they 
+\change_inserted 880794617 1542132360
+generally do not yield MCMC procedures that sample the Boltzmann distribution.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
-With Boltzmann Generators, valid low-energy structures of cyclical hydrocarbons
- can be generated in one shot.
- Using a short replica-exchange MD simulation of cyclononane (
+
+\change_inserted 880794617 1542135263
+Here we using cycical hydrocarbons as example.
+ Each hydrocarbon torsion angle has three rotamers (around 
+\begin_inset Formula $-60°$
+\end_inset
+
+, 
+\begin_inset Formula $60°$
+\end_inset
+
+, 
+\begin_inset Formula $180°$
+\end_inset
+
+).
+ The cycle constraints stabilize some otherwise unstable conformations but
+ generally reduce the total number of accessible conformations.
+
+\change_unchanged
+ 
+\change_inserted 880794617 1542135205
+For cyclononane (
 \begin_inset Formula $C_{9}H_{18}$
 \end_inset
 
-) as input in which 4 distinct rotamers have been sampled, one-shot samples
- from the Boltzmann Generator produce structures with both known and new
- rotamers (Fig.
+), we used
+\change_unchanged
+ 
+\change_inserted 880794617 1542135205
+a combination of training by energy and training by example, the latter
+ initialized with 
+\change_unchanged
+a short replica-exchange MD simulation in which 4 distinct rotamers 
+\change_inserted 880794617 1542135205
+conformations 
+\change_unchanged
+have been sampled
+\change_inserted 880794617 1542135205
+.
+ We then use a Boltzmann Generator for iterative discovery: In each iteration,
+ the Boltzmann generator samples structures from known conformation, and
+ also a small fraction of structures from new conformations.
+ We resample this result to produce a uniform number of samples from each
+ conformation and use these samples for training by example in the next
+ round (SI).
+ A so-trained
+\change_unchanged
+ Boltzmann Generator 
+\change_inserted 880794617 1542135205
+quickly 
+\change_unchanged
+produce
+\change_inserted 880794617 1542135205
+s
+\change_unchanged
+ structures 
+\change_inserted 880794617 1542135205
+not included in the initial MD data
+\change_unchanged
+ (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3919,8 +4422,8 @@ noprefix "false"
 
 b).
  Note that all atoms – including hydrogens – are generated in one shot.
- Nontheless, the bond lengths and bond angles follow their equilibrium distribut
-ion closely (Fig.
+ Nonetheless, the bond lengths and bond angles follow their equilibrium
+ distribution closely (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -4016,21 +4519,26 @@ c-d)
 \series bold
 e-g)
 \series default
- One-shot Boltzmann-generated structures and the most similar MD structures
- with free energies estimated from replica-exchange MD (red) and Boltzmann
- Generator (black).
+ One-shot Boltzmann-generated structures (black) and the most similar MD
+ structures from replica-exchange MD (red).
  
 \series bold
 h-j)
 \series default
  One-shot Boltzmann-generated structures that are not contained in the MD
- simulations, along with free energy estimates.
- k-l) One-shot Boltzmann-generated structures of bicyclo[4.4.4]tetradecane
+ simulations.
  
+\series bold
+k-l)
+\series default
+ One-shot Boltzmann-generated structures of bicyclo[4.4.4]tetradecane 
 \begin_inset Formula $C_{14}H_{26}$
 \end_inset
 
-.
+ – side-view is shown in large, top view below as ball+stick and space-filling
+ representation.
+ The three chains are colored for better visibility, the connecting carbons
+ are kept dark.
 \end_layout
 
 \end_inset
@@ -4044,10 +4552,14 @@ h-j)
 \end_layout
 
 \begin_layout Standard
+
+\change_inserted 880794617 1542132465
 \begin_inset Note Note
 status open
 
-\begin_layout Plain Layout
+\begin_layout Section
+
+\change_inserted 880794617 1542132469
 
 \series bold
 Conclusions
@@ -4063,14 +4575,43 @@ Boltzmann Generators are, as yet, the first approach that can sample the
  Boltzmann distribution and generate structures of condensed matter systems
  and complex polymers directly, i.e.
  by avoiding to make small MD or MCMC steps.
- We have demonstrated this for systems with up to about hundred dimensions.
- Although we expect the methodology to improve futher, we do not expect
- one-shot sampling to scale to systems of 100,000's of dimensions, such
- as atomistic models of proteins in solution.
- The present approach could still be applied to these systems by executing
- cluster Monte Carlo moves, i.e.
- by grouping the system into clusters of atoms and re-sample them according
- to their marginal distribution in the environment of the remaining system.
+ We have demonstrated this for systems with 
+\change_inserted 880794617 1542132489
+around
+\change_unchanged
+ 
+\change_inserted 880794617 1542132481
+100
+\change_unchanged
+ dimensions.
+ Although we expect the methodology to improve 
+\change_inserted 880794617 1542132581
+rapidly, we believe that for very high-dimensional systems, such as solvated
+ atomistic protein models with 100,000's of dimensions, the best strategy
+ is to employ Boltzmann Generators for Monte Carlo cluster moves.
+ By
+\change_unchanged
+ grouping the system into clusters of atoms
+\change_inserted 880794617 1542132595
+, and can
+\change_unchanged
+ re-sample the
+\change_inserted 880794617 1542132604
+se clusters
+\change_unchanged
+ according to their marginal 
+\change_inserted 880794617 1542132625
+Boltzmann 
+\change_unchanged
+distribution
+\change_inserted 880794617 1542132702
+, i.e.
+ using the internal potential energies and the interaction energies between
+ the cluster and the remaining system.
+ With such as strategy, Boltzmann Generators can be naturally combined with
+ existing local sampling methods.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -4079,9 +4620,35 @@ The present work shows that Boltzmann Generators can sample the Boltzmann
  the sampling problem in condensed matter systems.
  The limitation of the current work is that the transformation that achieves
  this needs to be trained using the system-specific energy.
- In order to make the approach general, it needs to be transferable across
- systems, and a promising route is the transferable machine learning practiced,
- e.g., in Quantum Machine Learning 
+ In order to make the approach general, it needs to be transfer
+\change_inserted 880794617 1542132715
+r
+\change_unchanged
+able across systems, and a promising route is 
+\change_inserted 880794617 1542132766
+to employ
+\change_unchanged
+ transfer
+\change_inserted 880794617 1542132711
+r
+\change_unchanged
+able 
+\change_inserted 880794617 1542132801
+featurization methods
+\change_unchanged
+ 
+\change_inserted 880794617 1542132774
+developed
+\change_unchanged
+ in 
+\change_inserted 880794617 1542132810
+the context of 
+\change_unchanged
+Machine Learning
+\change_inserted 880794617 1542132723
+ for Quantum Mechanics
+\change_unchanged
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "BehlerParrinello_PRL07_NeuralNetwork,RuppEtAl_PRL12_QML"
@@ -4090,6 +4657,36 @@ literal "false"
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Paragraph
+Acknowledgements
+\end_layout
+
+\begin_layout Standard
+FN acknowledges funding from European Commission (ERC CoG 772230 
+\begin_inset Quotes eld
+\end_inset
+
+ScaleCell
+\begin_inset Quotes erd
+\end_inset
+
+),
+\change_deleted 880794617 1542132853
+ 
+\change_inserted 880794617 1542132832
+ 
+\change_unchanged
+Deutsche Forschungsgemeinschaft (CRC1114/A04)
+\change_inserted 880794617 1542132920
+, and the MATH
+\begin_inset Formula $^{+}$
+\end_inset
+
+ research cluster (AA1x8, EF1x2).
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -4161,9 +4758,6 @@ Hence
  and backward transformations.
  Each transformation has a Jacobian matrix with the pairwise first derivatives
  of outputs with respect to inputs:
-\end_layout
-
-\begin_layout Standard
 \begin_inset Formula 
 \begin{align*}
 \mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta}) & =\left[\frac{\partial F_{zx}(\mathbf{z};\boldsymbol{\theta})}{\partial z_{1}},...,\frac{\partial F_{zx}(\mathbf{z};\boldsymbol{\theta})}{\partial z_{n}}\right]\\
@@ -4220,6 +4814,40 @@ p_{Z}(\mathbf{z}) & =p_{X}(\mathbf{x})\left|\det\mathbf{J}_{xz}(\mathbf{x})\righ
 
 \end_inset
 
+
+\change_inserted 880794617 1542101407
+
+\color red
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542101410
+
+\series bold
+Hao
+\series default
+\color red
+: This possibly leads to confusion of notations.
+ In Appendix B, 
+\begin_inset Formula $p_{X}$
+\end_inset
+
+ and 
+\begin_inset Formula $p_{Z}$
+\end_inset
+
+ are not coupled as the above.
+\end_layout
+
+\end_inset
+
+
+\change_unchanged
+
+\color inherit
 Here we employ the invertible network structures NICE 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -4248,7 +4876,23 @@ literal "false"
 , do only trivially invertible operations on each channel, such as multiplicatio
 n and addition, and use trainable, nonlinear neural network transformations
  between the channels to compute the value of these multiplication and addition
- transformations.
+ transformations
+\change_inserted 880794617 1542135628
+ (Suppl.
+ Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_network-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+b-e)
+\change_unchanged
+.
  
 \end_layout
 
@@ -4276,7 +4920,23 @@ noprefix "false"
  is implement via NICE or RealNVP transforms only the second channel and
  leaves the first channel unchanged.
  In order to allow all variables to be transformed, we swap channels in
- the next transformation, and define a NICE or RealNVP block as:
+ the next transformation
+\change_inserted 880794617 1542135622
+ (Suppl.
+ Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_network-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+f)
+\change_unchanged
+, and define a NICE or RealNVP block as:
 \begin_inset Formula 
 \begin{align*}
 (\mathbf{y}_{1},\mathbf{y}_{2}) & =f_{xy}(\mathbf{x}_{1},\mathbf{x}_{2})\\
@@ -4290,7 +4950,7 @@ Boltzmann Generators are build by putting the forward and the inverse of
  
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig_network-architecture"
+reference "fig:illustration"
 plural "false"
 caps "false"
 noprefix "false"
@@ -4320,6 +4980,105 @@ The NICE transformation is volume-preserving.
  In order to be able to model probability distributions with arbitrary entropy,
  we need to insert at least one scaling layer into a Boltzmann Generator
  that otherwise only contains NICE layers.
+\change_inserted 880794617 1541961990
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\change_inserted 880794617 1541961991
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+
+\change_inserted 880794617 1541961991
+\begin_inset Graphics
+	filename figs/network_structure2.pdf
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1541961991
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1541961991
+\begin_inset CommandInset label
+LatexCommand label
+name "fig_network-architecture"
+
+\end_inset
+
+
+\series bold
+Boltzmann Generator network architecture.
+
+\series default
+ 
+\series bold
+a)
+\series default
+ Nonlinear transformations 
+\begin_inset Formula $T$
+\end_inset
+
+ and 
+\begin_inset Formula $S$
+\end_inset
+
+ are built with multilayer neural networks.
+ 
+\series bold
+b,c)
+\series default
+ Volume-preserving NICE layer and its inverse.
+ 
+\series bold
+d,e)
+\series default
+ Non-volume-preserving RealNVP layer and its inverse.
+ 
+\series bold
+f)
+\series default
+ Stacking any sequence of these layers with channels exchanges produces
+ the full Boltzmann Generator, and invertible network.
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1541961991
+CC: Too much detail.
+ Put b-e in the SI.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -4645,7 +5404,11 @@ Invertible network components.
 
 \begin_layout Subsection*
 B.
- Training Boltzmann Generators
+ Training 
+\change_inserted 880794617 1542049370
+and using 
+\change_unchanged
+Boltzmann Generators
 \end_layout
 
 \begin_layout Standard
@@ -4658,9 +5421,35 @@ J=w_{ML}J_{ML}+w_{KL}J_{KL}+w_{RC}J_{RC}.
 
 \end_inset
 
-where the terms represent maximum-likelihood (ML), Kullback-Leiber (KL)
- or relative entropy, and reaction-coordinate (RC) optimization and the
- 
+where the terms represent maximum-likelihood (ML
+\change_inserted 880794617 1542135692
+, 
+\begin_inset Quotes eld
+\end_inset
+
+training by example
+\begin_inset Quotes erd
+\end_inset
+
+
+\change_unchanged
+), Kullback-Leiber (KL
+\change_inserted 880794617 1542135705
+, 
+\begin_inset Quotes eld
+\end_inset
+
+training by energy
+\begin_inset Quotes erd
+\end_inset
+
+
+\change_unchanged
+)
+\change_inserted 880794617 1542135708
+,
+\change_unchanged
+ and reaction-coordinate (RC) optimization and the 
 \begin_inset Formula $w$
 \end_inset
 
@@ -4670,11 +5459,81 @@ where the terms represent maximum-likelihood (ML), Kullback-Leiber (KL)
 \end_layout
 
 \begin_layout Standard
-We call the prior distribution injected into the latent space 
+We call the 
+\change_inserted 880794617 1542107243
+
+\begin_inset Quotes eld
+\end_inset
+
+exact
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\change_deleted 880794617 1542107245
+prior 
+\change_unchanged
+distribution
+\change_inserted 880794617 1542107250
+s 
+\begin_inset Formula $\mu$
+\end_inset
+
+
+\change_unchanged
+ 
+\change_inserted 880794617 1542107283
+and the generated distributions 
+\begin_inset Formula $q$
+\end_inset
+
+.
+ In particular, 
+\begin_inset Formula $\mu_{Z}(\mathbf{z})$
+\end_inset
+
+ is the Gaussian prior distribution 
+\change_unchanged
+injected into the latent space
+\change_inserted 880794617 1542107319
+ and 
+\begin_inset Formula $q_{X}(\mathbf{x})$
+\end_inset
+
+ is the distribution that results from the network transformation 
+\begin_inset Formula $F_{zx}$
+\end_inset
+
+.
+ Likewise,
+\change_unchanged
+ 
+\begin_inset Formula $\mu_{X}(\mathbf{x})\propto\exp(-u(\mathbf{x}))$
+\end_inset
+
+
+\change_inserted 880794617 1542107343
+ is
+\change_deleted 880794617 1542107344
+ and
+\change_unchanged
+ the Boltzmann distribution in 
+\change_deleted 880794617 1542107351
+the 
+\change_unchanged
+configuration space
+\change_inserted 880794617 1542107459
+ and 
 \begin_inset Formula $q_{Z}(\mathbf{z})$
 \end_inset
 
- and the Boltzmann distribution in the configuration space 
+ is the distribution that results from the network transformation 
+\begin_inset Formula $F_{xz}$
+\end_inset
+
+:
+\change_deleted 880794617 1542107461
+ 
 \begin_inset Formula $\mu_{X}(\mathbf{x})$
 \end_inset
 
@@ -4684,10 +5543,12 @@ We call the prior distribution injected into the latent space
 \end_inset
 
 :
+\change_unchanged
+
 \begin_inset Formula 
 \begin{eqnarray*}
-q_{Z}(\mathbf{z}) & \overset{F_{zx}}{\longrightarrow} & p_{X}(\mathbf{x})\\
-\mu_{X}(\mathbf{x}) & \overset{F_{xz}}{\longrightarrow} & p_{Z}(\mathbf{z})
+\mu_{Z}(\mathbf{z}) & \overset{F_{zx}}{\longrightarrow} & q_{X}(\mathbf{x})\\
+\mu_{X}(\mathbf{x}) & \overset{F_{xz}}{\longrightarrow} & q_{Z}(\mathbf{z})
 \end{eqnarray*}
 
 \end_inset
@@ -4700,11 +5561,13 @@ q_{Z}(\mathbf{z}) & \overset{F_{zx}}{\longrightarrow} & p_{X}(\mathbf{x})\\
 \series bold
 Boltzmann distribution
 \series default
-: We aim at sampling configurations 
-\begin_inset Formula $\mathbf{x}$
-\end_inset
+: 
+\change_inserted 880794617 1542135916
+A special case is to use Boltzmann Generators to sample from the Boltzmann
+ distribution of the canonical ensemble.
+ This distribution has the form:
+\change_unchanged
 
- from the Boltzmann distribution
 \begin_inset Formula 
 \begin{equation}
 \mu_{X}(\mathbf{x})=Z_{X}^{-1}\mathrm{e}^{-\beta U(\mathbf{x})}\label{eq:Boltzmann_distribution}
@@ -4773,7 +5636,7 @@ Prior distribution
  from the isotropic Gaussian distribution:
 \begin_inset Formula 
 \begin{equation}
-q_{Z}^{k}(\mathbf{z})=\mathcal{N}(\mathbf{0},\sigma_{k}^{2}\mathbf{I})=Z_{Z}^{-1}\mathrm{e}^{-\frac{1}{2}\left\Vert \mathbf{z}\right\Vert ^{2}/\sigma_{k}^{2}},\label{eq:z_Gaussian_prior}
+\mu_{Z}^{k}(\mathbf{z})=\mathcal{N}(\mathbf{0},\sigma_{k}^{2}\mathbf{I})=Z_{Z}^{-1}\mathrm{e}^{-\frac{1}{2}\left\Vert \mathbf{z}\right\Vert ^{2}/\sigma_{k}^{2}},\label{eq:z_Gaussian_prior}
 \end{equation}
 
 \end_inset
@@ -4788,7 +5651,7 @@ with normalization constant
  by: 
 \begin_inset Formula 
 \begin{align}
-u_{Z}^{k}(\mathbf{z}) & =-\log q_{Z}^{k}(\mathbf{z})\nonumber \\
+u_{Z}^{k}(\mathbf{z}) & =-\log\mu_{Z}^{k}(\mathbf{z})\nonumber \\
  & =\frac{1}{2\sigma_{k}^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}+\mathrm{const}.\label{eq:z_Gaussian_energy}
 \end{align}
 
@@ -4804,6 +5667,42 @@ Thus the variance takes the same role as the relative temperature.
 
 \end_inset
 
+
+\change_inserted 880794617 1542101436
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542101436
+
+\color red
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542101440
+
+\series bold
+Hao
+\series default
+\color red
+: Is this 
+\begin_inset Formula $\tau_{k}$
+\end_inset
+
+ the 
+\color inherit
+relative temperature
+\color red
+ in the above paragraph? If yes, the relationship holds only for NICE.
+\end_layout
+
+\end_inset
+
+
+\change_unchanged
 
 \end_layout
 
@@ -4824,7 +5723,7 @@ The KL divergence between two distributions
 \begin_inset Formula 
 \begin{align*}
 \mathrm{KL}(q\parallel p) & =\int q(\mathbf{x})\left[\log q(\mathbf{x})-\log p(\mathbf{x})\right]\mathrm{d}\mathbf{x},\\
- & =H_{q}-\int q(\mathbf{x})\log p(\mathbf{x})\mathrm{d}\mathbf{x},
+ & =-H_{q}-\int q(\mathbf{x})\log p(\mathbf{x})\mathrm{d}\mathbf{x},
 \end{align*}
 
 \end_inset
@@ -4842,9 +5741,12 @@ where
 \end_layout
 
 \begin_layout Standard
-Here we use the KL divergences to minimize the difference between the probabilit
-y densities predicted by the Boltzmann generator and the respective reference
- distribution.
+Here we use 
+\change_deleted 880794617 1542135983
+the 
+\change_unchanged
+KL divergences to minimize the difference between the probability densities
+ predicted by the Boltzmann generator and the respective reference distribution.
  Using the variable transformations (
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -4878,13 +5780,27 @@ noprefix "false"
 ), we can express the KL divergence in latent space as:
 \begin_inset Formula 
 \begin{align*}
-\mathrm{KL}_{\boldsymbol{\theta}}\left[q_{Z}\parallel p_{Z}\right] & =H_{Z}-\int q_{Z}(\mathbf{z})\log p_{Z}(\mathbf{z};\boldsymbol{\theta})\mathrm{d}\mathbf{z},\\
- & =H_{Z}-\int q_{Z}(\mathbf{z})\left[\log\mu_{X}(F_{zx}(\mathbf{z};\boldsymbol{\theta}))+\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]\mathrm{d}\mathbf{z},\\
- & =H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]
+\mathrm{KL}_{\boldsymbol{\theta}}\left[\mu_{Z}\parallel q_{Z}\right] & =-H_{Z}-\int\mu_{Z}(\mathbf{z})\log q_{Z}(\mathbf{z};\boldsymbol{\theta})\mathrm{d}\mathbf{z},\\
+ & =-H_{Z}-\int\mu_{Z}(\mathbf{z})\left[\log\mu_{X}(F_{zx}(\mathbf{z};\boldsymbol{\theta}))+\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]\mathrm{d}\mathbf{z},\\
+ & =-H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]
 \end{align*}
 
 \end_inset
 
+
+\change_inserted 880794617 1542101529
+This is equivalent to the KL divergence expressed in configuration space:
+\begin_inset Formula 
+\begin{align*}
+\mathrm{KL}_{\boldsymbol{\theta}}\left[q_{X}\parallel\mu_{X}\right] & =\int q_{X}(\mathbf{x};\boldsymbol{\theta})\left[\log q_{X}(\mathbf{x};\boldsymbol{\theta})+\log Z_{X}+u(\mathbf{x})\right]\mathrm{d}\mathbf{x}\\
+ & =\int\mu_{Z}(\mathbf{z})\left[\log\mu_{Z}(\mathbf{z})+\log\left|\det\mathbf{J}_{xz}(\mathbf{z};\boldsymbol{\theta})\right|+\log Z_{X}+u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))\right]\mathrm{d}\mathbf{z}\\
+ & =-H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]
+\end{align*}
+
+\end_inset
+
+
+\change_unchanged
 Here, 
 \begin_inset Formula $\boldsymbol{\theta}$
 \end_inset
@@ -4905,7 +5821,7 @@ Here,
 , the KL loss is given by:
 \begin_inset Formula 
 \begin{equation}
-J_{KL}=\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right].\label{eq:loss_KL}
+J_{KL}=\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right].\label{eq:loss_KL}
 \end{equation}
 
 \end_inset
@@ -4946,46 +5862,67 @@ noprefix "false"
 ) to simultaneously train at multiple temperatures, obtaining:
 \begin_inset Formula 
 \[
-J_{KL}^{T^{1},...,T^{K}}=\sum_{k=1}^{K}\mathbb{E}_{\mathbf{z}\sim q_{Z}^{k}(\mathbf{z})}\left[u^{k}(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right].
+J_{KL}^{T^{1},...,T^{K}}=\sum_{k=1}^{K}\mathbb{E}_{\mathbf{z}\sim\mu_{Z}^{k}(\mathbf{z})}\left[u^{k}(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right].
 \]
 
 \end_inset
 
+
+\change_inserted 880794617 1542037687
+The KL divergence 
+\begin_inset Formula $\mathrm{KL}_{\boldsymbol{\theta}}\left[\mu_{Z}\parallel q_{Z}\right]$
+\end_inset
+
+ is also maximized in 
+\emph on
+probability density distillation
+\emph default
+ used in the training of recent audio generation networks 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "VanDenOord_WaveNet2"
+literal "false"
+
+\end_inset
+
+.
+ Here, the reference distribution is defined by a teacher network that is
+ used to help training a student network.
+ However, the resulting expressions are different because the target distributio
+n is not defined by a physical energy as here.
+ 
+\change_unchanged
 
 \end_layout
 
 \begin_layout Paragraph
-Interpretation of latent KL as reweighting loss
+
+\change_inserted 880794617 1542108222
+Reweighting and i
+\change_unchanged
+nterpretation of latent KL as reweighting loss
 \end_layout
 
 \begin_layout Standard
-The KL loss (
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:loss_KL"
-plural "false"
-caps "false"
-noprefix "false"
 
+\change_inserted 880794617 1542108227
+The most direct way to compute quantitative statistics using Boltzmann generator
+s is to employ reweighting of probability densities.
+ In this framework, we assign to each generated configuration 
+\begin_inset Formula $\mathbf{x}$
 \end_inset
 
-) has an interesting thermodynamic interpretation.
- By transforming the prior distribution 
-\begin_inset Formula $q_{Z}$
-\end_inset
+ the statistical weight:
+\end_layout
 
- through the Boltzmann generator, we arrive at a proposal distribution 
-\begin_inset Formula $p_{X}$
-\end_inset
+\begin_layout Standard
 
-.
- We can now employ reweighting (see below) to turn this proposal distribution
- into a Boltzmann distribution.
- In reweighting, each point is assigned a weight
+\change_inserted 880794617 1542108347
 \begin_inset Formula 
-\[
-w_{X}(\mathbf{x}\mid\mathbf{z})=\frac{\mu_{X}(\mathbf{x})}{p_{X}(\mathbf{x})}=\frac{p_{Z}(\mathbf{z})}{q_{Z}(\mathbf{z})}.
-\]
+\begin{align}
+w_{X}(\mathbf{x}) & =\frac{\mu_{X}(\mathbf{x})}{q_{X}(\mathbf{x})}=\frac{q_{Z}(\mathbf{z})}{\mu_{Z}(\mathbf{z})}.\label{eq:reweighting_w}\\
+ & \propto\mathrm{e}^{-u_{X}\left(T_{zx}(\mathbf{z})\right)+u_{Z}(\mathbf{z})+\log\left|\det\left(\mathbf{J}_{zx}(\mathbf{z})\right)\right|}\nonumber 
+\end{align}
 
 \end_inset
 
@@ -5010,12 +5947,49 @@ noprefix "false"
 \end_inset
 
 ).
+ Using these weights, expectation values can be computed as
+\begin_inset Formula 
+\[
+\mathbb{E}[O]\approx\frac{\sum_{i=1}^{N}w_{X}(\mathbf{x})O(\mathbf{x})}{\sum_{i=1}^{N}w_{X}(\mathbf{x})}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542108301
+With the reweighting (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:reweighting_w"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+), t
+\change_unchanged
+he KL loss (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:loss_KL"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) has an interesting thermodynamic interpretation.
  The minimization of the latent KL divergence can be rewritten in terms
  of these weights:
 \begin_inset Formula 
 \begin{align*}
-\min\mathrm{KL}_{\boldsymbol{\theta}}\left[q_{Z}\parallel p_{Z}\right] & =\min\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[\log q_{Z}(\mathbf{z})-\log p_{Z}(\mathbf{z};\boldsymbol{\theta})\right]\\
- & =\max\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[\log w_{X}(\mathbf{x}\mid\mathbf{z})\right].
+\min\mathrm{KL}_{\boldsymbol{\theta}}\left[\mu_{Z}\parallel q_{Z}\right] & =\min\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[\log\mu_{Z}(\mathbf{z})-\log q_{Z}(\mathbf{z};\boldsymbol{\theta})\right]\\
+ & =\max\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[\log w_{X}(\mathbf{x}\mid\mathbf{z})\right].
 \end{align*}
 
 \end_inset
@@ -5043,42 +6017,49 @@ For invertible transformation
 
 , we additionally use the following relationship of the entropies of the
  two distributions:
+\change_inserted 880794617 1542101669
+
 \begin_inset Formula 
 \begin{align}
-H_{X} & =-\int_{\mathbf{x}}p_{X}(\mathbf{x})\log p_{X}(\mathbf{x})\:\mathrm{d}\mathbf{x}\nonumber \\
- & =-\int_{\mathbf{x}}p_{X}(F_{zx}(\mathbf{z}))\log p_{X}(F_{zx}(\mathbf{z}))\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|\:\mathrm{d}\mathbf{z}\nonumber \\
- & =-\int_{\mathbf{x}}p_{Z}(\mathbf{z})\log p_{X}(F_{zx}(\mathbf{z}))\:\mathrm{d}\mathbf{z}\nonumber \\
- & =-\int_{\mathbf{x}}p_{Z}(\mathbf{z})\log\left(p_{Z}(\mathbf{z})\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|^{-1}\right)\:\mathrm{d}\mathbf{z}\nonumber \\
- & =-\int_{\mathbf{x}}p_{Z}(\mathbf{z})\log p_{Z}(\mathbf{z})\:\mathrm{d}\mathbf{z}+\mathbb{E}_{Z}\log\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|\:\mathrm{d}\mathbf{z}\nonumber \\
- & =H_{Z}+\mathbb{E}_{Z}\log\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|\:\mathrm{d}\mathbf{z}\label{eq:entropy_difference}
+H_{X} & =-\int_{\mathbf{x}}q_{X}(\mathbf{x})\log q_{X}(\mathbf{x})\:\mathrm{d}\mathbf{x}\nonumber \\
+ & =-\int_{\mathbf{z}}q_{X}(F_{zx}(\mathbf{z}))\log q_{X}(F_{zx}(\mathbf{z}))\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|\:\mathrm{d}\mathbf{z}\nonumber \\
+ & =-\int_{\mathbf{z}}\mu_{Z}(\mathbf{z})\log q_{X}(F_{zx}(\mathbf{z}))\:\mathrm{d}\mathbf{z}\nonumber \\
+ & =-\int_{\mathbf{z}}\mu_{Z}(\mathbf{z})\log\left(\mu_{Z}(\mathbf{z})\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|^{-1}\right)\:\mathrm{d}\mathbf{z}\nonumber \\
+ & =-\int_{\mathbf{z}}\mu_{Z}(\mathbf{z})\log\mu_{Z}(\mathbf{z})\:\mathrm{d}\mathbf{z}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\log\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|\:\mathrm{d}\mathbf{z}\nonumber \\
+ & =H_{Z}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[\log\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|\right]\label{eq:entropy_difference}
 \end{align}
 
 \end_inset
 
+
+\change_unchanged
 Hence we have:
+\change_inserted 880794617 1542136245
+
 \begin_inset Formula 
 \begin{align*}
-\mathrm{KL}_{\boldsymbol{\theta}}\left[q_{Z}\parallel p_{Z}\right] & =H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))\right]-\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]\\
- & =2H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))\right]-H_{X}
+\mathrm{KL}_{\boldsymbol{\theta}}\left[\mu_{Z}\parallel q_{Z}\right] & =-H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))\right]-\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]\\
+ & =-H_{X}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))\right]\\
+ & =-H_{X}+\log Z_{X}+\mathbb{E}_{\mathbf{x}\sim\mu_{X}(\mathbf{x};\boldsymbol{\theta})}\left[u(\mathbf{x})\right]\\
+ & =\mathrm{KL}_{\boldsymbol{\theta}}\left[q_{X}\parallel\mu_{X}\right].
 \end{align*}
 
 \end_inset
 
-(
-\series bold
-interpretation unclear
-\series default
-).
- The loss function becomes a free energy:
+The loss function becomes a free energy:
 \begin_inset Formula 
 \begin{align*}
-J_{KL} & =\mathbb{E}_{\mathbf{z}\sim q_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]\\
- & =U_{Z}-H_{ZX}
+J_{KL} & =\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]\\
+ & =U-H_{ZX}
 \end{align*}
 
 \end_inset
 
-with the transformation entropy:
+with enthalpy 
+\begin_inset Formula $U$
+\end_inset
+
+ and transformation entropy:
 \begin_inset Formula 
 \[
 H_{ZX}=H_{X}-H_{Z}
@@ -5086,6 +6067,8 @@ H_{ZX}=H_{X}-H_{Z}
 
 \end_inset
 
+
+\change_unchanged
 
 \end_layout
 
@@ -5135,8 +6118,8 @@ noprefix "false"
 \begin_layout Standard
 \begin_inset Formula 
 \begin{align*}
-\mathrm{KL}_{\boldsymbol{\theta}}(\mu_{X}\parallel p_{X}) & =H_{X}-\int\mu_{X}(\mathbf{x})\log p_{X}(\mathbf{x};\boldsymbol{\theta})\mathrm{d}\mathbf{x}\\
- & =H_{X}-\int\mu_{X}(\mathbf{x})\left[\log q_{Z}(F_{xz}(\mathbf{x};\boldsymbol{\theta}))+\log\left|\mathbf{J}_{xz}(\mathbf{z};\boldsymbol{\theta})\right|\right]\mathrm{d}\mathbf{x}.\\
+\mathrm{KL}_{\boldsymbol{\theta}}\left[\mu_{X}\parallel q_{X}\right] & =H_{X}-\int\mu_{X}(\mathbf{x})\log q_{X}(\mathbf{x};\boldsymbol{\theta})\mathrm{d}\mathbf{x}\\
+ & =H_{X}-\int\mu_{X}(\mathbf{x})\left[\log\mu_{Z}(F_{xz}(\mathbf{x};\boldsymbol{\theta}))+\log\left|\mathbf{J}_{xz}(\mathbf{z};\boldsymbol{\theta})\right|\right]\mathrm{d}\mathbf{x}.\\
  & =H_{X}+\log Z_{Z}+\mathbb{E}_{\mathbf{x}\sim\mu(\mathbf{x})}\left[\frac{1}{\sigma^{2}}\left\Vert F_{xz}(\mathbf{x};\boldsymbol{\theta})\right\Vert ^{2}-\log\left|\mathbf{J}_{xz}(\mathbf{x};\boldsymbol{\theta})\right|\right].
 \end{align*}
 
@@ -5176,7 +6159,7 @@ However we can approximate the configuration KL divergence by starting from
  and using the loss:
 \begin_inset Formula 
 \begin{align*}
-J_{LL} & =-\mathbb{E}_{\mathbf{x}\sim\rho(\mathbf{x})}\left[\log p_{X}(\mathbf{x};\boldsymbol{\theta})\right]\\
+J_{ML} & =-\mathbb{E}_{\mathbf{x}\sim\rho(\mathbf{x})}\left[\log q_{X}(\mathbf{x};\boldsymbol{\theta})\right]\\
  & =\mathbb{E}_{\mathbf{x}\sim\rho(\mathbf{x})}\left[\frac{1}{\sigma^{2}}\left\Vert F_{xz}(\mathbf{x};\boldsymbol{\theta})\right\Vert ^{2}-\log\left|\mathbf{J}_{xz}(\mathbf{x};\boldsymbol{\theta})\right|\right]
 \end{align*}
 
@@ -5243,14 +6226,14 @@ The two KL divergences above can be naturally combined to the symmetric
 \begin_layout Standard
 \begin_inset Formula 
 \[
-D_{JS}=\frac{1}{2}D_{KL}(p_{X}\parallel p_{Z})+\frac{1}{2}D_{KL}(p_{Z}\parallel p_{X}),
+\mathrm{KL}_{\mathrm{sym}}=\frac{1}{2}\mathrm{KL}\left[\mu_{X}\parallel q_{X}\right]+\frac{1}{2}\mathrm{KL}\left[\mu_{Z}\parallel q_{Z}\right]
 \]
 
 \end_inset
 
 which corresponds, up to an additive constant, to the Jensen-Shannon divergence
  which uses the geometric mean of 
-\begin_inset Formula $m=\sqrt{p_{X}p_{Z}}$
+\begin_inset Formula $m=\sqrt{q_{X}q_{Z}}$
 \end_inset
 
  instead of the arithmetic mean.
@@ -5286,7 +6269,7 @@ n problem:
 \begin_inset Formula 
 \begin{align*}
 J_{RC} & =\int p\left(R(\mathbf{x})\right)\log p\left(R(\mathbf{x})\right)\:\mathrm{d}R(\mathbf{x})\\
- & =\mathbb{E}_{\mathbf{x}\sim p_{X}(\mathbf{x})}\log p\left(R(\mathbf{x})\right).
+ & =\mathbb{E}_{\mathbf{x}\sim q_{X}(\mathbf{x})}\log p\left(R(\mathbf{x})\right).
 \end{align*}
 
 \end_inset
@@ -5345,162 +6328,107 @@ J_{XX} & =\frac{1}{2}\int p(x)\left(\log p(x)-\log\sqrt{p(x)q(x)}\right)\\
 
 \end_layout
 
-\begin_layout Standard
-We can approximate the symmetrized divergence by combining the maximum likelihoo
-d and the latent KL-divergence
-\begin_inset Formula 
-\[
-\mathrm{D}_{JS}\approx J_{LL}+J_{KL}.
-\]
+\begin_layout Subsection*
 
+\change_inserted 880794617 1542049382
+C
+\change_unchanged
+.
+ Systems and Hyperparameters
+\change_inserted 880794617 1542039440
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542136593
+The 
+\begin_inset Quotes eld
 \end_inset
 
-This approximation becomes exact in the limit where we sample configurations
- 
+MD
+\begin_inset Quotes erd
+\end_inset
+
+ simulations of the systems below are not using actual dynamics, but are
+ emulated with Metropolis Monte Carlo with small local steps.
+ In each step, a random vector from an isotropic Gaussian distribution with
+ a system-dependent standard deviation 
+\begin_inset Formula $\sigma_{\mathrm{Metro}}$
+\end_inset
+
+ is added to the present configuration.
+ This proposed configuration is accepted or rejected with a standard Metropolis
+ acceptance criterion.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542136665
+All Boltzmann Generator networks are build of invertible blocks using NICE
+ or RealNVP layers.
+ Each block contains two such layers to make sure that all dimensions are
+ subject to a nonlinear transformation, as described in SI Section A.
+ Each configuration 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- from the Boltzmann distribution.
-\end_layout
-
-\begin_layout Section
-Sampling the Boltzmann Density
-\end_layout
-
-\begin_layout Standard
-A trained Boltzmann generator will generally sample from the Boltzmann density
- only approximately.
- The more significant problem is that the Boltzmann generator may not cover
- the complete configuration space.
- Below we describe a number of algorithms to correct the proposal density
- of the Boltzmann generator and to embed it into a sampling algorithm that
- may asymptotically sample the whole configuration space.
-\end_layout
-
-\begin_layout Paragraph
-Reweighting
-\end_layout
-
-\begin_layout Standard
-The most direct way to compute quantitative statistics using Boltzmann generator
-s is to employ reweighting of probability densities.
- In this framework, we assign to each generated configuration 
-\begin_inset Formula $\mathbf{x}$
-\end_inset
-
- the statistical weight:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{align}
-w_{X}(\mathbf{x}\mid\mathbf{z}) & =\frac{\mu_{X}(\mathbf{x})}{p_{X}(\mathbf{x})}=\frac{p_{Z}(\mathbf{z})}{q_{Z}(\mathbf{z})}.\label{eq:reweighting_w-1}\\
- & \propto\mathrm{e}^{-u_{X}\left(T_{zx}(\mathbf{z})\right)+u_{Z}(\mathbf{z})+\log\left|\det\left(\mathbf{J}_{zx}(\mathbf{z})\right)\right|}\nonumber 
-\end{align}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Using these weights, expectation values can be computed as
-\begin_inset Formula 
-\[
-\mathbb{E}[O]\approx\frac{\sum_{i=1}^{N}w_{X}(\mathbf{x})O(\mathbf{x})}{\sum_{i=1}^{N}w_{X}(\mathbf{x})}.
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
-Latent MCMC 
-\end_layout
-
-\begin_layout Standard
-Consider that we always propose 
+ or latent vector 
 \begin_inset Formula $\mathbf{z}$
 \end_inset
 
- samples from the prior distribution
-\begin_inset Formula 
-\[
-\mathbf{z}\sim\mathcal{N}(\mathbf{0},\sigma^{2}\mathbf{I})\propto\exp\left(-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}\right\Vert ^{2}\right).
-\]
-
+ is split into a channel of 
+\begin_inset Quotes eld
 \end_inset
 
-Our aim is to sample 
-\begin_inset Formula $\mu(\mathbf{x})$
+even
+\begin_inset Quotes erd
 \end_inset
 
-.
- The MCMC acceptance probability should be:
-\begin_inset Formula 
-\begin{align*}
-p_{\mathrm{acc}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2}) & =\min\left\{ 1,\frac{p_{Z}(\mathbf{z}_{2})}{p_{Z}(\mathbf{z}_{1})}\frac{p_{\mathrm{prop}}(\mathbf{z}_{2}\rightarrow\mathbf{z}_{1})}{p_{\mathrm{prop}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2})}\right\} 
-\end{align*}
-
+ and 
+\begin_inset Quotes eld
 \end_inset
 
-Using 
-\begin_inset Formula 
-\[
-p_{Z}(z)=J(z)p_{X}(F_{zx}(z))
-\]
-
+odd
+\begin_inset Quotes erd
 \end_inset
 
-with
-\begin_inset Formula 
-\[
-J(z)=\left|\det\left(\frac{dF_{zx}}{dz}\right)\right|(z)
-\]
-
+ dimensions, defining the pairs 
+\begin_inset Formula $(\mathbf{x}_{1},\mathbf{x}_{2})$
 \end_inset
 
-we have:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{align*}
-p_{\mathrm{acc}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2}) & =\min\left\{ 1,\frac{J(\mathbf{z}_{2})\mu(F_{zx}(\mathbf{z}_{2}))}{J(\mathbf{z}_{1})\mu(F_{zx}(\mathbf{z}_{1}))}\frac{p_{\mathrm{prop}}(\mathbf{z}_{1})}{p_{\mathrm{prop}}(\mathbf{z}_{2})}\right\} \\
- & =\min\left\{ 1,\frac{\mathrm{e}^{\log J(\mathbf{z}_{2})-u(F_{zx}(\mathbf{z}_{2}))}}{\mathrm{e}^{\log J(\mathbf{z}_{1})-u(F_{zx}(\mathbf{z}_{1}))}}\frac{\mathrm{e}^{-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{1}\right\Vert ^{2}}}{\mathrm{e}^{-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{2}\right\Vert ^{2}}}\right\} \\
- & =\min\left\{ 1,\mathrm{e}^{\log J(\mathbf{z}_{2})-u(F_{zx}(\mathbf{z}_{2}))+\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{2}\right\Vert ^{2}-\log J(\mathbf{z}_{1})+u(F_{zx}(\mathbf{z}_{1}))-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{1}\right\Vert ^{2}}\right\} 
-\end{align*}
-
+ and 
+\begin_inset Formula $(\mathbf{z}_{1},\mathbf{z}_{2})$
 \end_inset
 
+, respectively.
+ To describe the network architecture used, we use 
+\begin_inset Formula $N$
+\end_inset
 
-\end_layout
+, 
+\begin_inset Formula $R$
+\end_inset
 
-\begin_layout Standard
-In line 2 and 3 we have cancelled equal prefactors: the prefactor involved
- in variable transformation, e.g.
+ and 
+\begin_inset Formula $S$
+\end_inset
+
+ to denote NICE block, RealNVP block and Scaling layer, respectively.
+ A subscript is used to denote the number of repetitions of a motif, e.g.
  
-\begin_inset Formula $p_{z}(z)=\left|\det\left(S\right)\right|\mu(T_{zx}(z))$
+\begin_inset Formula $N_{10}$
 \end_inset
 
- for the scaled NICER network, and the constant prefactor of the Gaussian
- densities.
- This results in the check:
-\begin_inset Formula 
-\begin{align*}
-r & \le p_{\mathrm{acc}}(\mathbf{z}_{1}\rightarrow\mathbf{z}_{2})\\
--\log r & \ge\log J(\mathbf{z}_{1})-\log J(\mathbf{z}_{2})+u(F_{zx}(\mathbf{z}_{2}))-u(F_{zx}(\mathbf{z}_{1}))+\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{1}\right\Vert ^{2}-\frac{1}{2\sigma^{2}}\left\Vert \mathbf{z}_{2}\right\Vert ^{2}
-\end{align*}
-
+ are ten stacked NICE blocks, i.e.
+ 20 layers total, 
+\begin_inset Formula $(NR)_{4}$
 \end_inset
 
+ are four repetitions of a NICE and a RealNVP block, i.e.
+ 8 layers total.
+\change_unchanged
 
-\end_layout
-
-\begin_layout Subsection*
-C.
- Systems and Hyperparameters
 \end_layout
 
 \begin_layout Paragraph*
@@ -5518,9 +6446,9 @@ We define a two-dimensional toy model which is bistable in
 
 -direction:
 \begin_inset Formula 
-\[
-E(x,y)=\frac{1}{4}ax^{4}-\frac{1}{2}bx^{2}+cx+\frac{1}{2}dy^{2}
-\]
+\begin{equation}
+E(x,y)=\frac{1}{4}ax^{4}-\frac{1}{2}bx^{2}+cx+\frac{1}{2}dy^{2}\label{eq:double_well_energy}
+\end{equation}
 
 \end_inset
 
@@ -5548,9 +6476,131 @@ noprefix "false"
 \end_inset
 
 -direction.
+
+\change_inserted 880794617 1542136870
+ The system is simulated with a Metropolis step of 
+\begin_inset Formula $\sigma_{\mathrm{Metro}}=0.1$
+\end_inset
+
+.
+ To estimate the average time needed for a return trip between both states,
+ we construct another systems with 
+\begin_inset Formula $a=0.25$
+\end_inset
+
+ and 
+\begin_inset Formula $b=1.5$
+\end_inset
+
+ that has the same position of minima and the same energy difference between
+ them, but a much smaller barrier.
+ For the 
+\begin_inset Quotes eld
+\end_inset
+
+flat
+\begin_inset Quotes erd
+\end_inset
+
+ systems frequent transitions between the two end-states are observed.
+ The return-trip time of the original system is then estimated by 
+\begin_inset Formula $t=t_{\mathrm{flat}}\exp\left(B-B_{\mathrm{flat}}\right)$
+\end_inset
+
+, where 
+\begin_inset Formula $B,B_{\mathrm{flat}}$
+\end_inset
+
+ are the energy barriers for the original and the 
+\begin_inset Quotes eld
+\end_inset
+
+flat
+\begin_inset Quotes erd
+\end_inset
+
+ system from either one of the two minima, and 
+\begin_inset Formula $t,t_{\mathrm{flat}}$
+\end_inset
+
+ are the times taken for a round-trip between the states.
+ This results in an estimate of 
+\begin_inset Formula $t=4\cdot10^{6}$
+\end_inset
+
+ simulation steps for a return trip in the system shown in Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
+
+\change_inserted 880794617 1542040117
+In Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and Suppl.
+ Figs.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_training_methods_NICER"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+,
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_training_methods_RealNVP"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ we use NICE and RealNVP networks defined as below.
+ Networks are trained in two steps: in a first ML phase we only minimize
+ 
+\begin_inset Formula $J_{\mathrm{KL}}$
+\end_inset
+
+.
+ Subsequently we minimize 
+\begin_inset Formula $J_{\mathrm{KL}}+J_{\mathrm{ML}}$
+\end_inset
+
+ with equal weights 
+\begin_inset Formula $w_{\mathrm{ML}}=w_{\mathrm{KL}}=1$
+\end_inset
+
+, unless otherwise noted.
+\change_unchanged
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="3">
 <features tabularvalignment="middle">
@@ -5571,7 +6621,13 @@ Network
 \begin_inset Text
 
 \begin_layout Plain Layout
-epochs ML
+
+\change_deleted 880794617 1542039980
+e
+\change_inserted 880794617 1542039980
+E
+\change_unchanged
+pochs ML
 \end_layout
 
 \end_inset
@@ -5580,7 +6636,13 @@ epochs ML
 \begin_inset Text
 
 \begin_layout Plain Layout
-epochs KL
+
+\change_deleted 880794617 1542039981
+e
+\change_inserted 880794617 1542039981
+E
+\change_unchanged
+pochs KL
 \end_layout
 
 \end_inset
@@ -5655,19 +6717,49 @@ epochs KL
 \end_inset
 
 
+\change_inserted 880794617 1542040004
+
 \end_layout
 
 \begin_layout Paragraph
-Particle dimer
+
+\change_inserted 880794617 1542125459
+Bistable p
+\change_unchanged
+article dimer
+\change_inserted 880794617 1542125451
+ in a Lennard-Jones fluid
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
-Here we simulate two-dimensional system of a particle dimer in a bath of
- 
+Here we simulate two-dimensional system of a 
+\change_inserted 880794617 1542040168
+bistable 
+\change_unchanged
+particle dimer in a 
+\change_inserted 880794617 1542040174
+dense 
+\change_unchanged
+bath of 
 \begin_inset Formula $n_{s}=36$
 \end_inset
 
- solvent particles.
+ solvent particles
+\change_inserted 880794617 1542040205
+ with Lennard-Jones repulsion.
+ A similar system has been proposed in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "NilmeyerEtAl_PNA11_NCMC"
+literal "false"
+
+\end_inset
+
+
+\change_unchanged
+.
  The configuration vector is defined by alternating 
 \begin_inset Formula $x-$
 \end_inset
@@ -5700,8 +6792,8 @@ Defining the dimer distance
 \begin{align*}
 U(\mathbf{x}) & =k_{d}(\mathbf{x}_{1x}+\mathbf{x}_{2x})^{2}+k_{d}\mathbf{x}_{1y}^{2}+k_{d}\mathbf{x}_{2y}^{2}\\
  & +\frac{1}{4}a(d-d_{0})^{4}-\frac{1}{2}b(d-d_{0})^{2}+c(d-d_{0})^{4}\\
- & +\sum_{i=1}^{n+2}h(-\mathbf{x}_{1x}-l_{\mathrm{box}})k_{\mathrm{box}}(-\mathbf{x}_{1x}-l_{\mathrm{box}})^{2}+\sum_{i=1}^{n+2}h(\mathbf{x}_{1x}-l_{\mathrm{box}})k_{\mathrm{box}}(\mathbf{x}_{1x}-l_{\mathrm{box}})^{2}\\
- & +\sum_{i=1}^{n+2}h(-\mathbf{x}_{1y}-l_{\mathrm{box}})k_{\mathrm{box}}(-\mathbf{x}_{1y}-l_{\mathrm{box}})^{2}+\sum_{i=1}^{n+2}h(\mathbf{x}_{1y}-l_{\mathrm{box}})k_{\mathrm{box}}(\mathbf{x}_{1y}-l_{\mathrm{box}})^{2}\\
+ & +\sum_{i=1}^{n+2}h(-\mathbf{x}_{ix}-l_{\mathrm{box}})k_{\mathrm{box}}(-\mathbf{x}_{ix}-l_{\mathrm{box}})^{2}+\sum_{i=1}^{n+2}h(\mathbf{x}_{ix}-l_{\mathrm{box}})k_{\mathrm{box}}(\mathbf{x}_{ix}-l_{\mathrm{box}})^{2}\\
+ & +\sum_{i=1}^{n+2}h(-\mathbf{x}_{iy}-l_{\mathrm{box}})k_{\mathrm{box}}(-\mathbf{x}_{iy}-l_{\mathrm{box}})^{2}+\sum_{i=1}^{n+2}h(\mathbf{x}_{iy}-l_{\mathrm{box}})k_{\mathrm{box}}(\mathbf{x}_{iy}-l_{\mathrm{box}})^{2}\\
  & +\epsilon\sum_{i=1}^{n+1}\sum_{j=i+1,j\neq2}^{n+2}\left(\frac{\sigma}{\left\Vert \mathbf{x}_{i}-\mathbf{x}_{j}\right\Vert }\right)^{12}
 \end{align*}
 
@@ -5722,7 +6814,11 @@ where the five rows correspond to: (1) Constraints for the center and the
 \end_inset
 
 direction, (5) particle repulsion.
- The following parameter values were used:
+ The following parameter values were used
+\change_inserted 880794617 1542120387
+ (all in reduced units)
+\change_unchanged
+:
 \end_layout
 
 \begin_layout Standard
@@ -5957,6 +7053,135 @@ Value
 \end_inset
 
 
+\change_inserted 880794617 1542120296
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542137432
+To initialize training, we run Metropolis Monte Carlo simulations with a
+ Metropolis step length of 
+\begin_inset Formula $\sigma_{\mathrm{Metro}}=0.02\sqrt{\tau}$
+\end_inset
+
+, where 
+\begin_inset Formula $\tau$
+\end_inset
+
+ is the relative temperature.
+ To estimate the time taken for a return-trip between open and closed dimer
+ states, we take the same approach as for the double-well system above:
+ We conduct a simulation with 
+\begin_inset Formula $10^{6}$
+\end_inset
+
+ simulation steps for a system with maximally flattened energy (
+\begin_inset Formula $a=2.5$
+\end_inset
+
+ and 
+\begin_inset Formula $b=1.0$
+\end_inset
+
+).
+ Still no transition from closed to open states occur, we thus estimate
+ the 
+\emph on
+lower bound
+\emph default
+ for the return trip to be 
+\begin_inset Formula $t=10^{6}\exp(B-B_{\mathrm{flat}})\approx1.2\cdot10^{12}$
+\end_inset
+
+ where 
+\begin_inset Formula $B,B_{\mathrm{flat}}$
+\end_inset
+
+ are the intrinsic barrier heights for the unchanged and flattened system.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542125670
+For validation of the free energy profiles predicted in Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:particle_dimer"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+i, we perform Umbrella Sampling simulations 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Torrie_JCompPhys23_187"
+literal "false"
+
+\end_inset
+
+ for each relative temperature 
+\begin_inset Formula $(0.5,1.0,2.0)$
+\end_inset
+
+ using 35 Umbrella potentials on the dimer distance between values of 
+\begin_inset Formula $0.5$
+\end_inset
+
+ and 
+\begin_inset Formula $2.5$
+\end_inset
+
+ and with a force constant of 
+\begin_inset Formula $500$
+\end_inset
+
+ (reduced units).
+\change_unchanged
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542124540
+For initializing the training by example (ML), 
+\begin_inset Formula $10^{5}$
+\end_inset
+
+ simulation steps are stored for the 
+\begin_inset Quotes eld
+\end_inset
+
+open
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+closed
+\begin_inset Quotes erd
+\end_inset
+
+ dimer states.
+ No transitions between these states occur in the simulations.
+ In order to not have to learn the permutational invariance of the diffusing
+ solvent particles from the data, we remove this invariance by relabeling
+ solvent particles using the Hungarian algorithm 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Kuhn_Naval55_HungarianMethod"
+literal "false"
+
+\end_inset
+
+.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -5975,8 +7200,9 @@ Boltzmann Generator training was done with
 \noindent
 \align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="6">
+<lyxtabular version="3" rows="4" columns="7">
 <features tabularvalignment="middle">
+<column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -5997,6 +7223,21 @@ Epochs
 \begin_inset Text
 
 \begin_layout Plain Layout
+20
+\change_deleted 880794617 1542041751
+0
+\change_unchanged
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542040263
 200
 \end_layout
 
@@ -6056,6 +7297,23 @@ Epochs
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\change_deleted 880794617 1542041754
+0
+\change_inserted 880794617 1542041754
+1
+\change_unchanged
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542040263
 100
 \end_layout
 
@@ -6117,6 +7375,23 @@ Epochs
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\change_deleted 880794617 1542040287
+1
+\change_inserted 880794617 1542040287
+0
+\change_unchanged
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542040263
 1
 \end_layout
 
@@ -6176,6 +7451,23 @@ Epochs
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\change_deleted 880794617 1542040288
+1
+\change_inserted 880794617 1542040288
+0
+\change_unchanged
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542040263
 1
 \end_layout
 
@@ -6269,6 +7561,7 @@ i.
 \noindent
 \align center
 \begin_inset Float table
+placement H
 wide false
 sideways false
 status open
@@ -8639,7 +9932,7 @@ Hyperparameter selection for the particle dimer.
  
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig_network-architecture"
+reference "fig:illustration"
 plural "false"
 caps "false"
 noprefix "false"
@@ -8778,6 +10071,459 @@ CH-CH_{2}-CH_{2}-CH_{2}-CH_{2}-CH\\
 \end_layout
 
 \begin_layout Standard
+
+\change_inserted 880794617 1542137470
+To generate some initial structures for training by example, we conducted
+ a short (
+\begin_inset Formula $14,000$
+\end_inset
+
+ steps) replica-exchange simulation with relative temperatures 
+\begin_inset Formula $\tau=(1,1.5,2,2.5,3,3.5,4)$
+\end_inset
+
+ where 
+\begin_inset Formula $300$
+\end_inset
+
+ Kelvin is the standard temperature.
+ We used Metropolis-Monte Carlo step length 
+\begin_inset Formula $\sigma_{\mathrm{Metro}}=0.01\,\text{Å}$
+\end_inset
+
+.
+ The main aim of this simulation is to equilibrate the structure which is
+ started from a random placement of atoms in space.
+ The first 
+\begin_inset Formula $10,000$
+\end_inset
+
+ steps were discarded and the last 
+\begin_inset Formula $4,000$
+\end_inset
+
+ steps were retained for training.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542045010
+The Boltzmann Generator is trained using iterative discovery.
+ In each of 50 iterations, we use 
+\begin_inset Formula $4,000$
+\end_inset
+
+ configurations for training by example, and we train using the following
+ schedule:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\change_inserted 880794617 1542041977
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="5">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542040344
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041936
+First Iteration
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041897
+Next Iterations
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041910
+Epochs
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041873
+300
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041881
+300
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041944
+300
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041960
+300
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542040344
+\begin_inset Formula $w_{ML}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041743
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542040344
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041955
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041960
+1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542040344
+\begin_inset Formula $w_{KL}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542040344
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041949
+0.01
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041946
+0.1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542041960
+0.1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542137553
+At the end of each iteration, we use the Boltzmann Generator to sample 
+\begin_inset Formula $10^{6}$
+\end_inset
+
+ structures and make a list of all rotamer conformations that have been
+ generated.
+ A rotamer is defined by discretizing each torsion as follows:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\change_inserted 880794617 1542044658
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542044661
+Rotamer
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542044664
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542044669
+2
+\change_unchanged
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542044670
+3
+\change_unchanged
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542044673
+Angle
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542044704
+-120°...0°
+\change_unchanged
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542044702
+0°...120°
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542044724
+120°...-120°
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542044981
+And the rotamer conformation is the combination of all rotamers, e.g.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+123211211
+\begin_inset Quotes erd
+\end_inset
+
+.
+ We remove permutational symmetries, in cycloalkanes this is achieved by
+ setting all rotamer conformations equal that can be transformed by mirroring
+ or cyclical permutation.
+ After listing all conformations, we resample a list of 
+\begin_inset Formula $4,000$
+\end_inset
+
+ configurations, but now each rotamer conformation found has an equal probabilit
+y of being sampled.
+ This list is inserted into the next iteration for training by example.
+ 
+\end_layout
+
+\begin_layout Standard
 \begin_inset ERT
 status open
 
@@ -8795,12 +10541,17 @@ clearpage
 
 \begin_layout Subsection*
 D.
- Supplementary Figures
+ 
+\change_inserted 880794617 1542135560
+Additional Figures
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
 \align center
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -8840,26 +10591,44 @@ noprefix "false"
 
 .
  
+\change_inserted 880794617 1542112399
+Columns show: (1)
+\change_deleted 880794617 1542112401
+
 \begin_inset Formula $1^{st}$
 \end_inset
 
- column: distribution in configuration space 
+ column:
+\change_unchanged
+ distribution in configuration space 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
 , 
-\begin_inset Formula $1^{nd}$
+\change_inserted 880794617 1542112403
+(2)
+\change_deleted 880794617 1542112413
+
+\begin_inset Formula $2^{nd}$
 \end_inset
 
- column: distribution in latent space 
+ column:
+\change_unchanged
+ distribution in latent space 
 \begin_inset Formula $\mathbf{z}$
 \end_inset
 
 , 
+\change_inserted 880794617 1542112408
+(3)
+\change_deleted 880794617 1542112412
+
 \begin_inset Formula $3^{rd}$
 \end_inset
 
- column: free energy of Boltzmann Generator output 
+ column:
+\change_unchanged
+ free energy of Boltzmann Generator output 
 \begin_inset Formula $p_{X}(\mathbf{x})$
 \end_inset
 
@@ -8867,12 +10636,34 @@ noprefix "false"
 \begin_inset Formula $x_{1}$
 \end_inset
 
+
+\change_inserted 880794617 1542112419
+, (4)
+\change_deleted 880794617 1542112422
 , 
 \begin_inset Formula $4^{th}$
 \end_inset
 
- column: free energy after reweighting.
- ML
+ column:
+\change_unchanged
+ free energy after reweighting.
+ 
+\change_inserted 880794617 1542113848
+Training uses 200 epochs of ML and then 500 epochs of the method given in
+ the rows, using equal weights for these modes.
+ Training by example (ML) only reproduces the distribution of the training
+ data, which can be reweighted to the Boltzmann distribution in this low-dimensi
+onal example but reweighting fails for high-dimensional examples.
+ Training by energy (KL) only tends to collapse to one metastable state.
+ ML+KL combined samples closer to the Boltzmann distribution than ML and
+ avoids metastable state collapse, but samples high-energy transition states
+ with low probability.
+ KL+RC performs best in this example.
+ 
+\change_deleted 880794617 1542112437
+ML
+\change_unchanged
+
 \end_layout
 
 \end_inset
