@@ -1,5 +1,10 @@
+# files that will not be added to the git
+coverletter.*
+local_*
+
+# rescue and compiled files 
 *.lyx~
 ~$*
 .DS_Store
-local_*
+*.pyc
 
