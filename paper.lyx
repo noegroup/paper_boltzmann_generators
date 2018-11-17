@@ -221,7 +221,13 @@ Affiliations
 \end_layout
 
 \begin_layout Standard
-*: Correspondance to: frank.noe@fu-berlin.de
+*: 
+\change_deleted 880794617 1542469300
+Correspondance
+\change_inserted 880794617 1542469300
+Correspondence
+\change_unchanged
+ to: frank.noe@fu-berlin.de
 \change_inserted 880794617 1542318466
 
 \end_layout
@@ -4879,9 +4885,9 @@ ScaleCell
 
  research cluster (AA1x8, EF1x2).
 
-\change_inserted 880794617 1542389157
- We are grateful to Cecilia Clementi (Rice) and Brooke Husic (FU Berlin)
- for valuable comments and discussions.
+\change_inserted 880794617 1542469369
+ We are grateful to Cecilia Clementi (Rice University), Brooke Husic and
+ Simon Olsson (FU Berlin) for valuable comments and discussions.
 \end_layout
 
 \begin_layout Standard
@@ -4903,10 +4909,8 @@ The data and code for generating the results of this paper are available
 
 \begin_layout Standard
 
-\change_inserted 880794617 1542389315
-https://github.com/noegroup/paper_deep_boltzmann.
- A more general codebase implementing the present and other methods is available
- at https://github.com/noegroup/deep_boltzmann.
+\change_inserted 880794617 1542469346
+https://github.com/noegroup/paper_boltzmann_generators.
 \end_layout
 
 \begin_layout Standard
