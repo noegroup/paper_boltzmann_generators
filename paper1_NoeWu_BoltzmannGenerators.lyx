@@ -6,8 +6,8 @@
 \origin unavailable
 \textclass article
 \begin_preamble
-
- 
+\usepackage{etoolbox}
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 \end_preamble
 \use_default_options true
 \maintain_unincluded_children false
@@ -30,7 +30,7 @@
 \graphics default
 \default_output_format default
 \output_sync 0
-\bibtex_command default
+\bibtex_command bibtex
 \index_command default
 \paperfontsize 11
 \spacing double
@@ -47,12 +47,10 @@
 \use_package stackrel 1
 \use_package stmaryrd 1
 \use_package undertilde 1
-\cite_engine biblatex-natbib
-\cite_engine_type authoryear
-\biblio_style plainnat
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \biblio_options maxnames=5
-\biblatex_bibstyle numeric
-\biblatex_citestyle numeric
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -90,10 +88,82 @@
 \begin_body
 
 \begin_layout Title
-Title: Boltzmann Generators
+
+\series bold
+Title
+\series default
+: Boltzmann Generators
+\change_inserted 880794617 1542366510
+ – Sampling Equilibrium States of Many-Body Systems with Deep Learning
+\end_layout
+
+\begin_layout Date
+
+\change_inserted 880794617 1542318382
+\begin_inset Formula $\:$
+\end_inset
+
+
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
+
+\change_inserted 880794617 1542318445
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542318462
+
+
+\backslash
+vspace{-1.5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+One Sentence Summary
+\series default
+: Combining deep learning and statistical mechanics, we develop neural networks
+ that sample the 
+\change_inserted 880794617 1542366545
+equilibrium
+\change_unchanged
+ distribution of complex many-body systems.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542318447
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542318447
+
+
+\backslash
+vspace{0.5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542318447
 
 \series bold
 Authors
@@ -107,15 +177,6 @@ Authors
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-
-\series bold
-One Sentence Summary
-\series default
-: Combining deep learning and statistical mechanics, we develop neural networks
- that sample the Boltzmann distribution of complex many-body systems.
 \end_layout
 
 \begin_layout Standard
@@ -161,6 +222,28 @@ Affiliations
 
 \begin_layout Standard
 *: Correspondance to: frank.noe@fu-berlin.de
+\change_inserted 880794617 1542318466
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542361948
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542318466
+
+
+\backslash
+vspace{0.5cm}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -168,15 +251,11 @@ Affiliations
 \series bold
 Abstract
 \series default
-: Computing equilibrium structures and statistics of condensed-matter many-body
- systems such as spin systems or solvated macromolecules presently relies
- on computationally intensive simulations such as molecular dynamics (MD)
- or Markov-chain Monte Carlo (MCMC) that take many small steps in configuration
- space.
- Here we combine recent progress in deep learning with principles of statistical
- mechanics to develop Boltzmann Generators – neural networks that learn
- a variable transformation such that the equilibrium distribution of a given
- many-body system can be 
+: 
+\change_inserted 880794617 1542452727
+Computing equilibrium states in condensed-matter many-body systems, such
+ as solvated proteins, is a long-standing challenge.
+ Lacking 
 \begin_inset Quotes eld
 \end_inset
 
@@ -184,14 +263,28 @@ one-shot
 \begin_inset Quotes erd
 \end_inset
 
- sampled, i.e.
- by sampling statistically independent random variables from a simple distributi
-on in the transformed space.
- As an input, the Boltzmann Generator only needs to know the potential energy
- function of the system, and optionally examples of known configurations.
- Boltzmann Generators can both compute statistics, e.g., free energy differences,
- of known system states or phases, and discover new ones many orders of
- magnitude faster than a local MD or MCMC method.
+ methods for generating statistically independent equilibrium samples, vast
+ computational effort is invested for simulating these system in small steps,
+ e.g., using Molecular Dynamics.
+ Here we combine deep learning and statistical mechanics to develop Boltzmann
+ Generators, that are shown to achieve 
+\begin_inset Quotes eld
+\end_inset
+
+one-shot
+\begin_inset Quotes erd
+\end_inset
+
+ sampling for equilibrium states of representative condensed matter systems
+ and complex polymers.
+ Boltzmann Generators use neural networks to learn a coordinate transformation
+ of the complex configurational equilibrium distribution to a distribution
+ that can be easily sampled.
+ Accurate computation of free energy differences, and discovery of new system
+ states are demonstrated, providing a new statistical mechanics tool that
+ performs orders of magnitude faster than standard simulation methods.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -204,6 +297,16 @@ status open
 Next TODOs
 \series default
 :
+\end_layout
+
+\begin_layout Itemize
+
+\change_inserted 880794617 1542389359
+
+\series bold
+Clean up repositories
+\series default
+, check data availability below and update github names if needed
 \end_layout
 
 \begin_layout Itemize
@@ -2553,11 +2656,7 @@ Except for simple model systems, we presently have no approach to directly
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- from 
-\change_deleted 880794617 1542299927
-the 
-\change_unchanged
-Boltzmann
+ from Boltzmann
 \change_inserted 880794617 1542299929
 -type
 \change_unchanged
@@ -2570,34 +2669,49 @@ s
 statistics of the system,
 \change_unchanged
  such as free energy differences.
- Therefore, currently used simulation methods are variants of Markov-Chain
- Monte Carlo (MCMC) or Molecular Dynamics (MD) simulations that make tiny
- changes to 
+ Therefore, 
+\change_inserted 880794617 1542450637
+one 
+\change_unchanged
+currently 
+\change_inserted 880794617 1542450645
+relies on trajectory methods, such as
+\change_unchanged
+ Markov-Chain Monte Carlo (MCMC) or Molecular Dynamics (MD) simulations
+ that make tiny changes to 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- in each simulation step and will, over a long time, generate trajectories
- that sample from the Boltzmann distribution.
- These methods suffer from rare events, i.e., many simulation steps are needed
- to transition between different phases or metastable (long-lived) states
- – for example, 
+ in each simulation step
+\change_inserted 880794617 1542451369
+.
+ These methods sample from the Boltzmann distribution, but many simulation
+ steps are needed to produce a statistically independent sample.
+ This is because complex systems often have metastable (long-lived) phases
+ or states and the transitions between them are rare events – f
+\change_unchanged
+or example, 
 \begin_inset Formula $10^{9}-10^{15}$
 \end_inset
 
  MD simulation steps are needed to fold or unfold a protein.
- As a result, these methods are extremely expensive and consume much of
- the worldwide supercomputing resources.
+ As a result, 
+\change_inserted 880794617 1542451394
+MCMC and MD
+\change_unchanged
+ methods are extremely expensive and consume much of the worldwide supercomputin
+g resources.
  
-\change_inserted 880794617 1542299998
+\change_inserted 880794617 1542451118
 In specific cases, where low-dimensional coordinates can be identified that
  trace the r
 \change_unchanged
 are event transitions
-\change_inserted 880794617 1542300006
+\change_inserted 880794617 1542451118
 , these 
 \change_unchanged
 can be sped up 
-\change_inserted 880794617 1542300024
+\change_inserted 880794617 1542451118
 using
 \change_unchanged
  enhanced sampling methods 
@@ -2951,7 +3065,7 @@ statistics, such as free energy differences
 
 \begin_layout Standard
 \begin_inset Float figure
-placement t
+placement H
 wide false
 sideways false
 status open
@@ -3158,9 +3272,9 @@ noprefix "false"
 
 f).
  
-\change_inserted 880794617 1542300318
+\change_inserted 880794617 1542320025
 At least one non-volume preserving layer must be included so that the network
- is able to represent distributions with aribitrary 
+ is able to represent distributions with arbitrary 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3316,7 +3430,7 @@ status open
 
 \begin_layout Standard
 
-\change_inserted 880794617 1542276229
+\change_inserted 880794617 1542319947
 As shown in the SI, minimizing the KL divergence (
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3350,7 +3464,7 @@ noprefix "false"
 
 \end_inset
 
-) counterplay in an interesting way: the first term tries to minimize the
+) counter-play in an interesting way: the first term tries to minimize the
  energy, and therefore trains the Boltzmann Generator to sample low-energy
  structures.
  The second term tries to maximize the entropy of the generated distribution,
@@ -4269,6 +4383,7 @@ literal "false"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -4403,7 +4518,13 @@ literal "false"
 \end_layout
 
 \begin_layout Standard
-Here we using cycical hydrocarbons as example.
+Here we using 
+\change_deleted 880794617 1542319950
+cycical
+\change_inserted 880794617 1542319950
+cyclical
+\change_unchanged
+ hydrocarbons as example.
  Each hydrocarbon torsion angle has three rotamers (around 
 \begin_inset Formula $-60°$
 \end_inset
@@ -4514,8 +4635,11 @@ Finally, one-shot samples were generated for bicyclo[4.4.4]tetradecane
 \begin_inset Formula $C_{14}H_{26}$
 \end_inset
 
-, a highly constrained and densely packed hydrocarbone with two interconnected
- ring systems and 120 dimensions (Fig.
+, a highly constrained and densely packed hydrocarbon
+\change_deleted 880794617 1542448278
+e
+\change_unchanged
+ with two interconnected ring systems and 120 dimensions (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -4531,6 +4655,7 @@ k,l and insets).
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -4723,26 +4848,11 @@ References and Notes:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-vspace{-1.5cm}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 btprint "btPrintCited"
 bibfiles "/Users/noe/data/my_papers/bib/all,/Users/noe/data/my_papers/bib/own"
+options "plunsrt"
 biblatexopts "title={$\\:$}"
 
 \end_inset
@@ -4769,11 +4879,68 @@ ScaleCell
 
  research cluster (AA1x8, EF1x2).
 
-\change_inserted 880794617 1542209474
+\change_inserted 880794617 1542389157
  We are grateful to Cecilia Clementi (Rice) and Brooke Husic (FU Berlin)
  for valuable comments and discussions.
-\change_unchanged
+\end_layout
 
+\begin_layout Standard
+
+\change_inserted 880794617 1542389173
+
+\series bold
+Data and materials availability
+\series default
+:
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542389256
+The data and code for generating the results of this paper are available
+ at 
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542389315
+https://github.com/noegroup/paper_deep_boltzmann.
+ A more general codebase implementing the present and other methods is available
+ at https://github.com/noegroup/deep_boltzmann.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542389370
+
+\series bold
+Supplementary Materials
+\series default
+:
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542389373
+Materials and Methods
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542389589
+Supplementary Tables 1-2
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542389619
+Supplementary Figures 1-3
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542389622
+References 16-18
 \end_layout
 
 \begin_layout Standard
@@ -4794,6 +4961,61 @@ clearpage
 
 \begin_layout Section*
 Supplementary Material
+\change_inserted 880794617 1542389688
+s
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542389443
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542389476
+
+
+\backslash
+renewcommand{
+\backslash
+figurename}{Supplementary Figure}
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542389486
+
+
+\backslash
+setcounter{figure}{0} 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542389498
+
+
+\backslash
+renewcommand{
+\backslash
+tablename}{Supplementary Table}
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542389500
+
+
+\backslash
+setcounter{table}{0} 
+\end_layout
+
+\end_inset
+
+
+\change_unchanged
+
 \end_layout
 
 \begin_layout Subsection*
@@ -4881,42 +5103,12 @@ Our main motivation to use invertible transformations is that they allow
  us to transform random variables as follows:
 \begin_inset Formula 
 \begin{align}
-p_{X}(\mathbf{x}) & =p_{Z}(\mathbf{z})\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|^{-1}\nonumber \\
- & =p_{Z}(T_{xz}(\mathbf{x}))\left|\det\mathbf{J}_{xz}(\mathbf{x})\right|\label{eq:transform_zx}\\
-p_{Z}(\mathbf{z}) & =p_{X}(\mathbf{x})\left|\det\mathbf{J}_{xz}(\mathbf{x})\right|^{-1}\nonumber \\
- & =p_{X}(T_{zx}(\mathbf{z}))\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|\label{eq:transform_xz}
+p_{X}(\mathbf{x}) & =p_{Z}(\mathbf{z})R_{zx}(\mathbf{z})^{-1}=p_{Z}(T_{xz}(\mathbf{x}))R_{xz}(\mathbf{x})\label{eq:transform_zx}\\
+p_{Z}(\mathbf{z}) & =p_{X}(\mathbf{x})R_{xz}(\mathbf{x})^{-1}=p_{X}(T_{zx}(\mathbf{z}))R_{zx}(\mathbf{z})\label{eq:transform_xz}
 \end{align}
 
 \end_inset
 
-
-\color red
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-
-\series bold
-Hao
-\series default
-\color red
-: This possibly leads to confusion of notations.
- In Appendix B, 
-\begin_inset Formula $p_{X}$
-\end_inset
-
- and 
-\begin_inset Formula $p_{Z}$
-\end_inset
-
- are not coupled as the above.
-\end_layout
-
-\end_inset
-
-
-\color inherit
 Here we employ the invertible network structures NICE 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -5169,7 +5361,7 @@ Layer
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $\left|\det\mathbf{J}_{xz}\right|$
+\begin_inset Formula $R_{xz}$
 \end_inset
 
 
@@ -5193,7 +5385,7 @@ Layer
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $\left|\det\mathbf{J}_{zx}\right|$
+\begin_inset Formula $R_{zx}$
 \end_inset
 
 
@@ -5437,6 +5629,28 @@ name "tab:Invertible-network-components"
 \end_inset
 
 Invertible network components.
+
+\change_inserted 880794617 1542448758
+ 
+\begin_inset Formula $f_{xz}$
+\end_inset
+
+ and 
+\begin_inset Formula $f_{zx}=f_{xz}^{-1}$
+\end_inset
+
+ are the forward and inverse transformations.
+ 
+\begin_inset Formula $R_{xz}$
+\end_inset
+
+ and 
+\begin_inset Formula $R_{zx}$
+\end_inset
+
+ are the Jacobian determinants.
+\change_unchanged
+
 \end_layout
 
 \end_inset
@@ -5656,29 +5870,116 @@ Thus the variance takes the same role as the relative temperature.
 
 \begin_layout Standard
 
-\color red
+\change_inserted 880794617 1542382894
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
 
-\series bold
-Hao
-\series default
-\color red
-: Is this 
-\begin_inset Formula $\tau_{k}$
+\change_inserted 880794617 1542382894
+We sample the input in 
+\begin_inset Formula $\mathbf{z}$
 \end_inset
 
- the 
-\color inherit
-relative temperature
-\color red
- in the above paragraph? If yes, the relationship holds only for NICE.
+ from the standard Gaussian distribution for the standard temperature 
+\begin_inset Formula $T$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542382894
+\begin_inset Formula 
+\begin{equation}
+\mu_{Z}(\mathbf{z})=\mathcal{N}(\mathbf{0},\mathbf{I})=Z_{Z}^{-1}\mathrm{e}^{-\frac{1}{2}\left\Vert \mathbf{z}\right\Vert ^{2}}
+\end{equation}
+
+\end_inset
+
+with with normalization constant 
+\begin_inset Formula $Z_{Z}$
+\end_inset
+
+.
+ Then the approximation of the Boltzmann distribution at temperature 
+\begin_inset Formula $T^{k}$
+\end_inset
+
+ is correspondingly given by
+\begin_inset Formula 
+\begin{eqnarray}
+\exp\left(-u^{k}(\mathbf{x})\right)\propto\mu_{X}(\mathbf{x})^{\frac{1}{\tau_{k}}} & \approx & Z_{Z}^{-\frac{1}{\tau_{k}}}\cdot\exp\left(-\frac{1}{2\tau_{k}}\left\Vert \mathbf{z}\right\Vert ^{2}\right)\nonumber \\
+ &  & \cdot\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|^{-\frac{1}{\tau_{k}}}.
+\end{eqnarray}
+
+\end_inset
+
+Therefore, if the transformation 
+\begin_inset Formula $T_{zx}$
+\end_inset
+
+ if defined by NICE, 
+\begin_inset Formula $\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\equiv1$
+\end_inset
+
+ and we can draw the Boltzmann distribution in the configuration space at
+ 
+\begin_inset Formula $T^{k}$
+\end_inset
+
+ with the prior distribution
+\begin_inset Formula 
+\begin{equation}
+\mu_{Z}^{k}(\mathbf{z})=\mathcal{N}(\mathbf{0},\tau_{k}\mathbf{I}).
+\end{equation}
+
+\end_inset
+
+In the case where 
+\begin_inset Formula $T_{zx}$
+\end_inset
+
+ is a realNVP transformation, we can implement the sampling by using the
+ prior distribution 
+\begin_inset Formula $\mu_{Z}^{k}$
+\end_inset
+
+ and selecting a new transformation 
+\begin_inset Formula $\det T_{zx}^{k}(\mathbf{z};\boldsymbol{\theta})$
+\end_inset
+
+ so that 
+\begin_inset Formula $\left|\det\frac{\partial T_{zx}(\mathbf{z};\boldsymbol{\theta})}{\partial\mathbf{z}}\right|=\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|^{-\frac{1}{\tau_{k}}}$
+\end_inset
+
+.
+ But it is not clear how to construct the transformation yet.
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542382894
+Notice: The new 
+\begin_inset Formula $T_{zx}^{k}(\mathbf{z};\boldsymbol{\theta})$
+\end_inset
+
+ cannot be obtained by replacing 
+\begin_inset Formula $S(\mathbf{x};\boldsymbol{\theta})$
+\end_inset
+
+ with 
+\begin_inset Formula $\frac{1}{\tau_{k}}S(\mathbf{x};\boldsymbol{\theta})$
+\end_inset
+
+, because the output of each layer will also be changed with this replacement.
 \end_layout
 
 \end_inset
 
+
+\change_unchanged
 
 \end_layout
 
@@ -5754,8 +6055,8 @@ noprefix "false"
 \begin_inset Formula 
 \begin{align*}
 \mathrm{KL}_{\boldsymbol{\theta}}\left[\mu_{Z}\parallel q_{Z}\right] & =-H_{Z}-\int\mu_{Z}(\mathbf{z})\log q_{Z}(\mathbf{z};\boldsymbol{\theta})\mathrm{d}\mathbf{z},\\
- & =-H_{Z}-\int\mu_{Z}(\mathbf{z})\left[\log\mu_{X}(F_{zx}(\mathbf{z};\boldsymbol{\theta}))+\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]\mathrm{d}\mathbf{z},\\
- & =-H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]
+ & =-H_{Z}-\int\mu_{Z}(\mathbf{z})\left[\log\mu_{X}(F_{zx}(\mathbf{z};\boldsymbol{\theta}))+\log R_{zx}(\mathbf{z};\boldsymbol{\theta})\right]\mathrm{d}\mathbf{z},\\
+ & =-H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log R_{zx}(\mathbf{z};\boldsymbol{\theta})\right]
 \end{align*}
 
 \end_inset
@@ -5764,8 +6065,8 @@ This is equivalent to the KL divergence expressed in configuration space:
 \begin_inset Formula 
 \begin{align*}
 \mathrm{KL}_{\boldsymbol{\theta}}\left[q_{X}\parallel\mu_{X}\right] & =\int q_{X}(\mathbf{x};\boldsymbol{\theta})\left[\log q_{X}(\mathbf{x};\boldsymbol{\theta})+\log Z_{X}+u(\mathbf{x})\right]\mathrm{d}\mathbf{x}\\
- & =\int\mu_{Z}(\mathbf{z})\left[\log\mu_{Z}(\mathbf{z})+\log\left|\det\mathbf{J}_{xz}(\mathbf{z};\boldsymbol{\theta})\right|+\log Z_{X}+u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))\right]\mathrm{d}\mathbf{z}\\
- & =-H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]
+ & =\int\mu_{Z}(\mathbf{z})\left[\log\mu_{Z}(\mathbf{z})-\log R_{zx}(\mathbf{z};\boldsymbol{\theta})+\log Z_{X}+u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))\right]\mathrm{d}\mathbf{z}\\
+ & =-H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log R_{zx}(\mathbf{z};\boldsymbol{\theta})\right]
 \end{align*}
 
 \end_inset
@@ -5790,7 +6091,7 @@ Here,
 , the KL loss is given by:
 \begin_inset Formula 
 \begin{equation}
-J_{KL}=\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right].\label{eq:loss_KL}
+J_{KL}=\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log R_{zx}(\mathbf{z};\boldsymbol{\theta})\right].\label{eq:loss_KL}
 \end{equation}
 
 \end_inset
@@ -5799,7 +6100,13 @@ Practically, each training batch samples points
 \begin_inset Formula $\mathbf{z}\sim q_{Z}(\mathbf{z})$
 \end_inset
 
- from a normal distribution, transformes them via 
+ from a normal distribution, 
+\change_deleted 880794617 1542319979
+transformes
+\change_inserted 880794617 1542319979
+transforms
+\change_unchanged
+ them via 
 \begin_inset Formula $T_{zx}$
 \end_inset
 
@@ -5831,7 +6138,7 @@ noprefix "false"
 ) to simultaneously train at multiple temperatures, obtaining:
 \begin_inset Formula 
 \[
-J_{KL}^{T^{1},...,T^{K}}=\sum_{k=1}^{K}\mathbb{E}_{\mathbf{z}\sim\mu_{Z}^{k}(\mathbf{z})}\left[u^{k}(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right].
+J_{KL}^{T^{1},...,T^{K}}=\sum_{k=1}^{K}\mathbb{E}_{\mathbf{z}\sim\mu_{Z}^{k}(\mathbf{z})}\left[u^{k}(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log R_{zx}(\mathbf{z};\boldsymbol{\theta})\right].
 \]
 
 \end_inset
@@ -5878,7 +6185,7 @@ s is to employ reweighting of probability densities.
 \begin_inset Formula 
 \begin{align}
 w_{X}(\mathbf{x}) & =\frac{\mu_{X}(\mathbf{x})}{q_{X}(\mathbf{x})}=\frac{q_{Z}(\mathbf{z})}{\mu_{Z}(\mathbf{z})}.\label{eq:reweighting_w}\\
- & \propto\mathrm{e}^{-u_{X}\left(T_{zx}(\mathbf{z})\right)+u_{Z}(\mathbf{z})+\log\left|\det\left(\mathbf{J}_{zx}(\mathbf{z})\right)\right|}\nonumber 
+ & \propto\mathrm{e}^{-u_{X}\left(T_{zx}(\mathbf{z})\right)+u_{Z}(\mathbf{z})+\log R_{zx}(\mathbf{z};\boldsymbol{\theta})}\nonumber 
 \end{align}
 
 \end_inset
@@ -5906,13 +6213,87 @@ noprefix "false"
 ).
  Using these weights, expectation values can be computed as
 \begin_inset Formula 
-\[
-\mathbb{E}[O]\approx\frac{\sum_{i=1}^{N}w_{X}(\mathbf{x})O(\mathbf{x})}{\sum_{i=1}^{N}w_{X}(\mathbf{x})}.
-\]
+\begin{equation}
+\mathbb{E}[O]\approx\frac{\sum_{i=1}^{N}w_{X}(\mathbf{x})O(\mathbf{x})}{\sum_{i=1}^{N}w_{X}(\mathbf{x})}.\label{eq:weighted_expectation}
+\end{equation}
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542305065
+All free energy profiles shown in Figs.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:particle_dimer"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and Suppl.
+ Figs.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_training_methods_NICER"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_training_methods_NICER"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ were computed by 
+\begin_inset Formula $-k_{B}T\log p(R(\mathbf{x}))$
+\end_inset
+
+ where 
+\begin_inset Formula $p(R(\mathbf{x}))$
+\end_inset
+
+ is a probability density computed from a weighted histogram of the coordinate
+ 
+\begin_inset Formula $R(\mathbf{x})$
+\end_inset
+
+ using the weighted expectation (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:weighted_expectation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ All histogram weights that have weights worth less than 0.01 samples are
+ discarded to avoid making unreliable predictions.
 \end_layout
 
 \begin_layout Standard
@@ -5973,11 +6354,11 @@ For invertible transformation
 \begin_inset Formula 
 \begin{align}
 H_{X} & =-\int_{\mathbf{x}}q_{X}(\mathbf{x})\log q_{X}(\mathbf{x})\:\mathrm{d}\mathbf{x}\nonumber \\
- & =-\int_{\mathbf{z}}q_{X}(F_{zx}(\mathbf{z}))\log q_{X}(F_{zx}(\mathbf{z}))\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|\:\mathrm{d}\mathbf{z}\nonumber \\
+ & =-\int_{\mathbf{z}}q_{X}(F_{zx}(\mathbf{z}))\log\left(q_{X}(F_{zx}(\mathbf{z}))\,R_{zx}(\mathbf{z})\right)\:\mathrm{d}\mathbf{z}\nonumber \\
  & =-\int_{\mathbf{z}}\mu_{Z}(\mathbf{z})\log q_{X}(F_{zx}(\mathbf{z}))\:\mathrm{d}\mathbf{z}\nonumber \\
- & =-\int_{\mathbf{z}}\mu_{Z}(\mathbf{z})\log\left(\mu_{Z}(\mathbf{z})\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|^{-1}\right)\:\mathrm{d}\mathbf{z}\nonumber \\
- & =-\int_{\mathbf{z}}\mu_{Z}(\mathbf{z})\log\mu_{Z}(\mathbf{z})\:\mathrm{d}\mathbf{z}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\log\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|\:\mathrm{d}\mathbf{z}\nonumber \\
- & =H_{Z}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[\log\left|\det\mathbf{J}_{zx}(\mathbf{z})\right|\right]\label{eq:entropy_difference}
+ & =-\int_{\mathbf{z}}\mu_{Z}(\mathbf{z})\log\left(\mu_{Z}(\mathbf{z})R_{zx}(\mathbf{z})^{-1}\right)\:\mathrm{d}\mathbf{z}\nonumber \\
+ & =-\int_{\mathbf{z}}\mu_{Z}(\mathbf{z})\log\mu_{Z}(\mathbf{z})\:\mathrm{d}\mathbf{z}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\log R_{zx}(\mathbf{z})\:\mathrm{d}\mathbf{z}\nonumber \\
+ & =H_{Z}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[\log R_{zx}(\mathbf{z})\right]\label{eq:entropy_difference}
 \end{align}
 
 \end_inset
@@ -5985,7 +6366,7 @@ H_{X} & =-\int_{\mathbf{x}}q_{X}(\mathbf{x})\log q_{X}(\mathbf{x})\:\mathrm{d}\m
 Hence we have:
 \begin_inset Formula 
 \begin{align*}
-\mathrm{KL}_{\boldsymbol{\theta}}\left[\mu_{Z}\parallel q_{Z}\right] & =-H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))\right]-\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]\\
+\mathrm{KL}_{\boldsymbol{\theta}}\left[\mu_{Z}\parallel q_{Z}\right] & =-H_{Z}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))\right]-\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[\log R_{zx}(\mathbf{z};\boldsymbol{\theta})\right]\\
  & =-H_{X}+\log Z_{X}+\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))\right]\\
  & =-H_{X}+\log Z_{X}+\mathbb{E}_{\mathbf{x}\sim\mu_{X}(\mathbf{x};\boldsymbol{\theta})}\left[u(\mathbf{x})\right]\\
  & =\mathrm{KL}_{\boldsymbol{\theta}}\left[q_{X}\parallel\mu_{X}\right].
@@ -5996,7 +6377,7 @@ Hence we have:
 The loss function becomes:
 \begin_inset Formula 
 \begin{align*}
-J_{KL} & =\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\right]\\
+J_{KL} & =\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z};\boldsymbol{\theta}))-\log R_{zx}(\mathbf{z};\boldsymbol{\theta})\right]\\
  & =U-H_{X}+H_{Z}
 \end{align*}
 
@@ -6075,8 +6456,8 @@ noprefix "false"
 \begin_inset Formula 
 \begin{align*}
 \mathrm{KL}_{\boldsymbol{\theta}}\left[\mu_{X}\parallel q_{X}\right] & =H_{X}-\int\mu_{X}(\mathbf{x})\log q_{X}(\mathbf{x};\boldsymbol{\theta})\mathrm{d}\mathbf{x}\\
- & =H_{X}-\int\mu_{X}(\mathbf{x})\left[\log\mu_{Z}(F_{xz}(\mathbf{x};\boldsymbol{\theta}))+\log\left|\mathbf{J}_{xz}(\mathbf{z};\boldsymbol{\theta})\right|\right]\mathrm{d}\mathbf{x}.\\
- & =H_{X}+\log Z_{Z}+\mathbb{E}_{\mathbf{x}\sim\mu(\mathbf{x})}\left[\frac{1}{\sigma^{2}}\left\Vert F_{xz}(\mathbf{x};\boldsymbol{\theta})\right\Vert ^{2}-\log\left|\mathbf{J}_{xz}(\mathbf{x};\boldsymbol{\theta})\right|\right].
+ & =H_{X}-\int\mu_{X}(\mathbf{x})\left[\log\mu_{Z}(F_{xz}(\mathbf{x};\boldsymbol{\theta}))+\log R_{xz}(\mathbf{z};\boldsymbol{\theta})\right]\mathrm{d}\mathbf{x}.\\
+ & =H_{X}+\log Z_{Z}+\mathbb{E}_{\mathbf{x}\sim\mu(\mathbf{x})}\left[\frac{1}{\sigma^{2}}\left\Vert F_{xz}(\mathbf{x};\boldsymbol{\theta})\right\Vert ^{2}-\log R_{xz}(\mathbf{x};\boldsymbol{\theta})\right].
 \end{align*}
 
 \end_inset
@@ -6116,7 +6497,7 @@ However we can approximate the configuration KL divergence by starting from
 \begin_inset Formula 
 \begin{align*}
 J_{ML} & =-\mathbb{E}_{\mathbf{x}\sim\rho(\mathbf{x})}\left[\log q_{X}(\mathbf{x};\boldsymbol{\theta})\right]\\
- & =\mathbb{E}_{\mathbf{x}\sim\rho(\mathbf{x})}\left[\frac{1}{\sigma^{2}}\left\Vert F_{xz}(\mathbf{x};\boldsymbol{\theta})\right\Vert ^{2}-\log\left|\mathbf{J}_{xz}(\mathbf{x};\boldsymbol{\theta})\right|\right]
+ & =\mathbb{E}_{\mathbf{x}\sim\rho(\mathbf{x})}\left[\frac{1}{\sigma^{2}}\left\Vert F_{xz}(\mathbf{x};\boldsymbol{\theta})\right\Vert ^{2}-\log R_{xz}(\mathbf{x};\boldsymbol{\theta})\right]
 \end{align*}
 
 \end_inset
@@ -6238,7 +6619,13 @@ To implement this loss, the function
 \begin_inset Formula $p\left(R(\mathbf{x})\right)$
 \end_inset
 
- is computed as a batchwise kernel density estimate along between the bounds.
+ is computed as a 
+\change_deleted 880794617 1542319981
+batchwise
+\change_inserted 880794617 1542319981
+batch-wise
+\change_unchanged
+ kernel density estimate along between the bounds.
  
 \end_layout
 
@@ -6286,7 +6673,13 @@ J_{XX} & =\frac{1}{2}\int p(x)\left(\log p(x)-\log\sqrt{p(x)q(x)}\right)\\
 
 \begin_layout Subsection*
 C.
- Systems and Hyperparameters
+ Systems and 
+\change_deleted 880794617 1542319984
+Hyperparameters
+\change_inserted 880794617 1542319984
+Hyper-parameters
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -6373,6 +6766,26 @@ odd
 
  are four repetitions of a NICE and a RealNVP block, i.e.
  8 layers total.
+\change_inserted 880794617 1542305191
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542319986
+All networks are trained using the Adam adaptive stochastic gradient descent
+ method 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "KingmaBa_ADAM"
+literal "false"
+
+\end_inset
+
+.
+ Other choices and hyper-parameters are described below.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Paragraph*
@@ -6519,7 +6932,24 @@ noprefix "false"
 \end_inset
 
  we use NICE and RealNVP networks defined as below.
- Networks are trained in two steps: in a first ML phase we only minimize
+ 
+\change_inserted 880794617 1542305176
+All nonlinear transformations (
+\begin_inset Formula $T$
+\end_inset
+
+, 
+\begin_inset Formula $S$
+\end_inset
+
+) used dense networks with 
+\begin_inset Formula $\mathrm{tanh}$
+\end_inset
+
+ activation and two hidden layers with 100 hidden nodes.
+ 
+\change_unchanged
+Networks are trained in two steps: in a first ML phase we only minimize
  
 \begin_inset Formula $J_{\mathrm{KL}}$
 \end_inset
@@ -6685,7 +7115,11 @@ Defining the dimer distance
 \begin_inset Formula $d=\left\Vert \mathbf{x}_{1}-\mathbf{x}_{2}\right\Vert $
 \end_inset
 
-, and the Heavyside step function 
+, and the Heav
+\change_inserted 880794617 1542382965
+i
+\change_unchanged
+side step function 
 \begin_inset Formula $h$
 \end_inset
 
@@ -7393,10 +7827,28 @@ Epochs
 \end_layout
 
 \begin_layout Standard
-The italic values in the last row were treated as variable hyperparameters.
- We then did a hyperparameter search as indicated in the table below.
- The hyperparameters were chosen by minimizing the estimator variance for
- the free energy profile along dimer distance 
+The italic values in the last row were treated as variable 
+\change_deleted 880794617 1542319995
+hyperparameters
+\change_inserted 880794617 1542319995
+hyper-parameters
+\change_unchanged
+.
+ We then did a 
+\change_deleted 880794617 1542319996
+hyperparameter
+\change_inserted 880794617 1542319996
+hyper-parameter
+\change_unchanged
+ search as indicated in the table below.
+ The 
+\change_deleted 880794617 1542319998
+hyperparameters
+\change_inserted 880794617 1542319998
+hyper-parameters
+\change_unchanged
+ were chosen by minimizing the estimator variance for the free energy profile
+ along dimer distance 
 \begin_inset Formula $d$
 \end_inset
 
@@ -9792,7 +10244,13 @@ name "tab:hyperparameters_particle_dimer"
 
 \end_inset
 
-Hyperparameter selection for the particle dimer.
+
+\change_deleted 880794617 1542320000
+Hyperparameter
+\change_inserted 880794617 1542320000
+Hyper-parameter
+\change_unchanged
+ selection for the particle dimer.
  In the architecture, 
 \begin_inset Formula $R$
 \end_inset
@@ -9978,6 +10436,27 @@ To generate some initial structures for training by example, we conducted
 \end_layout
 
 \begin_layout Standard
+
+\change_inserted 880794617 1542305416
+The Boltzmann Generator used 
+\begin_inset Formula $R_{10}$
+\end_inset
+
+ (20 layers) as an architecture, All nonlinear transformations (
+\begin_inset Formula $T$
+\end_inset
+
+, 
+\begin_inset Formula $S$
+\end_inset
+
+) used dense networks with 
+\begin_inset Formula $\mathrm{tanh}$
+\end_inset
+
+ activation and four hidden layers with 100 hidden nodes.
+ 
+\change_unchanged
 The Boltzmann Generator is trained using iterative discovery.
  In each of 50 iterations, we use 
 \begin_inset Formula $4,000$
@@ -10405,13 +10884,31 @@ noprefix "false"
 \begin_inset Formula $x_{1}$
 \end_inset
 
-, (4) free energy after reweighting.
+, (4) free energy after reweighting
+\change_inserted 880794617 1542305455
+, vertical vars show uncertainties (one standard deviation, 68% percentile)
+\change_unchanged
+.
  Training uses 200 epochs of ML and then 500 epochs of the method given
  in the rows, using equal weights for these modes.
  Training by example (ML) only reproduces the distribution of the training
  data, which can be reweighted to the Boltzmann distribution in this low-dimensi
-onal example but reweighting fails for high-dimensional examples.
- Training by energy (KL) only tends to collapse to one metastable state.
+onal example but reweighting 
+\change_inserted 880794617 1542305477
+from the ML-generated distribution 
+\change_unchanged
+fails for high-dimensional examples.
+ Training by energy (KL)
+\change_deleted 880794617 1542305491
+ 
+\change_inserted 880794617 1542305501
+ alone 
+\change_unchanged
+tends to collapse to 
+\change_inserted 880794617 1542305507
+a single
+\change_unchanged
+ metastable state.
  ML+KL combined samples closer to the Boltzmann distribution than ML and
  avoids metastable state collapse, but samples high-energy transition states
  with low probability.
@@ -10457,7 +10954,12 @@ name "fig_training_methods_RealNVP"
 
 \end_inset
 
-Same as Fig.
+Same as 
+\change_inserted 880794617 1542389544
+Suppl.
+ 
+\change_unchanged
+Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
