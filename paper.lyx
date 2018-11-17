@@ -222,8 +222,6 @@ Affiliations
 
 \begin_layout Standard
 *: 
-\change_deleted 880794617 1542469300
-Correspondance
 \change_inserted 880794617 1542469300
 Correspondence
 \change_unchanged
@@ -4078,7 +4076,7 @@ orange).
 \series bold
 g)
 \series default
- Free energy estimates obtained after reweighting, colors as in (f).
+ Free energy estimates after reweighting, colors as in (f).
 \end_layout
 
 \end_inset
@@ -4488,6 +4486,28 @@ ng, bullets with error bars indicating one standard deviation) and umbrella
 
 \end_inset
 
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 880794617 1542473595
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 880794617 1542473598
+
+
+\backslash
+clearpage
+\change_unchanged
 
 \end_layout
 
