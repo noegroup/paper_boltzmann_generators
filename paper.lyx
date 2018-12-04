@@ -4,12 +4,13 @@
 \begin_header
 \save_transient_properties true
 \origin unavailable
-\textclass article
+\textclass revtex4-1
 \begin_preamble
 \usepackage{etoolbox}
 \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 \end_preamble
-\use_default_options true
+\options aip,floatfix,jcp,reprint,longbibliography
+\use_default_options false
 \maintain_unincluded_children false
 \language american
 \language_package default
@@ -33,7 +34,7 @@
 \bibtex_command bibtex
 \index_command default
 \paperfontsize 11
-\spacing double
+\spacing single
 \use_hyperref false
 \papersize letterpaper
 \use_geometry true
@@ -47,8 +48,8 @@
 \use_package stackrel 1
 \use_package stmaryrd 1
 \use_package undertilde 1
-\cite_engine basic
-\cite_engine_type default
+\cite_engine natbib
+\cite_engine_type numerical
 \biblio_style plain
 \biblio_options maxnames=5
 \use_bibtopic false
@@ -82,2541 +83,62 @@
 \html_math_output 0
 \html_css_as_file 0
 \html_be_strict false
-\author 880794617 "Frank Noe"
 \end_header
 
 \begin_body
 
 \begin_layout Title
-
-\series bold
-Title
-\series default
-: Boltzmann Generators
-\change_inserted 880794617 1542366510
- – Sampling Equilibrium States of Many-Body Systems with Deep Learning
+Boltzmann Generators – Sampling Equilibrium States of Many-Body Systems
+ with Deep Learning
 \end_layout
 
-\begin_layout Date
-
-\change_inserted 880794617 1542318382
-\begin_inset Formula $\:$
-\end_inset
-
-
-\change_unchanged
-
+\begin_layout Author
+Frank Noé
 \end_layout
 
-\begin_layout Standard
-
-\change_inserted 880794617 1542318445
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-\change_inserted 880794617 1542318462
-
-
-\backslash
-vspace{-1.5cm}
+\begin_layout Address
+FU Berlin, Department of Mathematics and Computer Science, Arnimallee 6,
+ 14195 Berlin
 \end_layout
 
-\end_inset
-
-
+\begin_layout Address
+Rice University, Department of Chemistry, Houston, Texas 77005, United States
 \end_layout
 
-\begin_layout Standard
-
-\series bold
-One Sentence Summary
-\series default
-: Combining deep learning and statistical mechanics, we develop neural networks
- that sample the 
-\change_inserted 880794617 1542366545
-equilibrium
-\change_unchanged
- distribution of complex many-body systems.
+\begin_layout Author Email
+frank.noe@fu-berlin.de
 \end_layout
 
-\begin_layout Standard
-
-\change_inserted 880794617 1542318447
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-\change_inserted 880794617 1542318447
-
-
-\backslash
-vspace{0.5cm}
+\begin_layout Author
+Hao Wu
 \end_layout
 
-\end_inset
-
-
+\begin_layout Address
+FU Berlin, Department of Mathematics and Computer Science, Arnimallee 6,
+ 14195 Berlin
 \end_layout
 
-\begin_layout Standard
-
-\change_inserted 880794617 1542318447
-
-\series bold
-Authors
-\series default
-: Frank Noé
-\begin_inset Formula $^{1,2*}$
-\end_inset
-
- and Hao Wu
-\begin_inset Formula $^{1,3}$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\series bold
-Affiliations
-\series default
-: 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $1$
-\end_inset
-
-: FU Berlin, Department of Mathematics and Computer Science, Arnimallee
- 6, 14195 Berlin
-\change_inserted 880794617 1542209491
-
-\end_layout
-
-\begin_layout Standard
-
-\change_inserted 880794617 1542209581
-\begin_inset Formula $2$
-\end_inset
-
-: Rice University, Department of Chemistry, Houston, Texas 77005, United
- States
-\end_layout
-
-\begin_layout Standard
-
-\change_inserted 880794617 1542209783
-\begin_inset Formula $3$
-\end_inset
-
-: Tongji University, School of Mathematical Sciences, Shanghai, 200092,
- P.R.
+\begin_layout Address
+Tongji University, School of Mathematical Sciences, Shanghai, 200092, P.R.
  China
-\change_unchanged
-
 \end_layout
 
-\begin_layout Standard
-*: 
-\change_inserted 880794617 1542469300
-Correspondence
-\change_unchanged
- to: frank.noe@fu-berlin.de
-\change_inserted 880794617 1542318466
-
-\end_layout
-
-\begin_layout Standard
-
-\change_inserted 880794617 1542361948
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-\change_inserted 880794617 1542318466
-
-
-\backslash
-vspace{0.5cm}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\series bold
-Abstract
-\series default
-: 
-\change_inserted 880794617 1542452727
+\begin_layout Abstract
 Computing equilibrium states in condensed-matter many-body systems, such
  as solvated proteins, is a long-standing challenge.
- Lacking 
-\begin_inset Quotes eld
-\end_inset
-
-one-shot
-\begin_inset Quotes erd
-\end_inset
-
- methods for generating statistically independent equilibrium samples, vast
- computational effort is invested for simulating these system in small steps,
- e.g., using Molecular Dynamics.
- Here we combine deep learning and statistical mechanics to develop Boltzmann
- Generators, that are shown to achieve 
-\begin_inset Quotes eld
-\end_inset
-
-one-shot
-\begin_inset Quotes erd
-\end_inset
-
- sampling for equilibrium states of representative condensed matter systems
- and complex polymers.
+ Lacking methods for generating statistically independent equilibrium samples
+ directly, vast computational effort is invested for simulating these system
+ in small steps, e.g., using Molecular Dynamics.
+ Combining deep learning and statistical mechanics, we here develop Boltzmann
+ Generators, that are shown to generate statistically independent samples
+ of equilibrium states of representative condensed matter systems and complex
+ polymers.
  Boltzmann Generators use neural networks to learn a coordinate transformation
  of the complex configurational equilibrium distribution to a distribution
  that can be easily sampled.
  Accurate computation of free energy differences, and discovery of new system
  states are demonstrated, providing a new statistical mechanics tool that
  performs orders of magnitude faster than standard simulation methods.
-\change_unchanged
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-
-\series bold
-Next TODOs
-\series default
-:
-\end_layout
-
-\begin_layout Itemize
-
-\change_inserted 880794617 1542389359
-
-\series bold
-Clean up repositories
-\series default
-, check data availability below and update github names if needed
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Clean up temperature prefactor mess
-\series default
-: analysis.free_energy_bootstrap(), EnergyInvNet.sample(), ...
- Where do we need to include the temperature factor, and where not? How
- should weights be interpreted?
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Multi-temperature
-\series default
-: Training with more temperatures, train with gradual removing of ML part.
- Test if we can reach a situation where zero ML contribution is stable and
- doesn't lead to an exploding z space.
-\end_layout
-
-\begin_layout Itemize
-Understand bimodality in J values for unsupervised training (Idea: the network
- takes most of the z-density and scales it to a small x region)
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-Fix 1: Re-introduce J-restraint in last training stage
-\end_layout
-
-\begin_layout Itemize
-Fix 2: Combine supervised + unsupervised
-\end_layout
-
-\end_deeper
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Section*
-Done
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-(done) Multi-Temperature
-\series default
-:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\series bold
-rc_entropy
-\series default
- does currently not depend on temperature, therefore we try to make the
- sum distribution uniform, which is not correct.
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-W2-loss
-\series default
- different temperatures may have different scaling factors.
- Therefore making the weights of all temperatures equal without considering
- the weighting factors probably does not have the correct effect.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-
-\series bold
-(failure) Center distributions
-\series default
-: Each trajectory should be centered (mean 0) or subject to ML.
- How can we do that rather than splitting the space between trajectories?
- 
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-(failed) Heavy tail distribution
-\series default
-: Seems to just reparametrize the same problem.
-\end_layout
-
-\begin_layout Itemize
-Optimizing acceptance rate 
-\series bold
-supervised problem
-\series default
-: One of the two states dominates, even when we train with metric
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-(
-\series bold
-failed
-\series default
-) Fix 1: symmetric: does not fix it.
-\end_layout
-
-\end_deeper
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Section*
-Minimal Paper Checklist
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Form
-\series default
-: 3-page style Science or Nat.
- Phys.
- + SI.
-\end_layout
-
-\begin_layout Itemize
-(
-\series bold
-Done
-\series default
-) Latent sampling idea.
- Sell as 
-\begin_inset Quotes eld
-\end_inset
-
-variable/coordinate transformation
-\begin_inset Quotes erd
-\end_inset
-
- to physicists.
-\end_layout
-
-\begin_layout Itemize
-Demonstrate that realistic structures / low energies can be sampled directly
- for 3 systems: 
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-(
-\series bold
-Done
-\series default
-) double well
-\end_layout
-
-\begin_layout Itemize
-(
-\series bold
-Done
-\series default
-) particle system
-\end_layout
-
-\begin_layout Itemize
-hydrocarbons.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Demonstrate that free energy differences can be computed efficiently for
- 3 systems
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-(
-\series bold
-Done
-\series default
-) double well
-\end_layout
-
-\begin_layout Itemize
-(
-\series bold
-Done
-\series default
-) particle system
-\end_layout
-
-\begin_layout Itemize
-protein.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Hydrocarbons:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-Generate Structures for cyclical (9-) hydrocarbon and polycyclical (?)
-\end_layout
-
-\end_deeper
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="9" columns="14">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $n_{l}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $w_{ML}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $w_{KL}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $ex$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $n_{l}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $w_{ML}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $w_{KL}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $ex$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
--5
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-7
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-267
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-6
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
--6
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-7
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-283
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-5.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-50
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-456
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-6
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-5.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-2
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-49
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-437
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
--6
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-5
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-157
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-6
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
--6
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-138
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-5.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-50
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-362
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-6
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-5.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-3
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-51
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-448
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
--3
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-34
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-514
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-6
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-5.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
--2
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-47
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-567
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-6
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-5.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
--6
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-8
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-267
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-6
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-5.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-3
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-54
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-547
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-6
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-5.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-Outline ideas to extend this method to Latent MCMC, FEP, Adaptive sampling
- etc.
- (+demonstrate for double well? Danger: request to do this for the other
- systems as well, but it doesn't work well for those yet)
-\end_layout
-
-\begin_layout Itemize
-Symbols: We have used 
-\begin_inset Formula $S$
-\end_inset
-
- and 
-\begin_inset Formula $T$
-\end_inset
-
- for the nonlinear transformations in the NN.
- Then it is confusing to also use 
-\begin_inset Formula $T$
-\end_inset
-
- (
-\begin_inset Formula $T_{xy}/T_{yx}$
-\end_inset
-
-) for the whole network.
- Maybe 
-\begin_inset Formula $F$
-\end_inset
-
-?
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Section*
-Overview / TODOs
-\end_layout
-
-\begin_layout Enumerate
-
-\series bold
-Data
-\series default
-: Long Hungarian Trajectory is so far the best.
- Couldn't get similar performance with restrained trajectory.
-\end_layout
-
-\begin_layout Enumerate
-
-\series bold
-Training
-\series default
-: 
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-Implement training of Gaussian in 
-\begin_inset Formula $z$
-\end_inset
-
- and likelihood in 
-\begin_inset Formula $x$
-\end_inset
-
- simultaneously (I have started this, but there was a bug)
-\end_layout
-
-\begin_layout Enumerate
-(
-\series bold
-done
-\series default
-) Hyperparameters for z training: now we mainly do KL training, so this
- is not so important.
- Just avoid overfitting at this stage by doing early stopping.
-\end_layout
-
-\begin_layout Enumerate
-Hyperparameters for E training: The resulting network can perform quite
- efficiently with Prior MCMC when being sampled using the same 
-\begin_inset Formula $\mathbf{z}$
-\end_inset
-
- standard deviation used in training.
- Some sampling data for the particle dimer system with distance 
-\begin_inset Formula $d$
-\end_inset
-
-, where training has been done with samples from 
-\begin_inset Formula $\sigma_{\mathbf{z}}$
-\end_inset
-
-: 
-\begin_inset Tabular
-<lyxtabular version="3" rows="12" columns="4">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $\sigma_{\mathbf{z}}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $N_{\mathrm{transition}}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $\mathrm{acf}_{\tau=100}(d)$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $\mathrm{acf}_{\tau=10,000}(d)$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.01
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.99
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.89
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.02 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.99
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.89
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.05 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.99
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.74
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.99
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.58
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.2 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-16
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.98
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.40
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.5 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-38 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.98
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.68
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.9
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-7100
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.68
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.21
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-10159
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.65
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.09
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-5945
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.69
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.13
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.3
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-516
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.92
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.36
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1.5
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-14
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.99
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.78
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-
-\series bold
-Hyperparameter search for E training
-\series default
-.
- 
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-New code, tested only on min Energy and networks with two R and variably
- many N layers:
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-Deeper networks were better.
-\end_layout
-
-\begin_layout Enumerate
-200 hidden units better than 100
-\end_layout
-
-\begin_layout Enumerate
-lower z std (0.6) worked well, but higher z std also worked OK.
-\end_layout
-
-\end_deeper
-\end_deeper
-\begin_layout Enumerate
-
-\series bold
-(Done) Most meaningful loss so far seems to be
-\series default
-:
-\begin_inset Formula 
-\[
-KL(p(x)\parallel\mu(x))+Shape(z)+Var_{1}(z_{scaled})
-\]
-
-\end_inset
-
-Current best results: KL-loss 250.
- Std 
-\begin_inset Formula $z$
-\end_inset
-
-: 1 (train) 1.3 (test).
- 
-\begin_inset Formula $N_{trans}\approx200$
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Enumerate
-
-\series bold
-Reduce target variance
-\series default
- for training data in order to account for increase of variance in test
- data.
-\end_layout
-
-\begin_layout Enumerate
-
-\series bold
-Reinforcement learning
-\series default
-: iterate (–> currently does not improve validation std_z.
- Revise protocol.):
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-Train with 
-\begin_inset Formula $(\mathbf{x},\mathbf{w})$
-\end_inset
-
- (initialized training data 
-\begin_inset Formula $\mathbf{x}$
-\end_inset
-
- from simulations in both endstates).
-\end_layout
-
-\begin_layout Enumerate
-Generate new data 
-\begin_inset Formula $\mathbf{x}^{*}$
-\end_inset
-
- by sampling 
-\begin_inset Formula $\mathbf{z}\sim\mathcal{N}(0,I)$
-\end_inset
-
- (already happening in step ii, perhaps we can reuse it).
-\end_layout
-
-\begin_layout Enumerate
-Run a few Metropolis steps to propagate 
-\begin_inset Formula $\mathbf{x}^{*}\rightarrow\mathbf{x}^{**}$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Enumerate
-Replace or augment 
-\begin_inset Formula $\mathbf{x}$
-\end_inset
-
- by 
-\begin_inset Formula $\mathbf{x}^{**}$
-\end_inset
-
-.
-\end_layout
-
-\end_deeper
-\end_deeper
-\begin_layout Enumerate
-
-\series bold
-Applications
-\series default
-:
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-Identical partical exchange in particle dimer: 
-\series bold
-Transferability issue
-\series default
- – training NICER network on one simulation and application to another leads
- to loss of overlap.
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-
-\series bold
-(done) Hungarian method
-\series default
-: Using longer simulations and Hungarian method helps a lot.
- Using NICER network on an independent dataset is still not great but starts
- looking OK and monomodal in z.
- 
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Formula $\rightarrow$
-\end_inset
-
- Works OK for short trajectories but not as well.
- Using longer trajectories now and storing data for quick recovery.
-\end_layout
-
-\begin_layout Enumerate
-
-\series bold
-(done) Data augmentation
-\series default
-: Check if we can get away by mixing all indices in the training data.
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Formula $\rightarrow$
-\end_inset
-
- Not trainable to good validation error.
- 
-\end_layout
-
-\begin_layout Enumerate
-
-\series bold
-Test
-\series default
-: Check if initial shuffling (DA) of indices does not affect energies and
- training when used with Hungarian method, as expected.
- 
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-CG Fip35 System
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-Analyze Justin's data – do we have everything to implement an energy and
- simulate it?
-\end_layout
-
-\begin_layout Enumerate
-Try simulating it with MCMC.
- Can we observe folding/unfolding?
-\end_layout
-
-\begin_layout Enumerate
-Apply NICER to this system
-\end_layout
-
-\end_deeper
-\end_deeper
-\begin_layout Enumerate
-
-\series bold
-Analysis
-\series default
-:
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-
-\series bold
-Transition rates for particle system
-\series default
-: Approximate transition rates for particle system by changing the barrier
- height without changing the minima –> 
-\series bold
-computing
-\series default
-.
-\end_layout
-
-\begin_layout Enumerate
-
-\series bold
-Run particle system training for different slope values
-\series default
-.
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-Write and run scripts.
-\end_layout
-
-\begin_layout Enumerate
-Analyze and compare with available US results.
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-
-\series bold
-Efficiency
-\series default
-: Find a way to compare efficiency of samplers.
- Number of independent samples?
-\end_layout
-
-\end_deeper
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Section
-
-\series bold
-Introduction
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-clearpage
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\series bold
-Main Text
-\series default
-:
 \end_layout
 
 \begin_layout Standard
@@ -2625,7 +147,7 @@ Statistical mechanics is concerned with computing the average behavior of
 s and their interactions.
  For example, what is the average magnetization in an Ising model of interacting
  magnetic spins in an external field, or what is the probability of a protein
- to be folded in an atomistic molecular model as a function of the temperature.
+ to be folded in an atomistic molecular model as a function of the temperature?
  Under a wide range of conditions, the equilibrium probability of a microscopic
  configuration 
 \begin_inset Formula $\mathbf{x}$
@@ -2636,15 +158,7 @@ s and their interactions.
 \begin_inset Formula $\mathrm{e}^{-u(\mathbf{x})}$
 \end_inset
 
-, 
-\change_inserted 880794617 1542299913
-for example
-\change_unchanged
-, the 
-\change_inserted 880794617 1542299920
-famous 
-\change_unchanged
-Boltzmann distribution.
+, for example, the well-known Boltzmann distribution.
  The dimensionless energy 
 \begin_inset Formula $u(\mathbf{x})$
 \end_inset
@@ -2660,65 +174,29 @@ Except for simple model systems, we presently have no approach to directly
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- from Boltzmann
-\change_inserted 880794617 1542299929
--type
-\change_unchanged
- distribution
-\change_inserted 880794617 1542299931
-s
-\change_unchanged
- in order to compute 
-\change_inserted 880794617 1542299963
-statistics of the system,
-\change_unchanged
- such as free energy differences.
- Therefore, 
-\change_inserted 880794617 1542450637
-one 
-\change_unchanged
-currently 
-\change_inserted 880794617 1542450645
-relies on trajectory methods, such as
-\change_unchanged
- Markov-Chain Monte Carlo (MCMC) or Molecular Dynamics (MD) simulations
- that make tiny changes to 
+ from Boltzmann-type distributions in order to compute statistics of the
+ system, such as free energy differences.
+ Therefore, one currently relies on trajectory methods, such as Markov-Chain
+ Monte Carlo (MCMC) or Molecular Dynamics (MD) simulations that make tiny
+ changes to 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- in each simulation step
-\change_inserted 880794617 1542451369
-.
+ in each simulation step.
  These methods sample from the Boltzmann distribution, but many simulation
  steps are needed to produce a statistically independent sample.
  This is because complex systems often have metastable (long-lived) phases
- or states and the transitions between them are rare events – f
-\change_unchanged
-or example, 
+ or states and the transitions between them are rare events – for example,
+ 
 \begin_inset Formula $10^{9}-10^{15}$
 \end_inset
 
  MD simulation steps are needed to fold or unfold a protein.
- As a result, 
-\change_inserted 880794617 1542451394
-MCMC and MD
-\change_unchanged
- methods are extremely expensive and consume much of the worldwide supercomputin
-g resources.
- 
-\change_inserted 880794617 1542451118
-In specific cases, where low-dimensional coordinates can be identified that
- trace the r
-\change_unchanged
-are event transitions
-\change_inserted 880794617 1542451118
-, these 
-\change_unchanged
-can be sped up 
-\change_inserted 880794617 1542451118
-using
-\change_unchanged
- enhanced sampling methods 
+ As a result, MCMC and MD methods are extremely expensive and consume much
+ of the worldwide supercomputing resources.
+ In specific cases, where low-dimensional coordinates can be identified
+ that trace the rare event transitions, these can be sped up using enhanced
+ sampling methods 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Torrie_JCompPhys23_187,Grubmueller_PhysRevE52_2893,LaioParrinello_PNAS99_12562"
@@ -2746,11 +224,7 @@ Boltzmann Generator
 \begin_inset Formula $\mathrm{e}^{-u(\mathbf{x})}$
 \end_inset
 
-
-\change_inserted 880794617 1542300036
-, circumventing the sampling problem
-\change_unchanged
-.
+, circumventing the sampling problem.
  At first sight, this enterprise seems hopeless for condensed-matter systems
  and complex polymers (e.g., Fig.
  
@@ -2843,12 +317,8 @@ learning from example
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
-, 
-\change_inserted 880794617 1542300064
-e.g.,
-\change_unchanged
- from the folded or unfolded state of a protein, but without knowing the
- probabilities of these states.
+, e.g., from the folded or unfolded state of a protein, but without knowing
+ the probabilities of these states.
  Then we employ statistical mechanics which offers a rich set of tools to
  generate the target distribution 
 \begin_inset Formula $\mathrm{e}^{-u(\mathbf{x})}$
@@ -2858,24 +328,9 @@ e.g.,
 \end_layout
 
 \begin_layout Standard
-
-\change_inserted 880794617 1542300094
-This paper
-\change_unchanged
- demonstrate
-\change_inserted 880794617 1542300100
-s
-\change_unchanged
- that Boltzmann Generators can be trained to sample low-energy structures
- of condensed-matter systems and complex polymer structures in 
-\begin_inset Quotes eld
-\end_inset
-
-one-shot
-\begin_inset Quotes erd
-\end_inset
-
-.
+This paper demonstrates that Boltzmann Generators can be trained to directly
+ generate independent samples of low-energy structures of condensed-matter
+ systems and complex polymer structures.
  When the Boltzmann Generator is initialized with a few structures from
  different metastable states, it can generate independent samples from these
  states and can compute the free energy difference between them without
@@ -2920,21 +375,6 @@ status open
 
 \series bold
 Boltzmann Generators
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Computational effort is to train the network, but then you generate the
- Boltzmann distribution in one shot, and you need only partial information
- to generate the network.
 \end_layout
 
 \end_inset
@@ -3059,17 +499,13 @@ To compute Boltzmann-weighted averages, we reweight the generated distribution
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- and then compute desired 
-\change_inserted 880794617 1542300179
-statistics, such as free energy differences
-\change_unchanged
- using this weight.
+ and then compute desired statistics, such as free energy differences using
+ this weight.
  
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
-placement H
 wide false
 sideways false
 status open
@@ -3077,8 +513,9 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename figs/Fig_Illustration.pdf
-	width 80text%
+	filename figs/Fig_Illustration_vertical.pdf
+	lyxscale 50
+	width 100col%
 
 \end_inset
 
@@ -3145,15 +582,7 @@ For both, training and reweighting, it is important that we can compute
 \begin_inset Formula $p_{X}(\mathbf{x})$
 \end_inset
 
- of 
-\change_inserted 880794617 1542300219
-generating a
-\change_unchanged
- 
-\change_inserted 880794617 1542300226
-configuration
-\change_unchanged
- 
+ of generating a configuration 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
@@ -3184,11 +613,7 @@ noprefix "false"
 , SI).
  Invertible neural network transformations are similar to flows of a fluid
  that transform the probability density from configuration space to latent
- space
-\change_inserted 880794617 1542300244
-, or backwards
-\change_unchanged
-.
+ space, or backwards.
  Here we consider invertible neural network blocks that are volume-preserving
  (as in incompressible fluids) 
 \begin_inset CommandInset citation
@@ -3243,15 +668,8 @@ noprefix "false"
 \end_inset
 
 c,e; see SI for details).
- Invertible blocks 
-\change_inserted 880794617 1542300257
-can be
-\change_unchanged
- stacked 
-\change_inserted 880794617 1542300272
-in various configurations 
-\change_unchanged
-to form a deep invertible neural network (Fig.
+ Invertible blocks can be stacked in various configurations to form a deep
+ invertible neural network (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3275,9 +693,7 @@ noprefix "false"
 \end_inset
 
 f).
- 
-\change_inserted 880794617 1542320025
-At least one non-volume preserving layer must be included so that the network
+ At least one non-volume preserving layer must be included so that the network
  is able to represent distributions with arbitrary 
 \begin_inset Quotes eld
 \end_inset
@@ -3287,8 +703,6 @@ widths
 \end_inset
 
 , or entropies.
-\change_unchanged
-
 \end_layout
 
 \begin_layout Standard
@@ -3330,15 +744,12 @@ training by example
 , which is – up to a constant – equal to the distribution we want to generate.
  For Boltzmann Generators, a natural way to compute this difference is the
  relative Entropy, also known as Kullback-Leibler (KL) divergence.
- As derived in the SI, the KL divergence can be computed 
-\change_inserted 880794617 1542300349
-as the following expectation value over samples 
+ As derived in the SI, the KL divergence can be computed as the following
+ expectation value over samples 
 \begin_inset Formula $\mathbf{z}$
 \end_inset
 
 :
-\change_unchanged
-
 \begin_inset Formula 
 \begin{equation}
 J_{KL}=\mathbb{E}_{\mathbf{z}}\left[u(F_{zx}(\mathbf{z}))-\log R_{zx}(\mathbf{z})\right]\label{eq:main_loss_KL}
@@ -3360,40 +771,21 @@ Here,
 \begin_inset Formula $\mathbf{z}$
 \end_inset
 
-
-\change_inserted 880794617 1542300363
-, and
-\change_unchanged
- therefore equals one for volume-preserving network blocks
-\change_inserted 880794617 1542300378
-, while it
-\change_unchanged
+, and therefore equals one for volume-preserving network blocks, while it
  can be easily computed for non-volume-preserving network blocks (SI).
  In order to train the Boltzmann Generator, we approximate 
 \begin_inset Formula $J_{KL}$
 \end_inset
 
  using a few thousand samples, and then change the neural network parameters
- 
-\change_inserted 880794617 1542300394
-so as to decrease 
+ so as to decrease 
 \begin_inset Formula $J_{KL}$
 \end_inset
 
 .
-
-\change_unchanged
- 
-\change_inserted 880794617 1542300425
-A few hundred or thousand
-\change_unchanged
- such iterations are required to train the Boltzmann Generator for the examples
- in this paper
-\change_inserted 880794617 1542300586
-.
- The
-\change_unchanged
- resulting few million computations of the potential energy in Eq.
+ A few hundred or thousand such iterations are required to train the Boltzmann
+ Generator for the examples in this paper.
+ The resulting few million computations of the potential energy in Eq.
  (
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3405,36 +797,10 @@ noprefix "false"
 \end_inset
 
 ) are the main computational investment to train the Boltzmann Generator
-\change_inserted 880794617 1542300696
- and take several minutes for each system studied here
-\change_unchanged
-.
-\change_inserted 880794617 1542300393
-
+ and take several minutes for each system studied here.
 \end_layout
 
 \begin_layout Standard
-
-\change_inserted 880794617 1542275480
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-
-\change_inserted 880794617 1542275497
-- Explain entropy interpretation (minus a factor)
-\end_layout
-
-\end_inset
-
-
-\change_unchanged
-
-\end_layout
-
-\begin_layout Standard
-
-\change_inserted 880794617 1542319947
 As shown in the SI, minimizing the KL divergence (
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3480,8 +846,6 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
-
-\change_inserted 880794617 1542275817
 Despite the entropy term in (
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3517,7 +881,7 @@ noprefix "false"
 
 ).
  We therefore additionally employ training by example, which is the standard
- training method used in other Machine Learning applications.
+ training method used in other machine learning applications.
  In training by example, we initialize the Boltzmann Generator with some
  
 \begin_inset Quotes eld
@@ -3536,9 +900,7 @@ valid
 \begin_inset Formula $F_{xz}$
 \end_inset
 
- and maximizing their likelihood in the Gaussian distribution
-\change_unchanged
- 
+ and maximizing their likelihood in the Gaussian distribution 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DinhDruegerBengio_NICE2015"
@@ -3547,16 +909,12 @@ literal "false"
 \end_inset
 
 .
- 
-\change_inserted 880794617 1542275817
-Training by example is especially used in the early stages of training,
+ Training by example is especially used in the early stages of training,
  at it helps to train 
 \begin_inset Formula $F_{zx}$
 \end_inset
 
  to point to relevant parts of state space.
-\change_unchanged
-
 \end_layout
 
 \begin_layout Standard
@@ -3594,8 +952,6 @@ literal "false"
  RC.
  For the same purpose, we introduce an RC loss that can optionally be used
  to enhance the sampling of a Boltzmann Generator along a chosen RC (SI).
-\change_inserted 880794617 1542208119
-
 \end_layout
 
 \begin_layout Standard
@@ -3615,11 +971,7 @@ Results
 
 \begin_layout Standard
 We first illustrate Boltzmann Generators using a two-dimensional potential
- that has two 
-\change_inserted 880794617 1542300832
-meta
-\change_unchanged
-stable states separated by a high energy barrier in 
+ that has two metastable states separated by a high energy barrier in 
 \begin_inset Formula $x_{1}$
 \end_inset
 
@@ -3639,15 +991,8 @@ noprefix "false"
 \end_inset
 
 a).
- MD simulations will 
-\change_inserted 880794617 1542300818
-in
-\change_unchanged
- one 
-\change_inserted 880794617 1542300829
-meta
-\change_unchanged
-stable state for a long time before a rare transition event occurs (Fig.
+ MD simulations stay in one metastable state for a long time before a rare
+ transition event occurs (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3711,15 +1056,7 @@ repacked
 \begin_inset Quotes erd
 \end_inset
 
- so as to form a compact density 
-\change_inserted 880794617 1542300840
-around
-\change_unchanged
- the 
-\change_inserted 880794617 1542300848
-origin
-\change_unchanged
-.
+ so as to form a compact density around the origin.
  
 \begin_inset Note Note
 status open
@@ -3773,192 +1110,30 @@ c).
 \end_layout
 
 \begin_layout Standard
-We use the Boltzmann generator by sampling from its latent space according
- to the Gaussian distribution.
- After transforming these variables via 
-\begin_inset Formula $F_{zx}$
-\end_inset
-
-, this produces uncorrelated samples from both stable states without any
- sampling problem.
- A variety of training methods succeed in sampling across the barrier such
- that the rare event nature of the system is eliminated (Suppl.
- Figs.
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig_training_methods_NICER"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-,
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig_training_methods_RealNVP"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-).
- Combining a Boltzmann Generator trained by 
-\change_inserted 880794617 1542208152
-energy and by example
-\change_unchanged
- with simple reweighting reproduces the precise free energy differences
- of the two metastable states (Fig.
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:double_well"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-g
-\change_inserted 880794617 1542300862
-,
-\change_unchanged
- green).
- By additionally training with the RC loss to promote sampling along 
-\begin_inset Formula $x_{1}$
-\end_inset
-
-, the low-probability transition states are sampled (Fig.
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:double_well"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-f
-\change_inserted 880794617 1542300859
-,
-\change_unchanged
- orange), and the full free energy profile along 
-\begin_inset Formula $x_{1}$
-\end_inset
-
- can be reconstructed with high precision (Fig.
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:double_well"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-f,g
-\change_inserted 880794617 1542300860
-,
-\change_unchanged
- orange).
-\end_layout
-
-\begin_layout Standard
-For the double-well system, the unbiased MD simulation needs on average
- 
-\begin_inset Formula $4\cdot10^{6}$
-\end_inset
-
- MD steps for a 
-\change_inserted 880794617 1542208173
-single 
-\change_unchanged
-return trip between the two states (SI)
-\change_inserted 880794617 1542208497
-, and about 
-\begin_inset Formula $100$
-\end_inset
-
- such crossings are required to compute the free energy difference with
- the same precision as the Boltzmann Generator results shown in (Fig.
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:double_well"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-g)
-\change_unchanged
-.
- The 
-\change_inserted 880794617 1542208541
-total effort of training the Boltzmann Generator (including generating the
- initial simulation data) corresponds to about 
-\begin_inset Formula $10^{6}$
-\end_inset
-
- steps, but once this is done, statistically independent samples can be
- generated at no significant cost.
- For this simple system, the Boltzmann Generator is therefore about a factor
- 
-\begin_inset Formula $100$
-\end_inset
-
- more efficient than direct simulation, but much more extreme savings can
- be observed for complex systems, as shown below.
-\change_unchanged
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-
-\series bold
-CC
-\series default
-: but you have used two short trajectories as input, so you need to consider
- the time to generate those.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-
-\series bold
-TODO
-\series default
-: Also show/describe Latent MCMC?
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\align center
 \begin_inset Float figure
-placement H
-wide false
+placement t
+wide true
 sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "b"
+use_parbox 0
+use_makebox 0
+width "120col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
@@ -3966,14 +1141,61 @@ status open
 \begin_inset Graphics
 	filename figs/Fig_Results_DoubleWell.pdf
 	lyxscale 80
-	width 80text%
+	width 120col%
 
 \end_inset
 
 
 \end_layout
 
+\end_inset
+
+
+\begin_inset ERT
+status open
+
 \begin_layout Plain Layout
+
+
+\backslash
+hfill
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "b"
+use_parbox 0
+use_makebox 0
+width "60col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.35cm}
+\end_layout
+
+\end_inset
+
+
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -4037,41 +1259,15 @@ d,e)
 \begin_inset Formula $F_{xz}$
 \end_inset
 
- using 
-\change_inserted 880794617 1542300912
-transformations that are (d) 
-\change_unchanged
-non-volume preserving 
-\change_inserted 880794617 1542300915
-and 
-\change_unchanged
-(
-\change_inserted 880794617 1542300916
-e
-\change_unchanged
-) and volume-preserving 
-\change_inserted 880794617 1542300937
-with one global scaling factor.
-
-\change_unchanged
+ using transformations that are (d) non-volume preserving and (e) and volume-pre
+serving with one global scaling factor.
  
 \series bold
 f)
 \series default
  Free energy corresponding to distribution sampled by Boltzmann Generators
- trained 
-\change_inserted 880794617 1542300976
-by energy and by example
-\change_unchanged
- (
-\change_inserted 880794617 1542300980
-KL+ML, 
-\change_unchanged
-green) and using reaction coordinate training (
-\change_inserted 880794617 1542300985
-KL+RC, 
-\change_unchanged
-orange).
+ trained by energy and by example (KL+ML, green) and using reaction coordinate
+ training (KL+RC, orange).
  
 \series bold
 g)
@@ -4087,6 +1283,131 @@ g)
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We use the Boltzmann generator by sampling from its latent space according
+ to the Gaussian distribution.
+ After transforming these variables via 
+\begin_inset Formula $F_{zx}$
+\end_inset
+
+, this produces uncorrelated samples from both stable states without any
+ sampling problem.
+ A variety of training methods succeed in sampling across the barrier such
+ that the rare event nature of the system is eliminated (Suppl.
+ Figs.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_training_methods_NICER"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+,
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_training_methods_RealNVP"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ Combining a Boltzmann Generator trained by energy and by example with simple
+ reweighting reproduces the precise free energy differences of the two metastabl
+e states (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+g, green).
+ By additionally training with the RC loss to promote sampling along 
+\begin_inset Formula $x_{1}$
+\end_inset
+
+, the low-probability transition states are sampled (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+f, orange), and the full free energy profile along 
+\begin_inset Formula $x_{1}$
+\end_inset
+
+ can be reconstructed with high precision (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+f,g, orange).
+\end_layout
+
+\begin_layout Standard
+For the double-well system, the unbiased MD simulation needs on average
+ 
+\begin_inset Formula $4\cdot10^{6}$
+\end_inset
+
+ MD steps for a single return trip between the two states (SI), and about
+ 
+\begin_inset Formula $100$
+\end_inset
+
+ such crossings are required to compute the free energy difference with
+ the same precision as the Boltzmann Generator results shown in (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:double_well"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+g).
+ The total effort of training the Boltzmann Generator (including generating
+ the initial simulation data) corresponds to about 
+\begin_inset Formula $10^{6}$
+\end_inset
+
+ steps, but once this is done, statistically independent samples can be
+ generated at no significant cost.
+ For this simple system, the Boltzmann Generator is therefore about a factor
+ 
+\begin_inset Formula $100$
+\end_inset
+
+ more efficient than direct simulation, but much more extreme savings can
+ be observed for complex systems, as shown below.
 \end_layout
 
 \begin_layout Standard
@@ -4127,65 +1448,174 @@ noprefix "false"
 \end_inset
 
 a-c).
- 
-\change_inserted 880794617 1542300997
-O
-\change_unchanged
-pening or closing the dimer 
-\change_inserted 880794617 1542301002
-directly 
-\change_unchanged
-is not possible due to the high density of the system
-\change_inserted 880794617 1542301006
-, but rather
-\change_unchanged
- requires a concerted rearrangement of the solvent particles.
- Particles repel each other with the 
+ Opening or closing the dimer directly is not possible due to the high density
+ of the system, but rather requires a concerted rearrangement of the solvent
+ particles.
+ At close distances, particles repel each other strongly, with the 
 \begin_inset Formula $12^{th}$
 \end_inset
 
- power of their inverse distance when being close.
+ power of their inverse distance.
  As a result, the fraction of low-energy configurations is vanishingly small,
- and 
-\change_inserted 880794617 1542301018
-manually 
-\change_unchanged
-designing a sampling method that simultaneously place
-\change_inserted 880794617 1542301029
-s
-\change_unchanged
- all 
+ and manually designing a sampling method that simultaneously places all
+ 
 \begin_inset Formula $38$
 \end_inset
 
- particles and achieve
-\change_inserted 880794617 1542301030
-s
-\change_unchanged
- low energies appears unfeasible.
+ particles and achieves low energies appears unfeasible.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
+\begin_inset Float figure
+placement t
+wide true
+sideways false
 status open
 
 \begin_layout Plain Layout
-Would be nice to illustrate how simple-minded configuration generation results
- in energies that are orders of magnitude too high.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
+\align center
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "b"
+use_parbox 0
+use_makebox 0
+width "120col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
-Make sure that it is understood that the main ingredient to training is
- the energy.
+\align center
+\begin_inset Graphics
+	filename figs/Fig_Results_Particles.pdf
+	lyxscale 70
+	width 110col%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hfill
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "b"
+use_parbox 0
+use_makebox 0
+width "70col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.35cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:particle_dimer"
+
+\end_inset
+
+
+\series bold
+Repulsive particle System with bistable dimer.
+
+\series default
+ 
+\series bold
+a,b)
+\series default
+ Closed (blue) and open (red) configurations from MD simulations (input
+ data).
+ 
+\series bold
+c)
+\series default
+ Bistable dimer potential.
+ 
+\series bold
+d)
+\series default
+ Distribution of MD simulation data on 
+\begin_inset Formula $x_{1},x_{2}$
+\end_inset
+
+.
+ e) Distribution of MD simulation data in latent space coordinates 
+\begin_inset Formula $z_{1},z_{2}$
+\end_inset
+
+ after training Boltzmann Generator.
+ 
+\series bold
+f, g, h)
+\series default
+ Potential energy distribution from MD (colored) and Boltzmann generator
+ (grey) for closed (f), open (h) and transition configurations (g).
+ Insets show directly generated samples from Boltzmann Generator.
+ 
+\series bold
+i)
+\series default
+ Free energy differences as a function of dimer distance and relative temperatur
+e sampled with Boltzmann generators (generation and reweighting, bullets
+ with error bars indicating one standard deviation) and umbrella sampling
+ (green lines).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4194,14 +1624,7 @@ Make sure that it is understood that the main ingredient to training is
 \end_layout
 
 \begin_layout Standard
-We train a Boltzmann Generator to sample low-energy configurations in 
-\begin_inset Quotes eld
-\end_inset
-
-one-shot
-\begin_inset Quotes erd
-\end_inset
-
+We train a Boltzmann Generator to sample independent low-energy configurations
  and use it in order to compute the free energy profiles of opening / closing
  the dimer.
  The training is initialized with examples from separate, disconnected simulatio
@@ -4289,13 +1712,8 @@ We estimate that the MD simulation needs at least
 \begin_inset Formula $10^{12}$
 \end_inset
 
- steps to spontaneously see a 
-\change_inserted 880794617 1542208728
-single 
-\change_unchanged
-transition from closed to open state and back (SI)
-\change_inserted 880794617 1542209182
-, and about 
+ steps to spontaneously see a single transition from closed to open state
+ and back (SI), and about 
 \begin_inset Formula $100$
 \end_inset
 
@@ -4311,16 +1729,8 @@ noprefix "false"
 
 \end_inset
 
-i
-\change_unchanged
-.
- The 
-\change_inserted 880794617 1542209169
-total effort to train the 
-\change_unchanged
-Boltzmann generator 
-\change_inserted 880794617 1542301048
-is about 
+i.
+ The total effort to train the Boltzmann generator is about 
 \begin_inset Formula $3\cdot10^{7}$
 \end_inset
 
@@ -4330,8 +1740,6 @@ is about
 \end_inset
 
  orders of magnitude speedup compared to MD.
-\change_unchanged
-
 \end_layout
 
 \begin_layout Standard
@@ -4348,18 +1756,14 @@ noprefix "false"
 
 ) simultaneously to a range of temperatures between one fourth and four
  times the reference temperature (SI).
- 
-\change_inserted 880794617 1542300773
-Here, we exploit that the temperature, which changes the configuration space
- distribution in a complex way, simply enters as a scaling factor in the
- width of the Gaussian 
+ Here, we exploit that the temperature, which changes the configuration
+ space distribution in a complex way, simply enters as a scaling factor
+ in the width of the Gaussian 
 \begin_inset Formula $q_{Z}(\mathbf{z})$
 \end_inset
 
  (SI).
- 
-\change_unchanged
-Then, we sample the Boltzmann Generator for a range of temperatures and
+ Then, we sample the Boltzmann Generator for a range of temperatures and
  use simple reweighting to compute the free energies along the dimer distances.
  As shown in Fig.
  
@@ -4387,102 +1791,37 @@ literal "false"
 
 \begin_layout Standard
 \begin_inset Float figure
-placement H
-wide false
+placement t
+wide true
 sideways false
 status open
 
 \begin_layout Plain Layout
 \align center
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "b"
+use_parbox 0
+use_makebox 0
+width "120col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
 \begin_inset Graphics
-	filename figs/Fig_Results_Particles.pdf
+	filename figs/Fig_Results_Hydrocarbons.pdf
 	lyxscale 70
-	width 80text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:particle_dimer"
-
-\end_inset
-
-
-\change_inserted 880794617 1542301071
-
-\series bold
-Repulsive p
-\change_unchanged
-article System with bistable dimer.
-
-\series default
- 
-\series bold
-a,b)
-\series default
- Closed (blue) and open (red) configurations from MD simulations (input
- data).
- 
-\series bold
-c)
-\series default
- Bistable dimer potential.
- 
-\series bold
-d)
-\series default
- Distribution of 
-\change_inserted 880794617 1542301092
-MD simulation
-\change_unchanged
- data on 
-\begin_inset Formula $x_{1},x_{2}$
-\end_inset
-
-.
- e) Distribution of 
-\change_inserted 880794617 1542301080
-MD simulation
-\change_unchanged
- data 
-\change_inserted 880794617 1542301110
-in latent space coordinates
-\change_unchanged
- 
-\begin_inset Formula $z_{1},z_{2}$
-\end_inset
-
- after training
-\change_inserted 880794617 1542301121
- Boltzmann Generator
-\change_unchanged
-.
- 
-\series bold
-f, g, h)
-\series default
- Potential energy distribution from MD (colored) and Boltzmann generator
- (grey) for closed (f), open (h) and transition configurations (g).
- Insets show one-shot samples from Boltzmann generator.
- 
-\series bold
-i)
-\series default
- Free energy differences as a function of dimer distance and 
-\change_inserted 880794617 1542301131
-relative 
-\change_unchanged
-temperature sampled with Boltzmann generators (one-shot generation and reweighti
-ng, bullets with error bars indicating one standard deviation) and umbrella
- sampling (green lines).
-\end_layout
+	width 120col%
 
 \end_inset
 
@@ -4492,22 +1831,121 @@ ng, bullets with error bars indicating one standard deviation) and umbrella
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-
-\change_inserted 880794617 1542473595
 \begin_inset ERT
 status open
 
 \begin_layout Plain Layout
 
-\change_inserted 880794617 1542473598
+
+\backslash
+hfill
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "b"
+use_parbox 0
+use_makebox 0
+width "60col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
 
 
 \backslash
-clearpage
-\change_unchanged
+vspace{-0.35cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:hydrocarbon"
+
+\end_inset
+
+
+\series bold
+Exploration of new states and direct sampling of cyclical molecule structures
+\series default
+: Cyclononane 
+\begin_inset Formula $C_{9}H_{18}$
+\end_inset
+
+ (a-j) and bicyclo[4.4.4]tetradecane 
+\begin_inset Formula $C_{14}H_{26}$
+\end_inset
+
+ (k-l).
+ 
+\series bold
+a)
+\series default
+ Number of distinct rotamers sampled with Boltzmann Generator that is initialize
+d with MD data containing 4 rotamer states.
+ 
+\series bold
+b)
+\series default
+ Potential energy distribution.
+ 
+\series bold
+c-d)
+\series default
+ Generated bond length and angle distribution compared to MD data.
+ 
+\series bold
+e-g)
+\series default
+ Boltzmann-generated structures (black) and the most similar structures
+ from replica-exchange MD (red).
+ 
+\series bold
+h-j)
+\series default
+ Boltzmann-generated structures that are not contained in the MD simulations.
+ 
+\series bold
+k-l)
+\series default
+ Boltzmann-generated structures of bicyclo[4.4.4]tetradecane 
+\begin_inset Formula $C_{14}H_{26}$
+\end_inset
+
+ – side-view is shown in large, top view below as ball+stick and space-filling
+ representation.
+ The three chains are colored for better visibility, the connecting carbons
+ are kept dark.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -4517,16 +1955,9 @@ clearpage
 \end_layout
 
 \begin_layout Standard
-Finally, we demonstrate that Boltzmann Generators can sample complex polymer
- structures in 
-\begin_inset Quotes eld
-\end_inset
-
-one shot
-\begin_inset Quotes erd
-\end_inset
-
- that belong to known or new metastable states.
+Finally, we demonstrate that Boltzmann Generators can directly generate
+ independent samples of complex polymer structures that belong to known
+ or new metastable states.
  Cyclical polymers are especially challenging, because the main degrees
  of freedom are torsion angles, but for each change of a torsion, other
  torsions must be changed concurrently so as to maintain ring closure and
@@ -4544,13 +1975,7 @@ literal "false"
 \end_layout
 
 \begin_layout Standard
-Here we using 
-\change_deleted 880794617 1542319950
-cycical
-\change_inserted 880794617 1542319950
-cyclical
-\change_unchanged
- hydrocarbons as example.
+Here we using cyclical hydrocarbons as example.
  Each hydrocarbon torsion angle has three rotamers (around 
 \begin_inset Formula $-60°$
 \end_inset
@@ -4563,9 +1988,7 @@ cyclical
 \begin_inset Formula $180°$
 \end_inset
 
-)
-\change_inserted 880794617 1542301140
-, and we use 
+), and we use 
 \begin_inset Quotes eld
 \end_inset
 
@@ -4573,42 +1996,21 @@ rotamer state
 \begin_inset Quotes erd
 \end_inset
 
- to denote the setting of all rotamers in the polymer
-\change_unchanged
-.
+ to denote the setting of all rotamers in the polymer.
  The cycle constraints stabilize some otherwise unstable conformations but
- generally reduce the total number of accessible 
-\change_inserted 880794617 1542209358
-rotamer states.
-
-\change_unchanged
+ generally reduce the total number of accessible rotamer states.
  For cyclononane (
 \begin_inset Formula $C_{9}H_{18}$
 \end_inset
 
 ), we used a combination of training by energy and training by example,
  the latter initialized with a short replica-exchange MD simulation in which
- 4 distinct rotamer
-\change_inserted 880794617 1542209363
- states
-\change_unchanged
- have been sampled.
+ 4 distinct rotamer states have been sampled.
  We then use a Boltzmann Generator for iterative discovery: In each iteration,
- the Boltzmann generator samples structures from known 
-\change_inserted 880794617 1542209437
-rotamer states
-\change_unchanged
-, and also a small fraction of structures from new 
-\change_inserted 880794617 1542209371
-rotamer states.
-
-\change_unchanged
- We sample 
-\change_inserted 880794617 1542301145
-an equal number of configurations from each rotamer state found, and re-insert
- 
-\change_unchanged
-these samples for training by example in the next round (SI).
+ the Boltzmann generator samples structures from known rotamer states, and
+ also a small fraction of structures from new rotamer states.
+ We sample an equal number of configurations from each rotamer state found,
+ and re-insert these samples for training by example in the next round (SI).
  A so-trained Boltzmann Generator quickly produces structures not included
  in the initial MD data (Fig.
  
@@ -4622,12 +2024,8 @@ noprefix "false"
 \end_inset
 
 a, e-j).
- Potential energies 
-\change_inserted 880794617 1542301151
-of
-\change_unchanged
- generated structures have a high overlap with the potential energy sampled
- in the MD simulation (Fig.
+ Potential energies of generated structures have a high overlap with the
+ potential energy sampled in the MD simulation (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -4657,15 +2055,13 @@ c,d).
 \end_layout
 
 \begin_layout Standard
-Finally, one-shot samples were generated for bicyclo[4.4.4]tetradecane 
+Finally, independent samples were generated for bicyclo[4.4.4]tetradecane
+ 
 \begin_inset Formula $C_{14}H_{26}$
 \end_inset
 
-, a highly constrained and densely packed hydrocarbon
-\change_deleted 880794617 1542448278
-e
-\change_unchanged
- with two interconnected ring systems and 120 dimensions (Fig.
+, a highly constrained and densely packed hydrocarbon with two interconnected
+ ring systems and 120 dimensions (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -4677,115 +2073,6 @@ noprefix "false"
 \end_inset
 
 k,l and insets).
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename figs/Fig_Results_Hydrocarbons.pdf
-	lyxscale 70
-	width 80text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:hydrocarbon"
-
-\end_inset
-
-
-\change_inserted 880794617 1542301283
-
-\series bold
-Exploration of new states and o
-\change_unchanged
-ne-shot sampling of cyclical molecule structures
-\series default
-: Cyclononane 
-\begin_inset Formula $C_{9}H_{18}$
-\end_inset
-
- (a-j) and bicyclo[4.4.4]tetradecane 
-\begin_inset Formula $C_{14}H_{26}$
-\end_inset
-
- (k-l).
- 
-\series bold
-a)
-\series default
- Number of distinct rotamers sample
-\change_inserted 880794617 1542301311
-d
-\change_unchanged
- with Boltzmann Generator that is initialized with MD data containing 
-\change_inserted 880794617 1542301290
-4
-\change_unchanged
- rotamer
-\change_inserted 880794617 1542301293
- states
-\change_unchanged
-.
- 
-\series bold
-b)
-\series default
- Potential energy distribution.
- 
-\series bold
-c-d)
-\series default
- Generated bond length and angle distribution compared to MD data.
- 
-\series bold
-e-g)
-\series default
- One-shot Boltzmann-generated structures (black) and the most similar structures
- from replica-exchange MD (red).
- 
-\series bold
-h-j)
-\series default
- One-shot Boltzmann-generated structures that are not contained in the MD
- simulations.
- 
-\series bold
-k-l)
-\series default
- One-shot Boltzmann-generated structures of bicyclo[4.4.4]tetradecane 
-\begin_inset Formula $C_{14}H_{26}$
-\end_inset
-
- – side-view is shown in large, top view below as ball+stick and space-filling
- representation.
- The three chains are colored for better visibility, the connecting carbons
- are kept dark.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -4812,35 +2099,24 @@ Boltzmann Generators are, as yet, the first approach that can sample the
  Although we expect the methodology to improve rapidly, we believe that
  for very high-dimensional systems, such as solvated atomistic protein models
  with 100,000's of dimensions, the best strategy is to employ Boltzmann
- Generators for 
-\change_inserted 880794617 1542301177
-so-called cluster 
-\change_unchanged
-Monte Carlo moves.
- 
-\change_inserted 880794617 1542301263
-In each iteration of this approach, one would re-sample the positions of
+ Generators for so-called cluster Monte Carlo moves.
+ In each iteration of this approach, one would re-sample the positions of
  a cluster of atoms using the sum of potential energies between cluster
  atoms and all system atoms.
- 
-\change_unchanged
-With such a strategy, Boltzmann Generators can be naturally combined with
+ With such a strategy, Boltzmann Generators can be naturally combined with
  existing local sampling methods.
 \end_layout
 
 \begin_layout Standard
-The present work shows that Boltzmann Generators can sample the Boltzmann
- distribution of complex systems in one shot and may offer a way out of
- the sampling problem in condensed matter systems.
+The present work shows that Boltzmann Generators can generated independent
+ samples of the Boltzmann distribution of complex systems directly and may
+ offer a way out of the sampling problem in condensed matter systems.
  The limitation of the current work is that the transformation that achieves
  this needs to be trained using the system-specific energy.
- In order to make the approach general, it needs to be
-\change_inserted 880794617 1542301332
-come
-\change_unchanged
- transferrable across systems, and a promising route is to employ transferrable
- featurization methods developed in the context of Machine Learning for
- Quantum Mechanics 
+ In order to make the approach general, it needs to become transferrable
+ across systems, and a promising route is to employ transferrable featurization
+ methods developed in the context of machine learning for quantum mechanics
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "BehlerParrinello_PRL07_NeuralNetwork,RuppEtAl_PRL12_QML"
@@ -4849,28 +2125,6 @@ literal "false"
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-vspace{0.5cm}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\series bold
-References and Notes:
 \end_layout
 
 \begin_layout Standard
@@ -4886,12 +2140,12 @@ biblatexopts "title={$\\:$}"
 
 \end_layout
 
-\begin_layout Paragraph
-Acknowledgements:
-\end_layout
-
 \begin_layout Standard
-FN acknowledges funding from European Commission (ERC CoG 772230 
+
+\series bold
+Acknowledgements
+\series default
+: FN acknowledges funding from European Commission (ERC CoG 772230 
 \begin_inset Quotes eld
 \end_inset
 
@@ -4904,15 +2158,11 @@ ScaleCell
 \end_inset
 
  research cluster (AA1x8, EF1x2).
-
-\change_inserted 880794617 1542469369
  We are grateful to Cecilia Clementi (Rice University), Brooke Husic and
  Simon Olsson (FU Berlin) for valuable comments and discussions.
 \end_layout
 
 \begin_layout Standard
-
-\change_inserted 880794617 1542389173
 
 \series bold
 Data and materials availability
@@ -4921,50 +2171,15 @@ Data and materials availability
 \end_layout
 
 \begin_layout Standard
-
-\change_inserted 880794617 1542389256
 The data and code for generating the results of this paper are available
- at 
+ at: 
 \end_layout
 
 \begin_layout Standard
 
-\change_inserted 880794617 1542469346
-https://github.com/noegroup/paper_boltzmann_generators.
-\end_layout
-
-\begin_layout Standard
-
-\change_inserted 880794617 1542389370
-
-\series bold
-Supplementary Materials
-\series default
-:
-\end_layout
-
-\begin_layout Standard
-
-\change_inserted 880794617 1542389373
-Materials and Methods
-\end_layout
-
-\begin_layout Standard
-
-\change_inserted 880794617 1542389589
-Supplementary Tables 1-2
-\end_layout
-
-\begin_layout Standard
-
-\change_inserted 880794617 1542389619
-Supplementary Figures 1-3
-\end_layout
-
-\begin_layout Standard
-
-\change_inserted 880794617 1542389622
-References 16-18
+\family typewriter
+\size scriptsize
+https://github.com/noegroup/paper_boltzmann_generators
 \end_layout
 
 \begin_layout Standard
@@ -4978,26 +2193,14 @@ status open
 clearpage
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section*
-Supplementary Material
-\change_inserted 880794617 1542389688
-s
-\end_layout
-
-\begin_layout Standard
-
-\change_inserted 880794617 1542389443
-\begin_inset ERT
-status open
-
 \begin_layout Plain Layout
 
-\change_inserted 880794617 1542389476
+
+\backslash
+onecolumngrid
+\end_layout
+
+\begin_layout Plain Layout
 
 
 \backslash
@@ -5008,16 +2211,12 @@ figurename}{Supplementary Figure}
 
 \begin_layout Plain Layout
 
-\change_inserted 880794617 1542389486
-
 
 \backslash
 setcounter{figure}{0} 
 \end_layout
 
 \begin_layout Plain Layout
-
-\change_inserted 880794617 1542389498
 
 
 \backslash
@@ -5028,8 +2227,6 @@ tablename}{Supplementary Table}
 
 \begin_layout Plain Layout
 
-\change_inserted 880794617 1542389500
-
 
 \backslash
 setcounter{table}{0} 
@@ -5038,8 +2235,10 @@ setcounter{table}{0}
 \end_inset
 
 
-\change_unchanged
+\end_layout
 
+\begin_layout Section*
+Methods
 \end_layout
 
 \begin_layout Subsection*
@@ -5262,7 +2461,7 @@ The NICE transformation is volume-preserving.
 \begin_layout Standard
 \align center
 \begin_inset Float figure
-wide false
+wide true
 sideways false
 status open
 
@@ -5346,7 +2545,7 @@ CC: Too much detail.
 
 \begin_layout Standard
 \begin_inset Float table
-wide false
+wide true
 sideways false
 status open
 
@@ -5653,8 +2852,6 @@ name "tab:Invertible-network-components"
 \end_inset
 
 Invertible network components.
-
-\change_inserted 880794617 1542448758
  
 \begin_inset Formula $f_{xz}$
 \end_inset
@@ -5673,8 +2870,6 @@ Invertible network components.
 \end_inset
 
  are the Jacobian determinants.
-\change_unchanged
-
 \end_layout
 
 \end_inset
@@ -5894,125 +3089,10 @@ Thus the variance takes the same role as the relative temperature.
 
 \begin_layout Standard
 
-\change_inserted 880794617 1542382894
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-
-\change_inserted 880794617 1542382894
-We sample the input in 
-\begin_inset Formula $\mathbf{z}$
-\end_inset
-
- from the standard Gaussian distribution for the standard temperature 
-\begin_inset Formula $T$
-\end_inset
-
-:
-\end_layout
-
-\begin_layout Plain Layout
-
-\change_inserted 880794617 1542382894
-\begin_inset Formula 
-\begin{equation}
-\mu_{Z}(\mathbf{z})=\mathcal{N}(\mathbf{0},\mathbf{I})=Z_{Z}^{-1}\mathrm{e}^{-\frac{1}{2}\left\Vert \mathbf{z}\right\Vert ^{2}}
-\end{equation}
-
-\end_inset
-
-with with normalization constant 
-\begin_inset Formula $Z_{Z}$
-\end_inset
-
-.
- Then the approximation of the Boltzmann distribution at temperature 
-\begin_inset Formula $T^{k}$
-\end_inset
-
- is correspondingly given by
-\begin_inset Formula 
-\begin{eqnarray}
-\exp\left(-u^{k}(\mathbf{x})\right)\propto\mu_{X}(\mathbf{x})^{\frac{1}{\tau_{k}}} & \approx & Z_{Z}^{-\frac{1}{\tau_{k}}}\cdot\exp\left(-\frac{1}{2\tau_{k}}\left\Vert \mathbf{z}\right\Vert ^{2}\right)\nonumber \\
- &  & \cdot\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|^{-\frac{1}{\tau_{k}}}.
-\end{eqnarray}
-
-\end_inset
-
-Therefore, if the transformation 
-\begin_inset Formula $T_{zx}$
-\end_inset
-
- if defined by NICE, 
-\begin_inset Formula $\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|\equiv1$
-\end_inset
-
- and we can draw the Boltzmann distribution in the configuration space at
- 
-\begin_inset Formula $T^{k}$
-\end_inset
-
- with the prior distribution
-\begin_inset Formula 
-\begin{equation}
-\mu_{Z}^{k}(\mathbf{z})=\mathcal{N}(\mathbf{0},\tau_{k}\mathbf{I}).
-\end{equation}
-
-\end_inset
-
-In the case where 
-\begin_inset Formula $T_{zx}$
-\end_inset
-
- is a realNVP transformation, we can implement the sampling by using the
- prior distribution 
-\begin_inset Formula $\mu_{Z}^{k}$
-\end_inset
-
- and selecting a new transformation 
-\begin_inset Formula $\det T_{zx}^{k}(\mathbf{z};\boldsymbol{\theta})$
-\end_inset
-
- so that 
-\begin_inset Formula $\left|\det\frac{\partial T_{zx}(\mathbf{z};\boldsymbol{\theta})}{\partial\mathbf{z}}\right|=\left|\det\mathbf{J}_{zx}(\mathbf{z};\boldsymbol{\theta})\right|^{-\frac{1}{\tau_{k}}}$
-\end_inset
-
-.
- But it is not clear how to construct the transformation yet.
-\end_layout
-
-\begin_layout Plain Layout
-
-\change_inserted 880794617 1542382894
-Notice: The new 
-\begin_inset Formula $T_{zx}^{k}(\mathbf{z};\boldsymbol{\theta})$
-\end_inset
-
- cannot be obtained by replacing 
-\begin_inset Formula $S(\mathbf{x};\boldsymbol{\theta})$
-\end_inset
-
- with 
-\begin_inset Formula $\frac{1}{\tau_{k}}S(\mathbf{x};\boldsymbol{\theta})$
-\end_inset
-
-, because the output of each layer will also be changed with this replacement.
-\end_layout
-
-\end_inset
-
-
-\change_unchanged
-
-\end_layout
-
-\begin_layout Paragraph
+\series bold
 Latent KL divergence
-\end_layout
-
-\begin_layout Standard
-The KL divergence between two distributions 
+\series default
+: The KL divergence between two distributions 
 \begin_inset Formula $q$
 \end_inset
 
@@ -6124,13 +3204,7 @@ Practically, each training batch samples points
 \begin_inset Formula $\mathbf{z}\sim q_{Z}(\mathbf{z})$
 \end_inset
 
- from a normal distribution, 
-\change_deleted 880794617 1542319979
-transformes
-\change_inserted 880794617 1542319979
-transforms
-\change_unchanged
- them via 
+ from a normal distribution, transforms them via 
 \begin_inset Formula $T_{zx}$
 \end_inset
 
@@ -6191,21 +3265,18 @@ n is not defined by a physical energy as here.
  
 \end_layout
 
-\begin_layout Paragraph
-Reweighting and interpretation of latent KL as reweighting loss
-\end_layout
-
 \begin_layout Standard
-The most direct way to compute quantitative statistics using Boltzmann generator
-s is to employ reweighting of probability densities.
+
+\series bold
+Reweighting and interpretation of latent KL as reweighting loss
+\series default
+: The most direct way to compute quantitative statistics using Boltzmann
+ generators is to employ reweighting of probability densities.
  In this framework, we assign to each generated configuration 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
  the statistical weight:
-\end_layout
-
-\begin_layout Standard
 \begin_inset Formula 
 \begin{align}
 w_{X}(\mathbf{x}) & =\frac{\mu_{X}(\mathbf{x})}{q_{X}(\mathbf{x})}=\frac{q_{Z}(\mathbf{z})}{\mu_{Z}(\mathbf{z})}.\label{eq:reweighting_w}\\
@@ -6247,8 +3318,6 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
-
-\change_inserted 880794617 1542305065
 All free energy profiles shown in Figs.
  
 \begin_inset CommandInset ref
@@ -6364,12 +3433,12 @@ Thus, the minimization of the latent KL divergence is equivalent to maximizing
  
 \end_layout
 
-\begin_layout Paragraph
-Interpretation of latent KL as free energy
-\end_layout
-
 \begin_layout Standard
-For invertible transformation 
+
+\series bold
+Interpretation of latent KL as free energy
+\series default
+: For invertible transformation 
 \begin_inset Formula $F_{xz}$
 \end_inset
 
@@ -6407,21 +3476,15 @@ J_{KL} & =\mathbb{E}_{\mathbf{z}\sim\mu_{Z}(\mathbf{z})}\left[u(F_{zx}(\mathbf{z
 
 \end_inset
 
-
-\change_inserted 880794617 1542276074
 which is, up to the constant 
 \begin_inset Formula $H_{Z}$
 \end_inset
 
- equal to the free energy of the generated distribution 
-\change_unchanged
-with enthalpy 
+ equal to the free energy of the generated distribution with enthalpy 
 \begin_inset Formula $U$
 \end_inset
 
- and 
-\change_inserted 880794617 1542276124
-entropic factor 
+ and entropic factor 
 \begin_inset Formula $H_{X}$
 \end_inset
 
@@ -6429,16 +3492,14 @@ entropic factor
  Note that this entropic factor is taken at the temperature used for generating
  the distribution, a temperature dependence will enter when training the
  Boltzmann Generator at multiple temperatures.
-\change_unchanged
-
-\end_layout
-
-\begin_layout Paragraph
-Configuration KL divergence 
 \end_layout
 
 \begin_layout Standard
-Likewise, we can express the KL divergence in 
+
+\series bold
+Configuration KL divergence
+\series default
+: Likewise, we can express the KL divergence in 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
@@ -6474,9 +3535,6 @@ noprefix "false"
 \end_inset
 
 ), this KL-divergences evaluates as:
-\end_layout
-
-\begin_layout Standard
 \begin_inset Formula 
 \begin{align*}
 \mathrm{KL}_{\boldsymbol{\theta}}\left[\mu_{X}\parallel q_{X}\right] & =H_{X}-\int\mu_{X}(\mathbf{x})\log q_{X}(\mathbf{x};\boldsymbol{\theta})\mathrm{d}\mathbf{x}\\
@@ -6507,13 +3565,13 @@ Although the constants
  
 \end_layout
 
-\begin_layout Paragraph
-Maximum Likelihood
-\end_layout
-
 \begin_layout Standard
-However we can approximate the configuration KL divergence by starting from
- a sample 
+
+\series bold
+Maximum Likelihood
+\series default
+: However we can approximate the configuration KL divergence by starting
+ from a sample 
 \begin_inset Formula $\rho(\mathbf{x})$
 \end_inset
 
@@ -6575,12 +3633,12 @@ u(z)=-\log p(z) & =\sum_{i=1}^{d}y_{i}+d\log\sigma+\frac{1}{2\sigma^{2}}\left\Ve
 
 \end_layout
 
-\begin_layout Paragraph
-Symmetric divergence
-\end_layout
-
 \begin_layout Standard
-The two KL divergences above can be naturally combined to the symmetric
+
+\series bold
+Symmetric divergence
+\series default
+: The two KL divergences above can be naturally combined to the symmetric
  divergence
 \end_layout
 
@@ -6601,12 +3659,12 @@ which corresponds, up to an additive constant, to the Jensen-Shannon divergence
  
 \end_layout
 
-\begin_layout Paragraph
-Reaction coordinate loss
-\end_layout
-
 \begin_layout Standard
-In some applications we do not want to sample from the Boltzmann distribution
+
+\series bold
+Reaction coordinate loss
+\series default
+: In some applications we do not want to sample from the Boltzmann distribution
  but promote the sampling of high-energy states in a specific direction
  of configuration space, for example in order to compute a free energy profile
  along a predefined reaction coordinate 
@@ -6643,67 +3701,13 @@ To implement this loss, the function
 \begin_inset Formula $p\left(R(\mathbf{x})\right)$
 \end_inset
 
- is computed as a 
-\change_deleted 880794617 1542319981
-batchwise
-\change_inserted 880794617 1542319981
-batch-wise
-\change_unchanged
- kernel density estimate along between the bounds.
+ is computed as a batch-wise kernel density estimate along between the bounds.
  
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-\begin_inset Formula 
-\[
-J_{XX}=\frac{1}{2}D_{KL}\left(p\parallel m\right)+\frac{1}{2}D_{KL}\left(q\parallel m\right)
-\]
-
-\end_inset
-
-using
-\begin_inset Formula 
-\[
-m=Z^{-1}\sqrt{pq}
-\]
-
-\end_inset
-
-results in:
-\begin_inset Formula 
-\begin{align*}
-J_{XX} & =\frac{1}{2}\int p(x)\left(\log p(x)-\log\sqrt{p(x)q(x)}\right)\\
- & +\frac{1}{2}\int q(x)\left(\log q(x)-\log\sqrt{p(x)q(x)}\right)-Z\\
- & =\frac{1}{2}\int p(x)\left(\log p(x)-\frac{1}{2}\log p(x)-\frac{1}{2}\log q(x)\right)\\
- & +\frac{1}{2}\int q(x)\left(\log q(x)-\frac{1}{2}\log p(x)-\frac{1}{2}\log q(x)\right)-Z\\
- & =\frac{1}{4}\int p(x)\left(\log p(x)-\log q(x)\right)\\
- & +\frac{1}{4}\int q(x)\left(\log q(x)-\log p(x)\right)-Z\\
- & =\frac{1}{4}D_{KL}\left(p\parallel q\right)+\frac{1}{4}D_{KL}\left(q\parallel p\right)-Z
-\end{align*}
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsection*
 C.
- Systems and 
-\change_deleted 880794617 1542319984
-Hyperparameters
-\change_inserted 880794617 1542319984
-Hyper-parameters
-\change_unchanged
-
+ Systems and Hyper-parameters
 \end_layout
 
 \begin_layout Standard
@@ -6790,13 +3794,9 @@ odd
 
  are four repetitions of a NICE and a RealNVP block, i.e.
  8 layers total.
-\change_inserted 880794617 1542305191
-
 \end_layout
 
 \begin_layout Standard
-
-\change_inserted 880794617 1542319986
 All networks are trained using the Adam adaptive stochastic gradient descent
  method 
 \begin_inset CommandInset citation
@@ -6808,15 +3808,17 @@ literal "false"
 
 .
  Other choices and hyper-parameters are described below.
-\change_unchanged
-
-\end_layout
-
-\begin_layout Paragraph*
-Double well
 \end_layout
 
 \begin_layout Standard
+
+\series bold
+Double well
+\series default
+:
+\series bold
+ 
+\series default
 We define a two-dimensional toy model which is bistable in 
 \begin_inset Formula $x$
 \end_inset
@@ -6956,9 +3958,7 @@ noprefix "false"
 \end_inset
 
  we use NICE and RealNVP networks defined as below.
- 
-\change_inserted 880794617 1542305176
-All nonlinear transformations (
+ All nonlinear transformations (
 \begin_inset Formula $T$
 \end_inset
 
@@ -6971,9 +3971,7 @@ All nonlinear transformations (
 \end_inset
 
  activation and two hidden layers with 100 hidden nodes.
- 
-\change_unchanged
-Networks are trained in two steps: in a first ML phase we only minimize
+ Networks are trained in two steps: in a first ML phase we only minimize
  
 \begin_inset Formula $J_{\mathrm{KL}}$
 \end_inset
@@ -7099,12 +4097,12 @@ Epochs KL
 
 \end_layout
 
-\begin_layout Paragraph
-Bistable particle dimer in a Lennard-Jones fluid
-\end_layout
-
 \begin_layout Standard
-Here we simulate two-dimensional system of a bistable particle dimer in
+
+\series bold
+Bistable particle dimer in a Lennard-Jones fluid
+\series default
+: Here we simulate two-dimensional system of a bistable particle dimer in
  a dense bath of 
 \begin_inset Formula $n_{s}=36$
 \end_inset
@@ -7139,11 +4137,7 @@ Defining the dimer distance
 \begin_inset Formula $d=\left\Vert \mathbf{x}_{1}-\mathbf{x}_{2}\right\Vert $
 \end_inset
 
-, and the Heav
-\change_inserted 880794617 1542382965
-i
-\change_unchanged
-side step function 
+, and the Heaviside step function 
 \begin_inset Formula $h$
 \end_inset
 
@@ -7493,8 +4487,6 @@ literal "false"
 \end_inset
 
  (reduced units).
-
-\change_inserted 880794617 1542208985
  Each umbrella simulation was 
 \begin_inset Formula $50,000$
 \end_inset
@@ -7505,8 +4497,6 @@ literal "false"
 \end_inset
 
  million simulation steps.
-\change_unchanged
-
 \end_layout
 
 \begin_layout Standard
@@ -7851,28 +4841,10 @@ Epochs
 \end_layout
 
 \begin_layout Standard
-The italic values in the last row were treated as variable 
-\change_deleted 880794617 1542319995
-hyperparameters
-\change_inserted 880794617 1542319995
-hyper-parameters
-\change_unchanged
-.
- We then did a 
-\change_deleted 880794617 1542319996
-hyperparameter
-\change_inserted 880794617 1542319996
-hyper-parameter
-\change_unchanged
- search as indicated in the table below.
- The 
-\change_deleted 880794617 1542319998
-hyperparameters
-\change_inserted 880794617 1542319998
-hyper-parameters
-\change_unchanged
- were chosen by minimizing the estimator variance for the free energy profile
- along dimer distance 
+The italic values in the last row were treated as variable hyper-parameters.
+ We then did a hyper-parameter search as indicated in the table below.
+ The hyper-parameters were chosen by minimizing the estimator variance for
+ the free energy profile along dimer distance 
 \begin_inset Formula $d$
 \end_inset
 
@@ -10268,13 +7240,7 @@ name "tab:hyperparameters_particle_dimer"
 
 \end_inset
 
-
-\change_deleted 880794617 1542320000
-Hyperparameter
-\change_inserted 880794617 1542320000
-Hyper-parameter
-\change_unchanged
- selection for the particle dimer.
+Hyper-parameter selection for the particle dimer.
  In the architecture, 
 \begin_inset Formula $R$
 \end_inset
@@ -10345,37 +7311,12 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
 
-\begin_layout Plain Layout
-Free energy (umbrella sampling) vs dimer potential :
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename figs/particle_dimer_energies.pdf
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
+\series bold
 Hydrocarbons
-\end_layout
-
-\begin_layout Standard
-A simple molecular mechanics model including bond, angle, torsion and Lennard-Jo
-nes interactions (between all pairs) was implemented in TensorFlow.
+\series default
+: A simple molecular mechanics model including bond, angle, torsion and
+ Lennard-Jones interactions (between all pairs) was implemented in TensorFlow.
  We use the parameters in 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -10460,8 +7401,6 @@ To generate some initial structures for training by example, we conducted
 \end_layout
 
 \begin_layout Standard
-
-\change_inserted 880794617 1542305416
 The Boltzmann Generator used 
 \begin_inset Formula $R_{10}$
 \end_inset
@@ -10479,9 +7418,7 @@ The Boltzmann Generator used
 \end_inset
 
  activation and four hidden layers with 100 hidden nodes.
- 
-\change_unchanged
-The Boltzmann Generator is trained using iterative discovery.
+ The Boltzmann Generator is trained using iterative discovery.
  In each of 50 iterations, we use 
 \begin_inset Formula $4,000$
 \end_inset
@@ -10829,22 +7766,6 @@ y of being sampled.
  
 \end_layout
 
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-clearpage
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection*
 D.
  Additional Figures
@@ -10862,7 +7783,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename figs/SFig_Training_NICER.pdf
-	width 80text%
+	width 80col%
 
 \end_inset
 
@@ -10908,31 +7829,16 @@ noprefix "false"
 \begin_inset Formula $x_{1}$
 \end_inset
 
-, (4) free energy after reweighting
-\change_inserted 880794617 1542305455
-, vertical vars show uncertainties (one standard deviation, 68% percentile)
-\change_unchanged
-.
+, (4) free energy after reweighting, vertical vars show uncertainties (one
+ standard deviation, 68% percentile).
  Training uses 200 epochs of ML and then 500 epochs of the method given
  in the rows, using equal weights for these modes.
  Training by example (ML) only reproduces the distribution of the training
  data, which can be reweighted to the Boltzmann distribution in this low-dimensi
-onal example but reweighting 
-\change_inserted 880794617 1542305477
-from the ML-generated distribution 
-\change_unchanged
-fails for high-dimensional examples.
- Training by energy (KL)
-\change_deleted 880794617 1542305491
- 
-\change_inserted 880794617 1542305501
- alone 
-\change_unchanged
-tends to collapse to 
-\change_inserted 880794617 1542305507
-a single
-\change_unchanged
- metastable state.
+onal example but reweighting from the ML-generated distribution fails for
+ high-dimensional examples.
+ Training by energy (KL) alone tends to collapse to a single metastable
+ state.
  ML+KL combined samples closer to the Boltzmann distribution than ML and
  avoids metastable state collapse, but samples high-energy transition states
  with low probability.
@@ -10953,6 +7859,7 @@ a single
 \begin_layout Standard
 \align center
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -10961,7 +7868,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename figs/SFig_Training_RealNVP.pdf
-	width 80text%
+	width 80col%
 
 \end_inset
 
@@ -10978,12 +7885,8 @@ name "fig_training_methods_RealNVP"
 
 \end_inset
 
-Same as 
-\change_inserted 880794617 1542389544
-Suppl.
- 
-\change_unchanged
-Fig.
+Same as Suppl.
+ Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref

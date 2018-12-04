@@ -1,4 +1,5 @@
 # files that will not be added to the git
+arxiv
 coverletter.*
 local_*
 
@@ -7,4 +8,5 @@ local_*
 ~$*
 .DS_Store
 *.pyc
+*.tex
 
