@@ -3,8 +3,7 @@ These are the resources for the following paper:
 
 Boltzmann Generators - Sampling Equilibrium States of Many-Body Systems with Deep Learning
 ---
-**Frank Noé, Hao Wu**
-frank.noe@fu-berlin.de
+**Frank Noé** frank.noe@fu-berlin.de, **Hao Wu**
 
 https://arxiv.org/abs/1812.01729
 
