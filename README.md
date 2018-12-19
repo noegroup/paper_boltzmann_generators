@@ -1,5 +1,4 @@
-# Boltzmann Generators - Sampling Equilibrium States of Many-Body Systems with Deep Learning
-These are the resources for the following paper 
+# Boltzmann Generators
 
 Boltzmann Generators - Sampling Equilibrium States of Many-Body Systems with Deep Learning
 ---
