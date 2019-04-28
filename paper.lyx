@@ -722,7 +722,7 @@ training by example
 
  sampled from a Gaussian distribution, and then transform them through the
  neural network to proposal configurations, 
-\begin_inset Formula $\mathbf{x}=F_{zx}(\mathbf{x})$
+\begin_inset Formula $\mathbf{x}=F_{zx}(\mathbf{z})$
 \end_inset
 
 .
