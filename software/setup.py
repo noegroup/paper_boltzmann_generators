@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='Deep Boltzmann Package',
       version='0.1',
@@ -8,5 +8,5 @@ setup(name='Deep Boltzmann Package',
       author='Frank Noe',
       author_email='frank.noe@fu-berlin.de',
       url='',
-      packages=['deep_boltzmann'],
+      packages=find_packages(),
      )
