@@ -1,7 +1,14 @@
 __author__ = 'noe'
 
 from deep_boltzmann.util import ensure_traj
-from scipy.misc import logsumexp
+
+# Newer version of SciPy changes location of logsumexp. Keep backward compatibility.
+import scipy.misc
+if hasattr(scipy.misc, 'logsumexp'):
+    from scipy.misc import logsumexp
+else:
+    from scipy.special import logsumexp
+    
 import numpy as np
 import keras
 
